@@ -170,7 +170,6 @@ START TRANSACTION;
 USE `fp2library`;
 INSERT INTO `fp2library`.`users` (`id`, `username`, `password`, `active`, `description`, `role_id`) VALUES (1, 'admin', '1234', 1, 'администратор', 1);
 INSERT INTO `fp2library`.`users` (`id`, `username`, `password`, `active`, `description`, `role_id`) VALUES (2, 'Alex', '1234', 1, 'читатель', 2);
-INSERT INTO `fp2library`.`users` (`id`, `username`, `password`, `active`, `description`, `role_id`) VALUES (3, 'Митя', '1234', 1, 'читатель', 2);
 
 COMMIT;
 
