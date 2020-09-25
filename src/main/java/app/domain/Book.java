@@ -1,8 +1,8 @@
 package app.domain;
 
-public class Book {
-    private int id;
+public class Book extends Entity {
+    private static final long serialVersionUID = 5692708766041889396L;
+
     private CatalogObj catalogObj;
-    private StateBook stateBook;
-    private String description;
+    private StatusBook statusBook;
 }
