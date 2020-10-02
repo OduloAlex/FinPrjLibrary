@@ -6,8 +6,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBManager {
     private static final Logger logger = Logger.getLogger(DBManager.class);
@@ -45,37 +44,58 @@ public class DBManager {
         }
         return con;
     }
-    // //////////////////////////////////////////////////////////
-    // DB util methods
-    // //////////////////////////////////////////////////////////
 
-    /**
-     * Commits and close the given connection.
-     *
-     * @param con
-     *            Connection to be committed and closed.
-     */
-    public void commitAndClose(Connection con) {
-        try {
-            con.commit();
-            con.close();
-        } catch (SQLException ex) {
-            logger.error("SQLException:", ex);
+////////////////////////////////////////////////////////////
+//     DB util methods
+////////////////////////////////////////////////////////////
+
+    public void closeResultSet(ResultSet rs) {
+        if (rs!=null) {
+            try {
+                rs.close();
+            } catch (SQLException ex) {
+                logger.error("SQLException:", ex);
+            }
         }
     }
 
-    /**
-     * Rollbacks and close the given connection.
-     *
-     * @param con
-     *            Connection to be rollbacked and closed.
-     */
-    public void rollbackAndClose(Connection con) {
-        try {
-            con.rollback();
-            con.close();
-        } catch (SQLException ex) {
-            logger.error("SQLException:", ex);
+    public void closePreparedStatement(PreparedStatement ps) {
+        if (ps!=null) {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                logger.error("SQLException:", ex);
+            }
+        }
+    }
+
+    public void closeStatement(Statement ps) {
+        if (ps!=null) {
+            try {
+                ps.close();
+            } catch (SQLException ex) {
+                logger.error("SQLException:", ex);
+            }
+        }
+    }
+
+    public void closeConnect(Connection con) {
+        if (con!=null) {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                logger.error("SQLException:", ex);
+            }
+        }
+    }
+
+    public void rollback(Connection con) {
+        if (con!=null) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                logger.error("SQLException:", ex);
+            }
         }
     }
 }

@@ -1,0 +1,7 @@
+<%--=========================================================================== 
+Footer (bottom area). 
+===========================================================================--%> 
+
+<footer class="w3-container w3-blue-grey w3-center">
+	<h6>&copy;MyLibrary.com (Final Project by Alex Odulo), 2020</h6>
+</footer>

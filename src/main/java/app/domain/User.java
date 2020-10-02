@@ -2,11 +2,13 @@ package app.domain;
 
 public class User  extends Entity{
     private static final long serialVersionUID = 5692708766041889396L;
+
     private String username;
     private String password;
     private boolean active;
     private int roleId;
     private String description;
+    private String localeName;
 
     public String getUsername() {
         return username;
@@ -48,6 +50,14 @@ public class User  extends Entity{
         this.description = description;
     }
 
+    public String getLocaleName() {
+        return localeName;
+    }
+
+    public void setLocaleName(String localeName) {
+        this.localeName = localeName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -56,6 +66,7 @@ public class User  extends Entity{
                 ", active=" + active +
                 ", roleId=" + roleId +
                 ", description='" + description + '\'' +
+                ", localeName='" + localeName + '\'' +
                 '}';
     }
 }
