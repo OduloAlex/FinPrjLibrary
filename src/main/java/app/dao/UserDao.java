@@ -19,12 +19,12 @@ public class UserDao {
             "SELECT * FROM users ORDER BY id";
 
     private static final String SQL_UPDATE_USER =
-            "UPDATE users SET password=?, active=?, description=?, role_id=?"+
+            "UPDATE users SET password=?, active=?, description=?, locale=?, role_id=?"+
                     " WHERE id=?";
 
     private static final String SQL_ADD_USER =
-            "INSERT INTO users (username, password, active, description, role_id)" +
-                    " VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO users (username, password, active, description, locale, role_id)" +
+                    " VALUES (?, ?, ?, ?, ?, ?)";
 
     private static final String SQL_DEL_USER_BY_ID =
             "DELETE FROM users WHERE id=?";
@@ -94,16 +94,17 @@ public class UserDao {
             pstmt.setString(k++, user.getPassword());
             pstmt.setBoolean(k++, user.isActive());
             pstmt.setString(k++, user.getDescription());
+            pstmt.setString(k++, user.getLocaleName());
             pstmt.setInt(k++, user.getRoleId());
             pstmt.setInt(k++, user.getId());
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
     }
 
@@ -124,15 +125,16 @@ public class UserDao {
             pstmt.setString(k++, user.getPassword());
             pstmt.setBoolean(k++, user.isActive());
             pstmt.setString(k++, user.getDescription());
+            pstmt.setString(k++, user.getLocaleName());
             pstmt.setInt(k, user.getRoleId());
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
     }
 
@@ -151,6 +153,7 @@ public class UserDao {
                 user.setActive(rs.getBoolean(Fields.USER_ACTIVE));
                 user.setDescription(rs.getString(Fields.USER_DESCRIPTION));
                 user.setRoleId(rs.getInt(Fields.USER_ROLE_ID));
+                user.setLocaleName(rs.getString(Fields.USER_LOCALE));
                 return user;
             } catch (SQLException e) {
                 throw new IllegalStateException(e);

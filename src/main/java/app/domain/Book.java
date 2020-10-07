@@ -5,6 +5,7 @@ public class Book extends Entity {
 
     private CatalogObj catalogObj;
     private int statusBookId;
+    private String invNumber;
 
     public CatalogObj getCatalogObj() {
         return catalogObj;
@@ -22,11 +23,20 @@ public class Book extends Entity {
         this.statusBookId = statusBookId;
     }
 
+    public String getInvNumber() {
+        return invNumber;
+    }
+
+    public void setInvNumber(String invNumber) {
+        this.invNumber = invNumber;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
                 "catalogObj=" + catalogObj +
                 ", statusBookId=" + statusBookId +
+                ", invNumber='" + invNumber + '\'' +
                 '}';
     }
 }

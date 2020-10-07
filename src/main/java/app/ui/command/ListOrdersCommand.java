@@ -1,11 +1,9 @@
 package app.ui.command;
 
 import app.Path;
-import app.dao.CardDao;
 import app.dao.CatalogObjDao;
 import app.dao.OrderDao;
 import app.dao.UserDao;
-import app.domain.Card;
 import app.domain.CatalogObj;
 import app.domain.Order;
 import app.domain.User;
@@ -18,25 +16,20 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Lists Cards items.
- *
- * @author
- *
- */
-public class ListCardsCommand extends Command {
+public class ListOrdersCommand extends Command {
 
     private static final long serialVersionUID = 7732286214029478505L;
 
-    private static final Logger log = Logger.getLogger(ListCardsCommand.class);
+    private static final Logger log = Logger.getLogger(ListOrdersCommand.class);
 
     @Override
     public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                          HttpServletResponse response, RequestType requestType) throws IOException, ServletException {
 
         log.debug("Command starts");
 
@@ -53,36 +46,36 @@ public class ListCardsCommand extends Command {
             UserDao.updateUser(user);
         }
 
-//      Get cards
-        List<Card> cards;
+//      Get orders
+        List<Order> orders;
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all cards------>>>>> " + show);
-            cards = CardDao.findAllCardByUsersId(user.getId());
-            log.trace("Found in DB: findAllCards --> " + cards);
+            log.debug("Show all order------>>>>> " + show);
+            orders = OrderDao.findAllOrderByUsersId(user.getId());
+            log.trace("Found in DB: findAllOrders --> " + orders);
             page = 1;
         } else {
-            cards = (List<Card>) request.getSession().getAttribute("cards");
-            log.trace("Found in Attribute: findAllCards --> " + cards);
+            orders = (List<Order>) request.getSession().getAttribute("orders");
+            log.trace("Found in Attribute: findAllOrder --> " + orders);
             page = (int) request.getSession().getAttribute("page");
         }
 
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            log.debug("Find by name in cards ------>>>>> " + find);
-            cards = cards.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getName().equals(find))
+            log.debug("Find by name in orders ------>>>>> " + find);
+            orders = orders.stream()
+                    .filter(c -> c.getCatalogObj().getName().equals(find))
                     .collect(Collectors.toList());
         }
 
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            log.debug("Find by author in cards ------>>>>> " + findAuthor);
-            cards = cards.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor))
+            log.debug("Find by author in orders ------>>>>> " + findAuthor);
+            orders = orders.stream()
+                    .filter(c -> c.getCatalogObj().getAuthor().getName().equals(findAuthor))
                     .collect(Collectors.toList());
         }
 
@@ -90,24 +83,24 @@ public class ListCardsCommand extends Command {
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName()))
+                log.debug("Sort orders by------>>>>> " + sort);
+                orders = orders.stream()
+                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getName()))
                         .collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName()))
+                log.debug("Sort orders by------>>>>> " + sort);
+                orders = orders.stream()
+                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getAuthor().getName()))
                         .collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName()))
+                log.debug("Sort orders by------>>>>> " + sort);
+                orders = orders.stream()
+                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getPublishing().getName()))
                         .collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear()))
+                log.debug("Sort orders by------>>>>> " + sort);
+                orders = orders.stream()
+                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getYear()))
                         .collect(Collectors.toList());
             }
         }
@@ -117,7 +110,7 @@ public class ListCardsCommand extends Command {
         if (goPage != null && !goPage.isEmpty()) {
             log.debug("Go page ------>>>>> " + goPage);
             if ("next".equals(goPage)) {
-                if (cards.size() > (page * 5)) {
+                if (orders.size() > (page * 5)) {
                     page++;
                 }
             } else if (("previous".equals(goPage)) && (page != 1)) {
@@ -125,22 +118,22 @@ public class ListCardsCommand extends Command {
             }
         }
         int lastPage = page * 5;
-        if (lastPage >= cards.size()) {
-            lastPage = cards.size();
+        if (lastPage >= orders.size()) {
+            lastPage = orders.size();
         }
-        List<Card> cardsPage = new ArrayList<>(cards.subList(((page * 5) - 5), lastPage));
+        List<Order> ordersPage = new ArrayList<>(orders.subList(((page * 5) - 5), lastPage));
 
-        request.setAttribute("cardsPage", cardsPage);
-        log.debug("Set the request attribute: cardsPage --> " + cardsPage);
+        request.setAttribute("ordersPage", ordersPage);
+        log.debug("Set the request attribute: ordersPage --> " + ordersPage);
 
-        request.getSession().setAttribute("cards", cards);
-        log.trace("Set the request attribute: cards --> " + cards);
+        request.getSession().setAttribute("orders", orders);
+        log.trace("Set the request attribute: orders --> " + orders);
 
         request.getSession().setAttribute("page", page);
         log.debug("Set page --> " + page);
 
         log.debug("Command finished");
-        return Path.PAGE__LIST_CARDS;
+        return Path.PAGE__LIST_ORDERS;
     }
 
 }

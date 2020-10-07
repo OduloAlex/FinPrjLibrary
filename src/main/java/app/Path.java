@@ -13,11 +13,11 @@ public final class Path {
     public static final String PAGE__REGISTRATION_PAGE = "/jsp/registration.jsp";
     public static final String PAGE__LIST_CARDS = "/jsp/client/list_cards.jsp";
     public static final String PAGE__LIST_CATALOG = "/jsp/client/list_catalog.jsp";
-    public static final String PAGE__LIST_ORDERS = "/jsp/admin/list_orders.jsp";
-    public static final String PAGE__SETTINGS = "/jsp/settings.jsp";
+    public static final String PAGE__LIST_ORDERS = "/jsp/client/list_orders.jsp";
 
     // commands
-    public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders";
-    public static final String COMMAND__LIST_CATALOG = "/controller?command=listCatalog";
+    public static final String COMMAND__LIST_ORDERS = "/controller?command=listOrders&show=all";
+    public static final String COMMAND__LIST_CATALOG = "/controller?command=listCatalog&show=all";
+    public static final String COMMAND__LIST_CARDS = "/controller?command=listCards&show=all";
 
 }

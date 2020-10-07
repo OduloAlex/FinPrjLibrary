@@ -49,7 +49,7 @@ public class DBManager {
 //     DB util methods
 ////////////////////////////////////////////////////////////
 
-    public void closeResultSet(ResultSet rs) {
+    public static void closeResultSet(ResultSet rs) {
         if (rs!=null) {
             try {
                 rs.close();
@@ -59,7 +59,7 @@ public class DBManager {
         }
     }
 
-    public void closePreparedStatement(PreparedStatement ps) {
+    public static void closePreparedStatement(PreparedStatement ps) {
         if (ps!=null) {
             try {
                 ps.close();
@@ -69,7 +69,7 @@ public class DBManager {
         }
     }
 
-    public void closeStatement(Statement ps) {
+    public static void closeStatement(Statement ps) {
         if (ps!=null) {
             try {
                 ps.close();
@@ -79,7 +79,7 @@ public class DBManager {
         }
     }
 
-    public void closeConnect(Connection con) {
+    public static void closeConnect(Connection con) {
         if (con!=null) {
             try {
                 con.close();
@@ -89,7 +89,7 @@ public class DBManager {
         }
     }
 
-    public void rollback(Connection con) {
+    public static void rollback(Connection con) {
         if (con!=null) {
             try {
                 con.rollback();

@@ -19,11 +19,14 @@ public class CatalogObjDao {
             "SELECT * FROM catalog WHERE id=?";
 
     private static final String SQL_ADD_CATALOG =
-            "INSERT INTO catalog (name, year, fine, description, author_id, publishing_id)" +
-                    " VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT INTO catalog (name, year, fine, description, quantity, author_id, publishing_id)" +
+                    " VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private static final String SQL_FIND_ALL_CATALOG =
             "SELECT * FROM catalog ORDER BY id";
+
+    private static final String SQL_FIND_ALL_CATALOG_QNN =
+            "SELECT * FROM catalog WHERE quantity!=0 ORDER BY id";
 
     private static final String SQL_DEL_CATALOG_BY_ID =
             "DELETE FROM catalog WHERE id=?";
@@ -65,6 +68,17 @@ public class CatalogObjDao {
     }
 
     /**
+     * Returns all CatalogObj where quantity more than 0.
+     *
+     * @return List<CatalogObj> entities.
+     */
+    public static List<CatalogObj> findAllCatalogObjQNN() {
+        CatalogMapper mapper = new CatalogMapper();
+        DBCrud<CatalogObj> dbCrud = new DBCrud<>();
+        return dbCrud.findAll(SQL_FIND_ALL_CATALOG_QNN, mapper);
+    }
+
+    /**
      * Del CatalogObj with the given id.
      *
      * @param id
@@ -93,16 +107,17 @@ public class CatalogObjDao {
             pstmt.setInt(k++, catalogObj.getYear());
             pstmt.setInt(k++, catalogObj.getFine());
             pstmt.setString(k++, catalogObj.getDescription());
+            pstmt.setInt(k++, catalogObj.getQuantity());
             pstmt.setInt(k++, catalogObj.getAuthor().getId());
             pstmt.setInt(k++, catalogObj.getPublishing().getId());
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
     }
 
@@ -120,6 +135,7 @@ public class CatalogObjDao {
                 catalogObj.setYear(rs.getInt(Fields.CATALOG_YEAR));
                 catalogObj.setFine(rs.getInt(Fields.CATALOG_FINE));
                 catalogObj.setDescription(rs.getString(Fields.CATALOG_DESCRIPTION));
+                catalogObj.setQuantity(rs.getInt(Fields.CATALOG_QUANTITY));
                 catalogObj.setAuthor(AuthorDao.findAuthorById(rs.getInt(Fields.CATALOG_AUTHOR_ID)));
                 catalogObj.setPublishing(PublishingDao.findPublishingById(rs.getInt(Fields.CATALOG_PUBLISHING_ID)));
                 return catalogObj;

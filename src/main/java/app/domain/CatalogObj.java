@@ -8,7 +8,8 @@ public class CatalogObj  extends Entity{
     private Publishing publishing;
     private int year;
     private int fine;
-    private  String description;
+    private String description;
+    private int quantity;
 
     public String getName() {
         return name;
@@ -58,6 +59,14 @@ public class CatalogObj  extends Entity{
         this.description = description;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Override
     public String toString() {
         return "CatalogObj{" +
@@ -67,6 +76,7 @@ public class CatalogObj  extends Entity{
                 ", year=" + year +
                 ", fine=" + fine +
                 ", description='" + description + '\'' +
+                ", quantity=" + quantity +
                 '}';
     }
 }

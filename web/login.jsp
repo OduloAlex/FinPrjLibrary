@@ -17,7 +17,7 @@
             <h3>Sign in</h3>
         </div>
         <div class="w3-light-grey w3-padding w3-left-align">
-            <form action="controller" method="post">
+            <form action="controller" method="get">
                 <%--отправить command в атрибутах--%>
                 <input type="hidden" name="command" value="login"/>
 
@@ -31,7 +31,8 @@
                         key="login_jsp.button.login"/></button>
             </form>
 
-            <form action="controller?command=toRegistration" method="post">
+            <form action="controller" method="get">
+                <input type="hidden" name="command" value="toRegistration"/>
                 <button type="submit" class="w3-btn w3-green w3-round-large w3-block">Registration</button>
             </form>
 

@@ -60,6 +60,7 @@ public class RegistrationCommand extends Command {
             user.setPassword(password);
             user.setActive(true);
             user.setDescription("reader");
+            user.setLocaleName("en");
             user.setRoleId(3);
             UserDao.addUser(user);
 

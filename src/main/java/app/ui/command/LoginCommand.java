@@ -60,11 +60,11 @@ public class LoginCommand extends Command {
 //@@@@@@@@@@@@@@@@ test
 //        log.trace("DELLLLLL "+ UserDao.delUserById(2));
 
-        List<Book> tmp = BookDao.findAllBook();
-        log.trace("Found in DB: book ::::::::::::--> " + tmp);
-
-        List<Card> tmp2 = CardDao.findAllCardByUsersId(1);
-        log.trace("Found in DB: cards ::::::::::::--> " + tmp2);
+//        List<Book> tmp = BookDao.findAllBook();
+//        log.trace("Found in DB: book ::::::::::::--> " + tmp);
+//
+//        List<Card> tmp2 = CardDao.findAllCardByUsersId(1);
+//        log.trace("Found in DB: cards ::::::::::::--> " + tmp2);
 //@@@@@@@@@@@@@@@
         if (user == null || !password.equals(user.getPassword())) {
             errorMessage = "Cannot find user with such login/password";
@@ -75,8 +75,8 @@ public class LoginCommand extends Command {
             Role userRole = Role.getRole(user);
             log.trace("userRole --> " + userRole);
 
-            if (userRole == Role.ADMIN)
-                forward = Path.COMMAND__LIST_ORDERS;
+//            if (userRole == Role.ADMIN)
+//                forward = Path.COMMAND__LIST_ORDERS;
 
             if (userRole == Role.READER)
                 forward = Path.COMMAND__LIST_CATALOG;

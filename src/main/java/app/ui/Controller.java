@@ -2,6 +2,7 @@ package app.ui;
 
 import app.ui.command.Command;
 import app.ui.command.CommandContainer;
+import app.ui.command.RequestType;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -25,19 +26,19 @@ public class Controller extends HttpServlet {
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        process(request, response);
+        process(request, response, RequestType.GET);
     }
 
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
-        process(request, response);
+        process(request, response, RequestType.POST);
     }
 
     /**
      * Main method of this controller.
      */
     private void process(HttpServletRequest request,
-                         HttpServletResponse response) throws IOException, ServletException {
+                         HttpServletResponse response, RequestType requestType) throws IOException, ServletException {
 
         log.debug("Controller starts");
 
@@ -51,15 +52,20 @@ public class Controller extends HttpServlet {
 
         // execute command and get forward address
         String forward = command.execute(request, response);
-        log.trace("Forward address --> " + forward);
 
-        log.debug("Controller finished, now go to forward address --> " + forward);
 
         // if the forward address is not null go to the address
         if (forward != null) {
-            RequestDispatcher disp = request.getRequestDispatcher(forward);
-            disp.forward(request, response);
+            if(requestType == RequestType.GET) {
+                log.trace("Forward to address --> " + forward);
+                RequestDispatcher disp = request.getRequestDispatcher(forward);
+                disp.forward(request, response);
+            } else if(requestType == RequestType.POST)  {
+                log.trace("Redirect to address --> " + forward);
+                response.sendRedirect(forward);
+            }
         }
+        log.debug("Controller finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }
 
 }

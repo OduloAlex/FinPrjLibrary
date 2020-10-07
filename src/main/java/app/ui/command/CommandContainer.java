@@ -30,6 +30,7 @@ public class CommandContainer {
 //        // client commands
         commands.put("listCards", new ListCardsCommand());
         commands.put("listCatalog", new ListCatalogCommand());
+        commands.put("listOrders", new ListOrdersCommand());
 //
 //        // admin commands
 //        commands.put("listOrders", new ListOrdersCommand());

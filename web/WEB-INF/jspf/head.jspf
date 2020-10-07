@@ -9,8 +9,7 @@
 	
 <%--=========================================================================== 
 Bind CSS document.
-===========================================================================--%> 
-<%--	<link rel="stylesheet" type="text/css" media="screen" href="style/st4.css"/>--%>
+===========================================================================--%>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <%--=========================================================================== 
 If you define http-equiv attribute, set the content type and the charset the same

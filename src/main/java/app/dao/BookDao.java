@@ -16,8 +16,8 @@ public class BookDao {
             "SELECT * FROM books WHERE id=?";
 
     private static final String SQL_ADD_BOOK =
-            "INSERT INTO books (state, catalog_id)" +
-                    " VALUES (?, ?)";
+            "INSERT INTO books (state, inv_number, catalog_id)" +
+                    " VALUES (?, ?, ?)";
 
     private static final String SQL_FIND_ALL_BOOK =
             "SELECT * FROM books ORDER BY id";
@@ -75,15 +75,16 @@ public class BookDao {
             pstmt = con.prepareStatement(SQL_ADD_BOOK);
             int k = 1;
             pstmt.setInt(k++, book.getStatusBookId());
+            pstmt.setString(k++, book.getInvNumber());
             pstmt.setInt(k++, book.getCatalogObj().getId());
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
     }
 
@@ -98,6 +99,7 @@ public class BookDao {
                 Book book = new Book();
                 book.setId(rs.getInt(Fields.ENTITY_ID));
                 book.setStatusBookId(rs.getInt(Fields.BOOK_STATE));
+                book.setInvNumber(rs.getString(Fields.BOOK_INV_NUMBER));
                 book.setCatalogObj(CatalogObjDao.findCatalogObjById(rs.getInt(Fields.BOOK_CATALOG_ID)));
                 return book;
             } catch (SQLException e) {

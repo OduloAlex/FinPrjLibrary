@@ -84,10 +84,10 @@ public class CardDao {
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
     }
 

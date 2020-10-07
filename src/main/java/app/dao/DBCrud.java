@@ -25,11 +25,11 @@ public class DBCrud<T> {
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closeResultSet(rs);
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closeResultSet(rs);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
         return entity;
     }
@@ -49,11 +49,11 @@ public class DBCrud<T> {
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closeResultSet(rs);
-            DBManager.getInstance().closeStatement(stmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closeResultSet(rs);
+            DBManager.closeStatement(stmt);
+            DBManager.closeConnect(con);
         }
         return entities;
     }
@@ -74,33 +74,35 @@ public class DBCrud<T> {
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closeResultSet(rs);
-            DBManager.getInstance().closeStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closeResultSet(rs);
+            DBManager.closeStatement(pstmt);
+            DBManager.closeConnect(con);
         }
         return entities;
     }
 
-    public boolean delete(String sqlQuery, String param) {
+    public boolean delete(String sqlQuery, String ... param) {
         PreparedStatement pstmt = null;
         Connection con = null;
         boolean result = false;
         try {
             con = DBManager.getInstance().getConnection();
             pstmt = con.prepareStatement(sqlQuery);
-            pstmt.setString(1, param);
+            for(int i = 0; i < param.length; i++) {
+                pstmt.setString((i+1), param[i]);
+            }
             if(pstmt.executeUpdate() != 0){
                 result = true;
             }
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
-            DBManager.getInstance().rollback(con);
+            DBManager.rollback(con);
         } finally {
-            DBManager.getInstance().closePreparedStatement(pstmt);
-            DBManager.getInstance().closeConnect(con);
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
         }
         return result;
     }
