@@ -1,14 +1,10 @@
-package app.ui.command;
+package app.ui.command.reader;
 
 import app.Path;
-import app.dao.CardDao;
-import app.dao.CatalogObjDao;
-import app.dao.OrderDao;
-import app.dao.UserDao;
+import app.dao.*;
 import app.domain.Card;
-import app.domain.CatalogObj;
-import app.domain.Order;
 import app.domain.User;
+import app.ui.command.Command;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -35,10 +31,117 @@ public class ListCardsCommand extends Command {
     private static final Logger log = Logger.getLogger(ListCardsCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request,
+    public String executeGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
+
+        User user = (User) request.getSession().getAttribute("user");
+
+//      Get cards
+        List<Card> cardsItems = null;
+        int page;
+        String show = request.getParameter("show");
+        if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
+            log.debug("Show all cards------>>>>> " + show);
+            try {
+                cardsItems = CardDao.findAllCardByUsersId(user.getId());
+            } catch (DBException e) {
+                String errorMessage = e.getMessage();
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                log.debug("Command Post finished");
+                return  Path.PAGE__ERROR_PAGE;
+            }
+            log.trace("Found in DB: findAllCards --> " + cardsItems);
+            page = 1;
+        } else {
+            cardsItems = (List<Card>) request.getSession().getAttribute("cardsItems");
+            log.trace("Found in Attribute: findAllCards --> " + cardsItems);
+            page = (int) request.getSession().getAttribute("page");
+        }
+
+//      Find by name
+        String find = request.getParameter("findName");
+        if (find != null && !find.isEmpty()) {
+            log.debug("Find by name in cards ------>>>>> " + find);
+            cardsItems = cardsItems.stream()
+                    .filter(c -> c.getBook().getCatalogObj().getName().equals(find))
+                    .collect(Collectors.toList());
+        }
+
+//      Find by author
+        String findAuthor = request.getParameter("findAuthor");
+        if (findAuthor != null && !findAuthor.isEmpty()) {
+            log.debug("Find by author in cards ------>>>>> " + findAuthor);
+            cardsItems = cardsItems.stream()
+                    .filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor))
+                    .collect(Collectors.toList());
+        }
+
+//      Sort
+        String sort = request.getParameter("sort");
+        if (sort != null && !sort.isEmpty()) {
+            if ("name".equals(sort)) {
+                log.debug("Sort cards by------>>>>> " + sort);
+                cardsItems = cardsItems.stream()
+                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName()))
+                        .collect(Collectors.toList());
+            } else if ("author".equals(sort)) {
+                log.debug("Sort cards by------>>>>> " + sort);
+                cardsItems = cardsItems.stream()
+                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName()))
+                        .collect(Collectors.toList());
+            } else if ("publishing".equals(sort)) {
+                log.debug("Sort cards by------>>>>> " + sort);
+                cardsItems = cardsItems.stream()
+                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName()))
+                        .collect(Collectors.toList());
+            } else if ("year".equals(sort)) {
+                log.debug("Sort cards by------>>>>> " + sort);
+                cardsItems = cardsItems.stream()
+                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear()))
+                        .collect(Collectors.toList());
+            }
+        }
+
+//      Pagination
+        List<Card> cardsPage = null;
+        if(cardsItems!=null) {
+            String goPage = request.getParameter("goPage");
+            if (goPage != null && !goPage.isEmpty()) {
+                log.debug("Go page ------>>>>> " + goPage);
+                if ("next".equals(goPage)) {
+                    if (cardsItems.size() > (page * 5)) {
+                        page++;
+                    }
+                } else if (("previous".equals(goPage)) && (page != 1)) {
+                    page--;
+                }
+            }
+            int lastPage = page * 5;
+            if (lastPage >= cardsItems.size()) {
+                lastPage = cardsItems.size();
+            }
+            cardsPage = new ArrayList<>(cardsItems.subList(((page * 5) - 5), lastPage));
+        }
+        request.setAttribute("cardsPage", cardsPage);
+        log.debug("Set the request attribute: cardsPage --> " + cardsPage);
+
+        request.getSession().setAttribute("cardsItems", cardsItems);
+        log.trace("Set the request attribute: cards --> " + cardsItems);
+
+        request.getSession().setAttribute("page", page);
+        log.debug("Set page --> " + page);
+
+        log.debug("Command finished");
+        return Path.PAGE__LIST_CARDS;
+    }
+    @Override
+    public String executePost(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException, ServletException {
+
+        log.debug("Command Post starts");
 
         User user = (User) request.getSession().getAttribute("user");
 
@@ -50,97 +153,18 @@ public class ListCardsCommand extends Command {
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
-            UserDao.updateUser(user);
-        }
-
-//      Get cards
-        List<Card> cards;
-        int page;
-        String show = request.getParameter("show");
-        if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all cards------>>>>> " + show);
-            cards = CardDao.findAllCardByUsersId(user.getId());
-            log.trace("Found in DB: findAllCards --> " + cards);
-            page = 1;
-        } else {
-            cards = (List<Card>) request.getSession().getAttribute("cards");
-            log.trace("Found in Attribute: findAllCards --> " + cards);
-            page = (int) request.getSession().getAttribute("page");
-        }
-
-//      Find by name
-        String find = request.getParameter("findName");
-        if (find != null && !find.isEmpty()) {
-            log.debug("Find by name in cards ------>>>>> " + find);
-            cards = cards.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getName().equals(find))
-                    .collect(Collectors.toList());
-        }
-
-//      Find by author
-        String findAuthor = request.getParameter("findAuthor");
-        if (findAuthor != null && !findAuthor.isEmpty()) {
-            log.debug("Find by author in cards ------>>>>> " + findAuthor);
-            cards = cards.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor))
-                    .collect(Collectors.toList());
-        }
-
-//      Sort
-        String sort = request.getParameter("sort");
-        if (sort != null && !sort.isEmpty()) {
-            if ("name".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName()))
-                        .collect(Collectors.toList());
-            } else if ("author".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName()))
-                        .collect(Collectors.toList());
-            } else if ("publishing".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName()))
-                        .collect(Collectors.toList());
-            } else if ("year".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
-                cards = cards.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear()))
-                        .collect(Collectors.toList());
+            try {
+                UserDao.updateUser(user);
+            } catch (DBException e) {
+                String errorMessage = e.getMessage();
+                session.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                log.debug("Command Post finished");
+                return  Path.COMMAND__ERROR;
             }
         }
 
-//      Pagination
-        String goPage = request.getParameter("goPage");
-        if (goPage != null && !goPage.isEmpty()) {
-            log.debug("Go page ------>>>>> " + goPage);
-            if ("next".equals(goPage)) {
-                if (cards.size() > (page * 5)) {
-                    page++;
-                }
-            } else if (("previous".equals(goPage)) && (page != 1)) {
-                page--;
-            }
-        }
-        int lastPage = page * 5;
-        if (lastPage >= cards.size()) {
-            lastPage = cards.size();
-        }
-        List<Card> cardsPage = new ArrayList<>(cards.subList(((page * 5) - 5), lastPage));
-
-        request.setAttribute("cardsPage", cardsPage);
-        log.debug("Set the request attribute: cardsPage --> " + cardsPage);
-
-        request.getSession().setAttribute("cards", cards);
-        log.trace("Set the request attribute: cards --> " + cards);
-
-        request.getSession().setAttribute("page", page);
-        log.debug("Set page --> " + page);
-
-        log.debug("Command finished");
-        return Path.PAGE__LIST_CARDS;
+        log.debug("Command Post finished");
+        return Path.COMMAND__LIST_CARDS;
     }
-
 }

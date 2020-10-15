@@ -32,7 +32,7 @@ public class OrderDao {
      *            Order object identifier.
      * @return List<Order> object entity.
      */
-    public static List<Order> findAllOrderByUsersId(int id) {
+    public static List<Order> findAllOrderByUsersId(int id) throws DBException {
         OrderMapper mapper = new OrderMapper();
         DBCrud<Order> dbCrud = new DBCrud<>();
         return dbCrud.findAllByParam(SQL_FIND_ORDER_BY_USERS_ID, String.valueOf(id), mapper);
@@ -43,7 +43,7 @@ public class OrderDao {
      *
      * @return List<Order> entities.
      */
-    public static List<Order> findAllOrder() {
+    public static List<Order> findAllOrder() throws DBException {
         OrderMapper mapper = new OrderMapper();
         DBCrud<Order> dbCrud = new DBCrud<>();
         return dbCrud.findAll(SQL_FIND_ALL_ORDER, mapper);
@@ -56,32 +56,36 @@ public class OrderDao {
      * @param userId id.
      * @return boolean true if del
      */
-    public static boolean delOrder(int catalogId, int userId) {
+    public static boolean delOrder(int catalogId, int userId) throws DBException {
         DBCrud<Order> dbCrud = new DBCrud<>();
         return dbCrud.delete(SQL_DEL_ORDER_BY_USERS_ID, String.valueOf(catalogId), String.valueOf(userId));
     }
 
     /**
-     * Add Order
+     * Add Orders
      *
-     * @param order
-     *            Order to add.
+     * @param orders
+     *            list Orders to add.
      */
-    public static void addOrder(Order order) {
+    public static void addOrders(List<Order> orders) throws DBException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = DBManager.getInstance().getConnection();
             pstmt = con.prepareStatement(SQL_ADD_ORDER);
-            int k = 1;
-            pstmt.setInt(k++, order.getCatalogObj().getId());
-            pstmt.setInt(k++, order.getUser().getId());
-            pstmt.setInt(k++, order.getState());
-            pstmt.executeUpdate();
+            for (Order order: orders) {
+                int k = 1;
+                pstmt.setInt(k++, order.getCatalogObj().getId());
+                pstmt.setInt(k++, order.getUser().getId());
+                logger.debug("Add order - " +order.getUser().getId());
+                pstmt.setInt(k++, order.getState());
+                pstmt.executeUpdate();
+            }
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -101,7 +105,7 @@ public class OrderDao {
                 order.setUser(UserDao.findUserById(rs.getInt(Fields.ORDER_USERS_ID)));
                 order.setState(rs.getInt(Fields.ORDER_STATE));
                 return order;
-            } catch (SQLException e) {
+            } catch (SQLException | DBException e) {
                 throw new IllegalStateException(e);
             }
         }

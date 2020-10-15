@@ -3,37 +3,46 @@
 
 <html>
 
-<c:set var="title" value="Registration"/>
-<%@ include file="/WEB-INF/jspf/head.jspf" %>
+<h:head title="res.RegistrationUser"></h:head>
 
 <body class="w3-white">
-<div class="w3-container w3-blue-grey w3-opacity w3-right-align">
-    <h1>MyLibrary.com</h1>
+
+<%@ include file="/WEB-INF/jspf/header.jspf" %>
+
+<div class="w3-bar  w3-blue-grey ">
+    <form action="controller" method="post">
+        <input type="hidden" name="command" value="registration"/>
+        <c:forEach var="localeName" items="${locales}">
+            <input type="submit" name="localeToSet" class="w3-bar-item w3-button w3-right" value=${localeName}>
+        </c:forEach>
+    </form>
 </div>
 
 <div class="w3-container w3-padding" align="center">
     <div class="w3-card-4" style="width: 30%">
         <div class="w3-container w3-center w3-green">
-            <h3>Registration</h3>
+            <h3><fmt:message key="res.RegistrationUser"/></h3>
         </div>
         <div class="w3-light-grey w3-padding w3-left-align">
             <form action="controller" method="post">
-                <%--отправить command в атрибутах--%>
                 <input type="hidden" name="command" value="registration"/>
 
-                <label><fmt:message key="login_jsp.label.login"/>
-                    <input type="text" name="login" class="w3-input w3-border w3-round-large"><br/>
+                <label><fmt:message key="res.login"/>
+                    <input type="text" name="login" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
                 </label>
-                <label><fmt:message key="login_jsp.label.password"/>
-                    <input type="password" name="password" class="w3-input w3-border w3-round-large"><br/>
+                <label><fmt:message key="res.password"/>
+                    <input type="password" name="password" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
                 </label>
-                <button type="submit" class="w3-btn w3-green w3-round-large w3-block">Registration</button>
+                    <label><fmt:message key="res.Description"/>
+                        <input type="text" name="description" class="w3-input w3-border w3-round-large" maxlength="120"><br/>
+                    </label>
+                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message key="res.RegistrationUser"/></button>
             </form>
 
-            <form action="${pageContext.request.contextPath}/login.jsp">
-                <button type="submit" class="w3-btn w3-green w3-round-large w3-block">Back</button>
+            <form action="controller" method="get">
+                <input type="hidden" name="command" value="login"/>
+                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message key="res.Back"/></button>
             </form>
-
         </div>
     </div>
 </div>

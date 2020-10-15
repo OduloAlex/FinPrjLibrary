@@ -18,9 +18,21 @@ public class UserDao {
     private static final String SQL_FIND_ALL_USER =
             "SELECT * FROM users ORDER BY id";
 
+    private static final String SQL_FIND_ALL_USER_READER =
+            "SELECT * FROM users WHERE role_id=3 ORDER BY id";
+
+    private static final String SQL_FIND_ALL_USER_READER_LIB =
+            "SELECT * FROM users WHERE role_id=2 OR role_id=3 ORDER BY id";
+
     private static final String SQL_UPDATE_USER =
             "UPDATE users SET password=?, active=?, description=?, locale=?, role_id=?"+
                     " WHERE id=?";
+
+    private static final String SQL_UPDATE_USER_ACTIVE =
+            "UPDATE users SET active=? WHERE id=?";
+
+    private static final String SQL_UPDATE_USER_ROLE =
+            "UPDATE users SET role_id=? WHERE id=?";
 
     private static final String SQL_ADD_USER =
             "INSERT INTO users (username, password, active, description, locale, role_id)" +
@@ -36,7 +48,7 @@ public class UserDao {
      *            User id.
      * @return User entity.
      */
-    public static User findUserById(int id) {
+    public static User findUserById(int id) throws DBException {
         UserMapper mapper = new UserMapper();
         DBCrud<User> dbCrud = new DBCrud<>();
         return dbCrud.findOne(SQL_FIND_USER_BY_ID, String.valueOf(id), mapper);
@@ -49,7 +61,7 @@ public class UserDao {
      *            User login.
      * @return User entity.
      */
-    public static User findUserByLogin(String login) {
+    public static User findUserByLogin(String login) throws DBException {
         UserMapper mapper = new UserMapper();
         DBCrud<User> dbCrud = new DBCrud<>();
         return dbCrud.findOne(SQL_FIND_USER_BY_LOGIN, login, mapper);
@@ -60,10 +72,32 @@ public class UserDao {
      *
      * @return List<User> entities.
      */
-    public static List<User> findAllUser() {
+    public static List<User> findAllUser() throws DBException {
         UserMapper mapper = new UserMapper();
         DBCrud<User> dbCrud = new DBCrud<>();
         return dbCrud.findAll(SQL_FIND_ALL_USER, mapper);
+    }
+
+    /**
+     * Returns all users with role reader.
+     *
+     * @return List<User> entities.
+     */
+    public static List<User> findAllUserReader() throws DBException {
+        UserMapper mapper = new UserMapper();
+        DBCrud<User> dbCrud = new DBCrud<>();
+        return dbCrud.findAll(SQL_FIND_ALL_USER_READER, mapper);
+    }
+
+    /**
+     * Returns all users with role reader or librarian.
+     *
+     * @return List<User> entities.
+     */
+    public static List<User> findAllUserReaderOrLib() throws DBException {
+        UserMapper mapper = new UserMapper();
+        DBCrud<User> dbCrud = new DBCrud<>();
+        return dbCrud.findAll(SQL_FIND_ALL_USER_READER_LIB, mapper);
     }
 
     /**
@@ -73,7 +107,7 @@ public class UserDao {
      *            User id.
      * @return boolean true if del
      */
-    public static boolean delUserById(int id) {
+    public static boolean delUserById(int id) throws DBException {
         DBCrud<User> dbCrud = new DBCrud<>();
         return dbCrud.delete(SQL_DEL_USER_BY_ID, String.valueOf(id));
     }
@@ -84,7 +118,7 @@ public class UserDao {
      * @param user
      *            user to update.
      */
-    public static void updateUser(User user) {
+    public static void updateUser(User user) throws DBException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -102,6 +136,61 @@ public class UserDao {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
+        } finally {
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
+        }
+    }
+
+    /**
+     * Update user's active.
+     *
+     * @param active
+     *            active to active.
+     */
+    public static void updateUserActive(int active, int id) throws DBException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            pstmt = con.prepareStatement(SQL_UPDATE_USER_ACTIVE);
+            int k = 1;
+            pstmt.setInt(k++, active);
+            pstmt.setInt(k++, id);
+            pstmt.executeUpdate();
+            con.commit();
+        } catch (SQLException ex) {
+            logger.error("SQLException when connecting to db", ex);
+            DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
+        } finally {
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
+        }
+    }
+
+    /**
+     * Update user's role.
+     *
+     * @param role
+     *            role to active.
+     */
+    public static void updateUserRole(int role, int id) throws DBException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            pstmt = con.prepareStatement(SQL_UPDATE_USER_ROLE);
+            int k = 1;
+            pstmt.setInt(k++, role);
+            pstmt.setInt(k++, id);
+            pstmt.executeUpdate();
+            con.commit();
+        } catch (SQLException ex) {
+            logger.error("SQLException when connecting to db", ex);
+            DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -114,7 +203,7 @@ public class UserDao {
      * @param user
      *            user to add.
      */
-    public static void addUser(User user) {
+    public static void addUser(User user) throws DBException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -132,6 +221,7 @@ public class UserDao {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);

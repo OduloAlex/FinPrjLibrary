@@ -2,7 +2,6 @@ package app.ui;
 
 import app.ui.command.Command;
 import app.ui.command.CommandContainer;
-import app.ui.command.RequestType;
 import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
@@ -26,21 +25,21 @@ public class Controller extends HttpServlet {
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-        process(request, response, RequestType.GET);
+        processGet(request, response);
     }
 
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
-        process(request, response, RequestType.POST);
+        processPost(request, response);
     }
 
     /**
      * Main method of this controller.
      */
-    private void process(HttpServletRequest request,
-                         HttpServletResponse response, RequestType requestType) throws IOException, ServletException {
+    private void processGet(HttpServletRequest request,
+                         HttpServletResponse response) throws IOException, ServletException {
 
-        log.debug("Controller starts");
+        log.debug("Controller Get starts");
 
         // extract command name from the request
         String commandName = request.getParameter("command");
@@ -51,21 +50,42 @@ public class Controller extends HttpServlet {
         log.trace("Obtained command --> " + command);
 
         // execute command and get forward address
-        String forward = command.execute(request, response);
+        String path = command.executeGet(request, response);
 
 
         // if the forward address is not null go to the address
-        if (forward != null) {
-            if(requestType == RequestType.GET) {
-                log.trace("Forward to address --> " + forward);
-                RequestDispatcher disp = request.getRequestDispatcher(forward);
+        if (path != null) {
+                log.trace("Forward to address --> " + path);
+                RequestDispatcher disp = request.getRequestDispatcher(path);
                 disp.forward(request, response);
-            } else if(requestType == RequestType.POST)  {
-                log.trace("Redirect to address --> " + forward);
-                response.sendRedirect(forward);
-            }
         }
-        log.debug("Controller finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        log.debug("Controller Get finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }
 
+    /**
+     * Main method of this controller.
+     */
+    private void processPost(HttpServletRequest request,
+                            HttpServletResponse response) throws IOException, ServletException {
+
+        log.debug("Controller Post starts");
+
+        // extract command name from the request
+        String commandName = request.getParameter("command");
+        log.trace("Request parameter: command --> " + commandName);
+
+        // obtain command object by its name
+        Command command = CommandContainer.get(commandName);
+        log.trace("Obtained command --> " + command);
+
+        // execute command and get forward address
+        String path = command.executePost(request, response);
+
+        // if the forward address is not null go to the address
+        if (path != null) {
+                log.trace("Redirect to address --> " + path);
+                response.sendRedirect(path);
+        }
+        log.debug("Controller Post finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    }
 }

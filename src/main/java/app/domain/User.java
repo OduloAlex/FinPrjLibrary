@@ -62,7 +62,6 @@ public class User  extends Entity{
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", active=" + active +
                 ", roleId=" + roleId +
                 ", description='" + description + '\'' +

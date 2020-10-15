@@ -33,7 +33,7 @@
     <!-- the (preferable) browser's locale will be used if we don't set the default locale -->
     <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>
-        <param-value>ru</param-value>
+        <param-value>en</param-value>
     </context-param>
 
     <!-- supported locales -->
@@ -43,14 +43,86 @@
     </context-param>
 
     <!--============================================================
+        Encoding support filter
+    =============================================================-->
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>app.ui.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/jsp/*</url-pattern>
+        <servlet-name>Controller</servlet-name>
+    </filter-mapping>
+
+    <!--============================================================
+        Security filter.
+        Delimiter - space/tab
+    =============================================================-->
+    <filter>
+        <filter-name>CommandAccessFilter</filter-name>
+        <filter-class>app.ui.filter.CommandAccessFilter</filter-class>
+
+<!--        admin commands -->
+        <init-param>
+            <param-name>admin</param-name>
+            <param-value>listAdminCatalog listAdminUsers listAdminAuthors editAdminBook settingsAdminBook makeAdminBook listAdminPublishings</param-value>
+        </init-param>
+
+<!--        librarian commands -->
+        <init-param>
+            <param-name>librarian</param-name>
+            <param-value>listLibReaders listLibOrders listLibCards makeLibCard listLibCatalog</param-value>
+        </init-param>
+
+<!--        reader commands -->
+        <init-param>
+            <param-name>reader</param-name>
+            <param-value>listCards listCatalog listOrders</param-value>
+        </init-param>
+
+<!--        commands for all roles -->
+        <init-param>
+            <param-name>common</param-name>
+            <param-value>logout</param-value>
+        </init-param>
+
+<!--        commands without access control -->
+        <init-param>
+            <param-name>out-of-control</param-name>
+            <param-value>login registration error</param-value>
+        </init-param>
+
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CommandAccessFilter</filter-name>
+        <servlet-name>Controller</servlet-name>
+    </filter-mapping>
+
+    <!--============================================================
         Context listener
     =============================================================-->
     <listener>
         <listener-class>app.ui.listener.ContextListener</listener-class>
     </listener>
 
+    <!--============================================================
+        Error page
+    =============================================================-->
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/jsp/error_page.jsp</location>
+    </error-page>
+
     <error-page>
         <error-code>404</error-code>
-        <location>/views/error_page.jsp</location>
+        <location>/jsp/error_page.jsp</location>
     </error-page>
+
 </web-app>

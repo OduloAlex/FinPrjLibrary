@@ -9,7 +9,7 @@ import java.util.List;
 public class DBCrud<T> {
     private static final Logger logger = Logger.getLogger(DBCrud.class);
 
-    public T findOne(String sqlQuery, String param, EntityMapper<T> mapper) {
+    public T findOne(String sqlQuery, String param, EntityMapper<T> mapper) throws DBException {
         T entity = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -26,6 +26,7 @@ public class DBCrud<T> {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to find data in DB");
         } finally {
             DBManager.closeResultSet(rs);
             DBManager.closePreparedStatement(pstmt);
@@ -34,7 +35,7 @@ public class DBCrud<T> {
         return entity;
     }
 
-    public List<T> findAll(String sqlQuery, EntityMapper<T> mapper) {
+    public List<T> findAll(String sqlQuery, EntityMapper<T> mapper) throws DBException {
         List<T> entities = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
@@ -50,6 +51,7 @@ public class DBCrud<T> {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to find data in DB");
         } finally {
             DBManager.closeResultSet(rs);
             DBManager.closeStatement(stmt);
@@ -58,7 +60,7 @@ public class DBCrud<T> {
         return entities;
     }
 
-    public List<T> findAllByParam(String sqlQuery, String param, EntityMapper<T> mapper) {
+    public List<T> findAllByParam(String sqlQuery, String param, EntityMapper<T> mapper) throws DBException {
         List<T> entities = new ArrayList<>();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -75,6 +77,7 @@ public class DBCrud<T> {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to find data in DB");
         } finally {
             DBManager.closeResultSet(rs);
             DBManager.closeStatement(pstmt);
@@ -83,7 +86,7 @@ public class DBCrud<T> {
         return entities;
     }
 
-    public boolean delete(String sqlQuery, String ... param) {
+    public boolean delete(String sqlQuery, String ... param) throws DBException {
         PreparedStatement pstmt = null;
         Connection con = null;
         boolean result = false;
@@ -100,6 +103,7 @@ public class DBCrud<T> {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to delete data in DB");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);

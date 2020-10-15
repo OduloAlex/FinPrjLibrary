@@ -1,9 +1,7 @@
 package app.ui.command;
 
 import app.Path;
-import app.dao.BookDao;
-import app.dao.CardDao;
-import app.dao.UserDao;
+import app.dao.*;
 import app.domain.Book;
 import app.domain.Card;
 import app.domain.Role;
@@ -31,7 +29,7 @@ public class LoginCommand extends Command {
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request,
+    public String executeGet(HttpServletRequest request,
                           HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
@@ -44,67 +42,93 @@ public class LoginCommand extends Command {
 
         String password = request.getParameter("password");
 
+
         // error handler
         String errorMessage = null;
-        String forward = Path.PAGE__ERROR_PAGE;
+        String forward = Path.PAGE__LOGIN;
+        if (login != null && password != null){
+            forward = Path.COMMAND__ERROR;
+            if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45)) {
+                errorMessage = "ErrorLoginPassEmpty";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return forward;
+            }
 
-        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-            errorMessage = "Login/password cannot be empty";
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return forward;
-        }
+            User user = null;
+            try {
+                user = UserDao.findUserByLogin(login);
+            } catch (DBException e) {
+                e.printStackTrace();
+            }
 
-        User user = UserDao.findUserByLogin(login);
-        log.trace("Found in DB: user --> " + user);
-//@@@@@@@@@@@@@@@@ test
-//        log.trace("DELLLLLL "+ UserDao.delUserById(2));
+            log.trace("Found in DB: user --> " + user);
+            if (user == null || !password.equals(user.getPassword())) {
+                errorMessage = "ErrorNotFindUser";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return forward;
+            } else if (!user.isActive()) {
+                errorMessage = "ErrorUserBlocked";
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                return forward;
+            } else {
+                Role userRole = Role.getRole(user);
+                log.trace("userRole --> " + userRole);
 
-//        List<Book> tmp = BookDao.findAllBook();
-//        log.trace("Found in DB: book ::::::::::::--> " + tmp);
-//
-//        List<Card> tmp2 = CardDao.findAllCardByUsersId(1);
-//        log.trace("Found in DB: cards ::::::::::::--> " + tmp2);
-//@@@@@@@@@@@@@@@
-        if (user == null || !password.equals(user.getPassword())) {
-            errorMessage = "Cannot find user with such login/password";
-            request.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
-            return forward;
-        } else {
-            Role userRole = Role.getRole(user);
-            log.trace("userRole --> " + userRole);
+                if (userRole == Role.ADMIN)
+                    forward = Path.COMMAND__LIST_ADMIN_CATALOG;
 
-//            if (userRole == Role.ADMIN)
-//                forward = Path.COMMAND__LIST_ORDERS;
+                if (userRole == Role.LIBRARIAN)
+                    forward = Path.COMMAND__LIST_LIB_CATALOG;
 
-            if (userRole == Role.READER)
-                forward = Path.COMMAND__LIST_CATALOG;
+                if (userRole == Role.READER)
+                    forward = Path.COMMAND__LIST_CATALOG;
 
-            session.setAttribute("user", user);
-            log.trace("Set the session attribute: user --> " + user);
+                session.setAttribute("user", user);
+                log.trace("Set the session attribute: user --> " + user);
 
-            session.setAttribute("userRole", userRole);
-            log.trace("Set the session attribute: userRole --> " + userRole);
+                session.setAttribute("userRole", userRole);
+                log.trace("Set the session attribute: userRole --> " + userRole);
 
-            log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
+                log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
 
-            // work with i18n
-            String userLocaleName = user.getLocaleName();
-            log.trace("userLocalName --> " + userLocaleName);
+                // work with i18n
+                String userLocaleName = user.getLocaleName();
+                log.trace("userLocalName --> " + userLocaleName);
 
-            if (userLocaleName != null && !userLocaleName.isEmpty()) {
-                Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
+                if (userLocaleName != null && !userLocaleName.isEmpty()) {
+                    Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
 
-                session.setAttribute("defaultLocale", userLocaleName);
-                log.trace("Set the session attribute: defaultLocaleName --> " + userLocaleName);
+                    session.setAttribute("defaultLocale", userLocaleName);
+                    log.trace("Set the session attribute: defaultLocaleName --> " + userLocaleName);
 
-                log.info("Locale for user: defaultLocale --> " + userLocaleName);
+                    log.info("Locale for user: defaultLocale --> " + userLocaleName);
+                }
             }
         }
-
-        log.debug("Command finished");
+        log.debug("Command Get finished");
         return forward;
+    }
+
+    @Override
+    public String executePost(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException, ServletException {
+
+        log.debug("Command Post starts");
+
+        //      Set locale
+        String localeToSet = request.getParameter("localeToSet");
+        if (localeToSet != null && !localeToSet.isEmpty()) {
+            log.debug("Set locale------>>>>> " + localeToSet);
+            HttpSession session = request.getSession();
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            session.setAttribute("defaultLocale", localeToSet);
+        }
+
+        log.debug("Command Post finished");
+        return Path.COMMAND__LOGIN;
     }
 
 }

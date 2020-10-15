@@ -1,12 +1,14 @@
-package app.ui.command;
+package app.ui.command.reader;
 
 import app.Path;
 import app.dao.CatalogObjDao;
+import app.dao.DBException;
 import app.dao.OrderDao;
 import app.dao.UserDao;
 import app.domain.CatalogObj;
 import app.domain.Order;
 import app.domain.User;
+import app.ui.command.Command;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -15,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,31 +32,28 @@ public class ListCatalogCommand extends Command {
     private static final Logger log = Logger.getLogger(ListCatalogCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+    public String executeGet(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
 
         User user = (User) request.getSession().getAttribute("user");
 
-//      Set locale
-        String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
-            HttpSession session = request.getSession();
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-            user.setLocaleName(localeToSet);
-            UserDao.updateUser(user);
-        }
-
 //      Get Catalog
-        List<CatalogObj> catalogItems;
+        List<CatalogObj> catalogItems = null;
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
             log.debug("Show all catalog------>>>>> " + show);
-            catalogItems = CatalogObjDao.findAllCatalogObjQNN();
+            try {
+                catalogItems = CatalogObjDao.findAllCatalogObjQNN();
+            } catch (DBException e) {
+                String errorMessage = e.getMessage();
+                request.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                log.debug("Command Post finished");
+                return  Path.PAGE__ERROR_PAGE;
+            }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
             page = 1;
         } else {
@@ -109,45 +107,26 @@ public class ListCatalogCommand extends Command {
         }
 
 //      Pagination
-        String goPage = request.getParameter("goPage");
-        if (goPage != null && !goPage.isEmpty()) {
-            log.debug("Go page ------>>>>> " + goPage);
-            if ("next".equals(goPage)) {
-                if (catalogItems.size() > (page * 5)) {
-                    page++;
-                }
-            } else if (("previous".equals(goPage)) && (page != 1)) {
-                page--;
-            }
-        }
-
-        int lastPage = page * 5;
-        if (lastPage >= catalogItems.size()) {
-            lastPage = catalogItems.size();
-        }
-        List<CatalogObj> catalogPage = new ArrayList<>(catalogItems.subList(((page * 5) - 5), lastPage));
-
-//      Make Order
-        String[] itemIds = request.getParameterValues("itemId");
-        if (itemIds != null) {
-            for (String item : itemIds) {
-                try {
-                    int result = Integer.parseInt(item);
-                    Order order = new Order();
-                    order.setUser(user);
-                    order.setState(1);
-                    order.setCatalogObj(catalogPage.get(result - 1));
-                    OrderDao.addOrder(order);
-                    log.debug("Add new Order --> " + order);
-                } catch (NumberFormatException e) {
-                    log.trace("Order itemId doesn't parse --> " + e);
+        List<CatalogObj> catalogPage = null;
+        if(catalogItems!=null) {
+            String goPage = request.getParameter("goPage");
+            if (goPage != null && !goPage.isEmpty()) {
+                log.debug("Go page ------>>>>> " + goPage);
+                if ("next".equals(goPage)) {
+                    if (catalogItems.size() > (page * 5)) {
+                        page++;
+                    }
+                } else if (("previous".equals(goPage)) && (page != 1)) {
+                    page--;
                 }
             }
-            log.debug("Command finished");
-            log.debug("array " + Arrays.toString(itemIds));
-            return Path.COMMAND__LIST_ORDERS;
-        }
 
+            int lastPage = page * 5;
+            if (lastPage >= catalogItems.size()) {
+                lastPage = catalogItems.size();
+            }
+            catalogPage = new ArrayList<>(catalogItems.subList(((page * 5) - 5), lastPage));
+        }
         request.setAttribute("catalogPage", catalogPage);
         log.debug("Set the request attribute: catalogPage --> " + catalogPage);
 
@@ -161,4 +140,72 @@ public class ListCatalogCommand extends Command {
         return Path.PAGE__LIST_CATALOG;
     }
 
+    @Override
+    public String executePost(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException, ServletException {
+
+        log.debug("Command Post starts");
+
+        User user = (User) request.getSession().getAttribute("user");
+        HttpSession session = request.getSession();
+
+//      Set locale
+        String localeToSet = request.getParameter("localeToSet");
+        if (localeToSet != null && !localeToSet.isEmpty()) {
+            log.debug("Set locale------>>>>> " + localeToSet);
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            session.setAttribute("defaultLocale", localeToSet);
+            user.setLocaleName(localeToSet);
+            try {
+                UserDao.updateUser(user);
+            } catch (DBException e) {
+                String errorMessage = e.getMessage();
+                session.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                log.debug("Command Post finished");
+                return  Path.COMMAND__ERROR;
+            }
+        }
+
+//      Make Order
+        String[] itemIds = request.getParameterValues("itemId");
+        if (itemIds != null) {
+            List<Order> orderList = new ArrayList<>();
+            for (String item : itemIds) {
+                try {
+                    int result = Integer.parseInt(item);
+                    Order order = new Order();
+                    order.setUser(user);
+                    order.setState(1);
+                    CatalogObj catalogObj = CatalogObjDao.findCatalogObjById(result);
+                    order.setCatalogObj(catalogObj);
+                    orderList.add(order);
+                    log.debug("Add new Order --> " + order);
+                } catch (NumberFormatException e) {
+                    log.trace("Order itemId doesn't parse --> " + e);
+                } catch (DBException e) {
+                    String errorMessage = e.getMessage();
+                    session.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    log.debug("Command Post finished");
+                    return  Path.COMMAND__ERROR;
+                }
+            }
+            try {
+                OrderDao.addOrders(orderList);
+            } catch (DBException e) {
+                session.setAttribute("errorMessage", "ErrorOrderExist");
+                log.error("errorMessage --> ErrorOrderExist");
+                log.debug("Command Post finished");
+                return  Path.COMMAND__ERROR;
+            }
+
+            log.debug("Command finished");
+            log.debug("array " + Arrays.toString(itemIds));
+            return Path.COMMAND__LIST_ORDERS;
+        }
+
+        log.debug("Command Post finished");
+        return Path.COMMAND__LIST_CATALOG;
+    }
 }

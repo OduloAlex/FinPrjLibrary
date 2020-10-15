@@ -2,6 +2,7 @@ package app.dao;
 
 import app.domain.Card;
 import app.domain.CatalogObj;
+import app.domain.Order;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -26,7 +27,7 @@ public class CardDao {
             "SELECT * FROM cards ORDER BY users_id";
 
     private static final String SQL_DEL_CARD_BY_USERS_ID =
-            "DELETE FROM cards WHERE users_id=?";
+            "DELETE FROM cards WHERE books_id=? AND users_id=?";
     /**
      * Returns all Card object with the given identifier User.
      *
@@ -34,7 +35,7 @@ public class CardDao {
      *            Card object identifier.
      * @return List<Card> object entity.
      */
-    public static List<Card> findAllCardByUsersId(int id) {
+    public static List<Card> findAllCardByUsersId(int id) throws DBException {
         CardMapper mapper = new CardMapper();
         DBCrud<Card> dbCrud = new DBCrud<>();
         return dbCrud.findAllByParam(SQL_FIND_CARD_BY_USERS_ID, String.valueOf(id), mapper);
@@ -45,22 +46,22 @@ public class CardDao {
      *
      * @return List<Card> entities.
      */
-    public static List<Card> findAllCard() {
+    public static List<Card> findAllCard() throws DBException {
         CardMapper mapper = new CardMapper();
         DBCrud<Card> dbCrud = new DBCrud<>();
         return dbCrud.findAll(SQL_FIND_ALL_CARD, mapper);
     }
 
     /**
-     * Del Card with the given id User.
+     * Del Card.
      *
-     * @param id
-     *            Card id.
+     * @param bookId id.
+     * @param userId id.
      * @return boolean true if del
      */
-    public static boolean delCardByUsersId(int id) {
+    public static boolean delCard(int bookId, int userId) throws DBException {
         DBCrud<Card> dbCrud = new DBCrud<>();
-        return dbCrud.delete(SQL_DEL_CARD_BY_USERS_ID, String.valueOf(id));
+        return dbCrud.delete(SQL_DEL_CARD_BY_USERS_ID, String.valueOf(bookId), String.valueOf(userId));
     }
 
     /**
@@ -69,7 +70,7 @@ public class CardDao {
      * @param card
      *            Card to add.
      */
-    public static void addCard(Card card) {
+    public static void addCard(Card card) throws DBException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -85,6 +86,7 @@ public class CardDao {
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);
             DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -105,7 +107,7 @@ public class CardDao {
                 card.setBook(BookDao.findBookById(rs.getInt(Fields.CARD_BOOKS_ID)));
                 card.setUser(UserDao.findUserById(rs.getInt(Fields.CARD_USERS_ID)));
                 return card;
-            } catch (SQLException e) {
+            } catch (SQLException | DBException e) {
                 throw new IllegalStateException(e);
             }
         }
