@@ -86,17 +86,17 @@ public class DBCrud<T> {
         return entities;
     }
 
-    public boolean delete(String sqlQuery, String ... param) throws DBException {
+    public boolean delete(String sqlQuery, String... param) throws DBException {
         PreparedStatement pstmt = null;
         Connection con = null;
         boolean result = false;
         try {
             con = DBManager.getInstance().getConnection();
             pstmt = con.prepareStatement(sqlQuery);
-            for(int i = 0; i < param.length; i++) {
-                pstmt.setString((i+1), param[i]);
+            for (int i = 0; i < param.length; i++) {
+                pstmt.setString((i + 1), param[i]);
             }
-            if(pstmt.executeUpdate() != 0){
+            if (pstmt.executeUpdate() != 0) {
                 result = true;
             }
             con.commit();

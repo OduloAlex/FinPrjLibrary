@@ -1,8 +1,6 @@
 package app.dao;
 
 import app.domain.Book;
-import app.domain.Card;
-import app.domain.User;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -28,9 +26,6 @@ public class BookDao {
             "INSERT INTO books (state, inv_number, catalog_id)" +
                     " VALUES (?, ?, ?)";
 
-    private static final String SQL_FIND_ALL_BOOK =
-            "SELECT * FROM books ORDER BY id";
-
     private static final String SQL_DEL_BOOK_BY_ID =
             "DELETE FROM books WHERE id=?";
 
@@ -40,8 +35,7 @@ public class BookDao {
     /**
      * Returns a Book object with the given identifier.
      *
-     * @param id
-     *            Book object identifier.
+     * @param id Book object identifier.
      * @return Book object entity.
      */
     public static Book findBookById(int id) throws DBException {
@@ -53,8 +47,7 @@ public class BookDao {
     /**
      * Returns all Book object with the given id Catalog where State - Librarian.
      *
-     * @param id
-     *            Catalog object identifier.
+     * @param id Catalog object identifier.
      * @return List<Book> object entity.
      */
     public static List<Book> findBookByCatalogIdStateLib(int id) throws DBException {
@@ -64,21 +57,9 @@ public class BookDao {
     }
 
     /**
-     * Returns all Book.
-     *
-     * @return List<Book> entities.
-     */
-    public static List<Book> findAllBook() throws DBException {
-        BookMapper mapper = new BookMapper();
-        DBCrud<Book> dbCrud = new DBCrud<>();
-        return dbCrud.findAll(SQL_FIND_ALL_BOOK, mapper);
-    }
-
-    /**
      * Del Book with the given id.
      *
-     * @param id
-     *            Book id.
+     * @param id Book id.
      * @return boolean true if del
      */
     public static boolean delBookById(int id) throws DBException {
@@ -89,8 +70,7 @@ public class BookDao {
     /**
      * Update book's state.
      *
-     * @param state
-     *            state to update.
+     * @param state state to update.
      */
     public static void updateBookState(int state, int id) throws DBException {
         Connection con = null;
@@ -116,7 +96,7 @@ public class BookDao {
     /**
      * Add Book.
      *
-     * @param state state to add.
+     * @param state     state to add.
      * @param invNumber invNumber to add.
      * @param catalogId catalogId to add.
      */

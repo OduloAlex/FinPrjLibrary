@@ -1,6 +1,6 @@
 package app.domain;
 
-public class User  extends Entity{
+public class User extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
     private String username;

@@ -15,7 +15,6 @@ import java.io.IOException;
  * Main servlet controller.
  *
  * @author
- *
  */
 public class Controller extends HttpServlet {
 
@@ -37,7 +36,7 @@ public class Controller extends HttpServlet {
      * Main method of this controller.
      */
     private void processGet(HttpServletRequest request,
-                         HttpServletResponse response) throws IOException, ServletException {
+                            HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Controller Get starts");
 
@@ -55,9 +54,9 @@ public class Controller extends HttpServlet {
 
         // if the forward address is not null go to the address
         if (path != null) {
-                log.trace("Forward to address --> " + path);
-                RequestDispatcher disp = request.getRequestDispatcher(path);
-                disp.forward(request, response);
+            log.trace("Forward to address --> " + path);
+            RequestDispatcher disp = request.getRequestDispatcher(path);
+            disp.forward(request, response);
         }
         log.debug("Controller Get finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }
@@ -66,7 +65,7 @@ public class Controller extends HttpServlet {
      * Main method of this controller.
      */
     private void processPost(HttpServletRequest request,
-                            HttpServletResponse response) throws IOException, ServletException {
+                             HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Controller Post starts");
 
@@ -83,8 +82,8 @@ public class Controller extends HttpServlet {
 
         // if the forward address is not null go to the address
         if (path != null) {
-                log.trace("Redirect to address --> " + path);
-                response.sendRedirect(path);
+            log.trace("Redirect to address --> " + path);
+            response.sendRedirect(path);
         }
         log.debug("Controller Post finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
     }

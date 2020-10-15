@@ -30,7 +30,8 @@
                     <input type="text" name="login" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
                 </label>
                 <label><fmt:message key="res.password"/>
-                    <input type="password" name="password" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
+                    <input type="password" name="password" class="w3-input w3-border w3-round-large"
+                           maxlength="45"><br/>
                 </label>
                 <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message
                         key="res.loginIn"/></button>
@@ -38,7 +39,8 @@
 
             <form action="controller" method="get">
                 <input type="hidden" name="command" value="registration"/>
-                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message key="res.RegistrationUser"/></button>
+                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message
+                        key="res.RegistrationUser"/></button>
             </form>
 
         </div>

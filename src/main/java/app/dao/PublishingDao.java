@@ -1,6 +1,5 @@
 package app.dao;
 
-import app.domain.Author;
 import app.domain.Publishing;
 import org.apache.log4j.Logger;
 
@@ -25,11 +24,11 @@ public class PublishingDao {
     private static final String SQL_ADD_PUBLISHING =
             "INSERT INTO publishing (name)" +
                     " VALUES (?)";
+
     /**
      * Returns a Publishing object with the given identifier.
      *
-     * @param id
-     *            Publishing identifier.
+     * @param id Publishing identifier.
      * @return Publishing object entity.
      */
     public static Publishing findPublishingById(int id) throws DBException {
@@ -52,8 +51,7 @@ public class PublishingDao {
     /**
      * Del Publishing with the given id.
      *
-     * @param id
-     *            Publishing id.
+     * @param id Publishing id.
      * @return boolean true if del
      */
     public static boolean delPublishingById(int id) throws DBException {
@@ -64,8 +62,7 @@ public class PublishingDao {
     /**
      * Add Publishing.
      *
-     * @param publishing
-     *            Publishing to add.
+     * @param publishing Publishing to add.
      */
     public static void addPublishing(Publishing publishing) throws DBException {
         Connection con = null;

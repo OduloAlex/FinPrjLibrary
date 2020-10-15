@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="w3-bar-item w3-right">
-                    <input type="date" name="date" class="w3-input w3-border w3-round-large"/>
+                <input type="date" name="date" class="w3-input w3-border w3-round-large"/>
             </div>
             <div class="w3-bar-item w3-right">
                 <div class="w3-padding">

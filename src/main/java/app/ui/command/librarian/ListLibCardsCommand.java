@@ -29,9 +29,7 @@ public class ListLibCardsCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
         User reader = (User) request.getSession().getAttribute("reader");
-        HttpSession session = request.getSession();
 
 //      Get Cards
         List<Card> cardsItems = null;
@@ -59,7 +57,7 @@ public class ListLibCardsCommand extends Command {
 //      Pagination
         List<Card> cardPage = null;
 
-        if(cardsItems!=null) {
+        if (cardsItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);

@@ -68,14 +68,16 @@
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="stateOffId" value="${item.id}"
-                                            class="w3-btn w3-green w3-round-large"><i class="material-icons">check_circle_outline</i></button>
+                                            class="w3-btn w3-green w3-round-large"><i class="material-icons">check_circle_outline</i>
+                                    </button>
                                 </form>
                             </c:when>
                             <c:otherwise>
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="stateOnId" value="${item.id}"
-                                            class="w3-btn w3-red w3-round-large"><i class="material-icons">block</i></button>
+                                            class="w3-btn w3-red w3-round-large"><i class="material-icons">block</i>
+                                    </button>
                                 </form>
                             </c:otherwise>
                         </c:choose>
@@ -86,14 +88,16 @@
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="libOffId" value="${item.id}"
-                                            class="w3-btn w3-blue w3-round-large"><i class="material-icons">check_circle_outline</i></button>
+                                            class="w3-btn w3-blue w3-round-large"><i class="material-icons">check_circle_outline</i>
+                                    </button>
                                 </form>
                             </c:when>
                             <c:otherwise>
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="libOnId" value="${item.id}"
-                                            class="w3-btn w3-gray w3-round-large"><i class="material-icons">block</i></button>
+                                            class="w3-btn w3-gray w3-round-large"><i class="material-icons">block</i>
+                                    </button>
                                 </form>
                             </c:otherwise>
                         </c:choose>

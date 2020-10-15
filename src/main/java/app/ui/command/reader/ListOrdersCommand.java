@@ -99,7 +99,7 @@ public class ListOrdersCommand extends Command {
 
 //      Pagination
         List<Order> ordersPage = null;
-        if(ordersItems!=null) {
+        if (ordersItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -153,7 +153,7 @@ public class ListOrdersCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 
@@ -165,12 +165,12 @@ public class ListOrdersCommand extends Command {
                     int result = Integer.parseInt(item);
                     int userId = user.getId();
                     log.debug("Del Order --> catalogId " + result + ", userId " + userId);
-                    if(!OrderDao.delOrder(result, userId)){
+                    if (!OrderDao.delOrder(result, userId)) {
                         String errorMessage = "Can't del Order in DB";
                         session.setAttribute("errorMessage", errorMessage);
                         log.error("errorMessage --> " + errorMessage);
                         log.debug("Command Post finished");
-                        return  Path.COMMAND__ERROR;
+                        return Path.COMMAND__ERROR;
                     }
                 } catch (NumberFormatException e) {
                     log.trace("Order itemId doesn't parse --> " + e);
@@ -179,7 +179,7 @@ public class ListOrdersCommand extends Command {
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     log.debug("Command Post finished");
-                    return  Path.COMMAND__ERROR;
+                    return Path.COMMAND__ERROR;
                 }
             }
         }

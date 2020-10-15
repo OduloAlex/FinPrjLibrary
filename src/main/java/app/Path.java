@@ -1,9 +1,9 @@
 package app;
+
 /**
  * Path holder (jsp pages, controller commands).
  *
  * @author
- *
  */
 public final class Path {
 

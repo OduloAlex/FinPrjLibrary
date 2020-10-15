@@ -12,9 +12,6 @@ import java.util.List;
 public class CatalogObjDao {
     private static final Logger logger = Logger.getLogger(CatalogObjDao.class);
 
-    private static final String SQL_FIND_CATALOG_BY_NAME =
-            "SELECT * FROM catalog WHERE name=?";
-
     private static final String SQL_FIND_CATALOG_BY_ID =
             "SELECT * FROM catalog WHERE id=?";
 
@@ -36,30 +33,17 @@ public class CatalogObjDao {
 
     private static final String SQL_UPDATE_CATALOG =
             "UPDATE catalog SET name=?, year=?, fine=?, description=?, author_id=?, publishing_id=? WHERE id=?";
+
     /**
      * Returns a catalog object with the given identifier.
      *
-     * @param id
-     *            catalog object identifier.
+     * @param id catalog object identifier.
      * @return catalog object entity.
      */
     public static CatalogObj findCatalogObjById(int id) throws DBException {
         CatalogMapper mapper = new CatalogMapper();
         DBCrud<CatalogObj> dbCrud = new DBCrud<>();
         return dbCrud.findOne(SQL_FIND_CATALOG_BY_ID, String.valueOf(id), mapper);
-    }
-
-    /**
-     * Returns a CatalogObj with the given name.
-     *
-     * @param name
-     *            CatalogObj name.
-     * @return CatalogObj entity.
-     */
-    public static CatalogObj findCatalogObjByName(String name) throws DBException {
-        CatalogMapper mapper = new CatalogMapper();
-        DBCrud<CatalogObj> dbCrud = new DBCrud<>();
-        return dbCrud.findOne(SQL_FIND_CATALOG_BY_NAME, name, mapper);
     }
 
     /**
@@ -87,8 +71,7 @@ public class CatalogObjDao {
     /**
      * Del CatalogObj with the given id.
      *
-     * @param id
-     *            CatalogObj id.
+     * @param id CatalogObj id.
      * @return boolean true if del
      */
     public static boolean delCatalogObjById(int id) throws DBException {
@@ -99,12 +82,12 @@ public class CatalogObjDao {
     /**
      * Add CatalogObj.
      *
-     * @param name name
-     * @param year year
-     * @param fine fine
-     * @param description description
-     * @param quantity quantity
-     * @param authorId author_id
+     * @param name         name
+     * @param year         year
+     * @param fine         fine
+     * @param description  description
+     * @param quantity     quantity
+     * @param authorId     author_id
      * @param publishingId publishing_id
      */
     public static void addCatalogObj(String name, int year, int fine, String description, int quantity,
@@ -137,8 +120,7 @@ public class CatalogObjDao {
     /**
      * Update catalogs's quantity.
      *
-     * @param quantity
-     *            quantity to update.
+     * @param quantity quantity to update.
      */
     public static void updateCatalogObjQuantity(int quantity, int id) throws DBException {
         Connection con = null;
@@ -164,11 +146,11 @@ public class CatalogObjDao {
     /**
      * Update catalog.
      *
-     * @param name name
-     * @param year year
-     * @param fine fine
-     * @param description description
-     * @param authorId author_id
+     * @param name         name
+     * @param year         year
+     * @param fine         fine
+     * @param description  description
+     * @param authorId     author_id
      * @param publishingId publishing_id
      */
     public static void updateCatalogObj(String name, int year, int fine, String description,

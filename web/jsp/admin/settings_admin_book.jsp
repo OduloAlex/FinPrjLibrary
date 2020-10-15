@@ -53,7 +53,8 @@
         <div class="w3-bar">
             <div class="w3-bar-item">
                 <label><fmt:message key="res.Name"/>
-                    <input name="name" class="w3-input w3-border w3-round-large" type="text" value="${catalog.name}" maxlength="45">
+                    <input name="name" class="w3-input w3-border w3-round-large" type="text" value="${catalog.name}"
+                           maxlength="45">
                 </label>
             </div>
             <div class="w3-bar-item">

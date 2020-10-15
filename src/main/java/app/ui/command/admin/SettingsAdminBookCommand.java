@@ -26,8 +26,6 @@ public class SettingsAdminBookCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-        User reader = (User) request.getSession().getAttribute("reader");
         HttpSession session = request.getSession();
 
         //      Get books
@@ -64,9 +62,7 @@ public class SettingsAdminBookCommand extends Command {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        User reader = (User) session.getAttribute("reader");
         String editId = (String) session.getAttribute("editId");
-
 
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
@@ -97,9 +93,6 @@ public class SettingsAdminBookCommand extends Command {
         if ((name != null) && (strAuthorId != null) && (strPublishingId != null)
                 && (strYear != null) && (description != null) && (strFine != null)) {
 
-//            String name = new String(strName.getBytes("ISO-8859-1"), "utf-8");
-//            String description = new String(strDescription.getBytes("ISO-8859-1"), "utf-8");
-
             if (name.isEmpty() || (name.length() > 45) || description.isEmpty() || (description.length() > 120)) {
                 String errorMessage = "ErrorMoreThan45ch";
                 request.getSession().setAttribute("errorMessage", errorMessage);
@@ -122,7 +115,7 @@ public class SettingsAdminBookCommand extends Command {
                 int catalogId = Integer.parseInt(editId);
                 int authorId = Integer.parseInt(strAuthorId);
                 int publishingId = Integer.parseInt(strPublishingId);
-                CatalogObjDao.updateCatalogObj(name, year,fine, description, authorId, publishingId, catalogId);
+                CatalogObjDao.updateCatalogObj(name, year, fine, description, authorId, publishingId, catalogId);
                 log.debug("Update catalogObj --> catalogId: " + catalogId);
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);

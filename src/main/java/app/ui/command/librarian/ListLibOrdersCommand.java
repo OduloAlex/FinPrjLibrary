@@ -1,11 +1,9 @@
 package app.ui.command.librarian;
 
 import app.Path;
-import app.dao.BookDao;
 import app.dao.DBException;
 import app.dao.OrderDao;
 import app.dao.UserDao;
-import app.domain.Book;
 import app.domain.Order;
 import app.domain.User;
 import app.ui.command.Command;
@@ -32,9 +30,7 @@ public class ListLibOrdersCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
         User reader = (User) request.getSession().getAttribute("reader");
-        HttpSession session = request.getSession();
 
 //      Get Orders
         List<Order> ordersItems = null;
@@ -54,14 +50,14 @@ public class ListLibOrdersCommand extends Command {
             log.trace("Found in DB: findAllOrders --> " + ordersItems);
             page = 1;
         } else {
-            ordersItems= (List<Order>) request.getSession().getAttribute("ordersItems");
+            ordersItems = (List<Order>) request.getSession().getAttribute("ordersItems");
             log.trace("Found in Attribute: findAllOrders --> " + ordersItems);
             page = (int) request.getSession().getAttribute("page");
         }
 
 //      Pagination
         List<Order> ordersPage = null;
-        if(ordersItems!=null) {
+        if (ordersItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -124,27 +120,27 @@ public class ListLibOrdersCommand extends Command {
 //      Cancel Order
         String itemId = request.getParameter("cancelId");
         if (itemId != null) {
-                try {
-                    int catalogId = Integer.parseInt(itemId);
-                    int readerId = reader.getId();
-                    log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
-                    if(!OrderDao.delOrder(catalogId, readerId)){
-                        String errorMessage = "Can't del Order in DB";
-                        session.setAttribute("errorMessage", errorMessage);
-                        log.error("errorMessage --> " + errorMessage);
-                        log.debug("Command Post finished");
-                        return  Path.COMMAND__ERROR;
-                    }
-                    log.debug("Del Order successful");
-                } catch (NumberFormatException e) {
-                    log.trace("Order itemId doesn't parse --> " + e);
-                } catch (DBException e) {
-                    String errorMessage = e.getMessage();
+            try {
+                int catalogId = Integer.parseInt(itemId);
+                int readerId = reader.getId();
+                log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
+                if (!OrderDao.delOrder(catalogId, readerId)) {
+                    String errorMessage = "Can't del Order in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     log.debug("Command Post finished");
-                    return  Path.COMMAND__ERROR;
+                    return Path.COMMAND__ERROR;
                 }
+                log.debug("Del Order successful");
+            } catch (NumberFormatException e) {
+                log.trace("Order itemId doesn't parse --> " + e);
+            } catch (DBException e) {
+                String errorMessage = e.getMessage();
+                session.setAttribute("errorMessage", errorMessage);
+                log.error("errorMessage --> " + errorMessage);
+                log.debug("Command Post finished");
+                return Path.COMMAND__ERROR;
+            }
         }
 
         log.debug("Command Post finished");

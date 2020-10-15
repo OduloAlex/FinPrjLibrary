@@ -2,8 +2,6 @@ package app.ui.command;
 
 import app.Path;
 import app.dao.*;
-import app.domain.Book;
-import app.domain.Card;
 import app.domain.Role;
 import app.domain.User;
 import org.apache.log4j.Logger;
@@ -14,13 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Login command.
  *
  * @author
- *
  */
 public class LoginCommand extends Command {
 
@@ -30,7 +26,7 @@ public class LoginCommand extends Command {
 
     @Override
     public String executeGet(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                             HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
 
@@ -38,7 +34,7 @@ public class LoginCommand extends Command {
 
         // obtain login and password from the request
         String login = request.getParameter("login");
-        log.trace("Request parameter: loging --> " + login);
+        log.trace("Request parameter: login --> " + login);
 
         String password = request.getParameter("password");
 
@@ -46,7 +42,7 @@ public class LoginCommand extends Command {
         // error handler
         String errorMessage = null;
         String forward = Path.PAGE__LOGIN;
-        if (login != null && password != null){
+        if (login != null && password != null) {
             forward = Path.COMMAND__ERROR;
             if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45)) {
                 errorMessage = "ErrorLoginPassEmpty";

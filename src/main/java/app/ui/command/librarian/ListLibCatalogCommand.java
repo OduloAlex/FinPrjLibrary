@@ -3,13 +3,10 @@ package app.ui.command.librarian;
 import app.Path;
 import app.dao.CatalogObjDao;
 import app.dao.DBException;
-import app.dao.OrderDao;
 import app.dao.UserDao;
 import app.domain.CatalogObj;
-import app.domain.Order;
 import app.domain.User;
 import app.ui.command.Command;
-import app.ui.command.reader.ListCatalogCommand;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,8 +32,6 @@ public class ListLibCatalogCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-
 //      Get Catalog
         List<CatalogObj> catalogItems = null;
         int page;
@@ -51,7 +45,7 @@ public class ListLibCatalogCommand extends Command {
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.PAGE__ERROR_PAGE;
+                return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
             page = 1;
@@ -107,7 +101,7 @@ public class ListLibCatalogCommand extends Command {
 
 //      Pagination
         List<CatalogObj> catalogPage = null;
-        if(catalogItems!=null) {
+        if (catalogItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -162,7 +156,7 @@ public class ListLibCatalogCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 

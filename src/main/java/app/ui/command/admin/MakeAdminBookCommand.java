@@ -3,7 +3,6 @@ package app.ui.command.admin;
 import app.Path;
 import app.dao.*;
 import app.domain.Author;
-import app.domain.CatalogObj;
 import app.domain.Publishing;
 import app.domain.User;
 import app.ui.command.Command;
@@ -29,8 +28,6 @@ public class MakeAdminBookCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-        User reader = (User) request.getSession().getAttribute("reader");
         HttpSession session = request.getSession();
 
         try {
@@ -89,9 +86,6 @@ public class MakeAdminBookCommand extends Command {
         if (save != null) {
             if ((name != null) && (strAuthorId != null) && (strPublishingId != null)
                     && (strYear != null) && (description != null) && (strFine != null)) {
-
-//                String name = new String(strName.getBytes("ISO-8859-1"), "utf-8");
-//                String description = new String(strDescription.getBytes("ISO-8859-1"), "utf-8");
 
                 if (name.isEmpty() || (name.length() > 45) || description.isEmpty() || (description.length() > 120)) {
                     String errorMessage = "ErrorMoreThan45ch";

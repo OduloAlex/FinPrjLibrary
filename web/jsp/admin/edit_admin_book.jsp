@@ -49,8 +49,8 @@
             <input type="hidden" name="command" value="editAdminBook"/>
             <div class="w3-bar-item w3-right">
                 <div class="w3-margin-top">
-                <button type="submit" class="w3-btn w3-green w3-round-large"><fmt:message
-                        key="res.MakeCopy"/></button>
+                    <button type="submit" class="w3-btn w3-green w3-round-large"><fmt:message
+                            key="res.MakeCopy"/></button>
                 </div>
             </div>
             <div class="w3-bar-item w3-right">
@@ -62,11 +62,11 @@
         </form>
         <div class="w3-bar-item w3-right">
             <div class="w3-margin-bottom">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="settingsAdminBook"/>
-                <button type="submit" class="w3-btn w3-green w3-round-large"><fmt:message
-                        key="res.SettingsBook"/></button>
-            </form>
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="settingsAdminBook"/>
+                    <button type="submit" class="w3-btn w3-green w3-round-large"><fmt:message
+                            key="res.SettingsBook"/></button>
+                </form>
             </div>
         </div>
     </div>

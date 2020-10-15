@@ -98,7 +98,8 @@
                             </c:if>
                         </td>
                         <td>
-                            <button type="submit"  name="deleteId" value="${item.book.id}" class="w3-btn w3-green w3-round-large">
+                            <button type="submit" name="deleteId" value="${item.book.id}"
+                                    class="w3-btn w3-green w3-round-large">
                                 <fmt:message key="res.Delete"/></button>
                         </td>
                     </tr>

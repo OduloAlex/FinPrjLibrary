@@ -5,7 +5,6 @@ import app.dao.*;
 import app.domain.CatalogObj;
 import app.domain.User;
 import app.ui.command.Command;
-import app.ui.command.librarian.ListLibCatalogCommand;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -31,8 +30,6 @@ public class ListAdminCatalogCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-
 //      Get Catalog
         List<CatalogObj> catalogItems = null;
         int page;
@@ -46,7 +43,7 @@ public class ListAdminCatalogCommand extends Command {
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.PAGE__ERROR_PAGE;
+                return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
             page = 1;
@@ -102,7 +99,7 @@ public class ListAdminCatalogCommand extends Command {
 
 //      Pagination
         List<CatalogObj> catalogPage = null;
-        if(catalogItems!=null) {
+        if (catalogItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -157,7 +154,7 @@ public class ListAdminCatalogCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 
@@ -167,12 +164,12 @@ public class ListAdminCatalogCommand extends Command {
             try {
                 int catalogId = Integer.parseInt(itemId);
                 log.debug("Del Catalog --> catalogId " + catalogId);
-                if(!CatalogObjDao.delCatalogObjById(catalogId)){
+                if (!CatalogObjDao.delCatalogObjById(catalogId)) {
                     String errorMessage = "Can't del Catalog in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     log.debug("Command Post finished");
-                    return  Path.COMMAND__ERROR;
+                    return Path.COMMAND__ERROR;
                 }
                 log.debug("Del Catalog successful");
             } catch (NumberFormatException e) {
@@ -182,7 +179,7 @@ public class ListAdminCatalogCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 

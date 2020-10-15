@@ -29,8 +29,6 @@ public class MakeLibCardCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-        User reader = (User) request.getSession().getAttribute("reader");
         HttpSession session = request.getSession();
 
         //      Get books
@@ -126,14 +124,14 @@ public class MakeLibCardCommand extends Command {
                 CardDao.addCard(card);
                 log.debug("Add Card successful");
                 int stateId = 2;
-                if("room".equals(state)){
+                if ("room".equals(state)) {
                     stateId = 3;
                 }
                 BookDao.updateBookState(stateId, bookId);
                 log.debug("Update Book State " + stateId + " successful");
                 CatalogObj catalogObj = book.getCatalogObj();
                 int quantity = catalogObj.getQuantity() - 1;
-                if(quantity<0){
+                if (quantity < 0) {
                     quantity = 0;
                     log.trace("Error Catalog quantity less than 0 ");
                 }
@@ -142,12 +140,12 @@ public class MakeLibCardCommand extends Command {
 
                 int catalogId = book.getCatalogObj().getId();
                 log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
-                if(!OrderDao.delOrder(catalogId, readerId)){
+                if (!OrderDao.delOrder(catalogId, readerId)) {
                     String errorMessage = "Can't del Order in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     log.debug("Command Post finished");
-                    return  Path.COMMAND__ERROR;
+                    return Path.COMMAND__ERROR;
                 }
                 log.debug("Del Order successful");
             } catch (NumberFormatException e) {

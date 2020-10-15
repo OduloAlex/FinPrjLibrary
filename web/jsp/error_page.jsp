@@ -12,7 +12,8 @@
 </div>
 <div class="w3-container w3-padding">
 
-    <button type="submit" onclick="history.back();" class="w3-btn w3-green w3-round-large"><fmt:message key="res.Back"/></button>
+    <button type="submit" onclick="history.back();" class="w3-btn w3-green w3-round-large"><fmt:message
+            key="res.Back"/></button>
 
     <h2>
         <fmt:message key="res.ErrorOccurred"/>

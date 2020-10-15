@@ -10,8 +10,10 @@
 <%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <div class="w3-bar  w3-blue-grey ">
-    <a href="controller?command=listCatalog&show=all" class="w3-bar-item w3-button w3-left"><fmt:message key="res.Catalog"/></a>
-    <a href="controller?command=listCards&show=all" class="w3-bar-item w3-button w3-left"><fmt:message key="res.Cards"/></a>
+    <a href="controller?command=listCatalog&show=all" class="w3-bar-item w3-button w3-left"><fmt:message
+            key="res.Catalog"/></a>
+    <a href="controller?command=listCards&show=all" class="w3-bar-item w3-button w3-left"><fmt:message
+            key="res.Cards"/></a>
     <a href="controller?command=logout" class="w3-bar-item w3-button w3-right"><fmt:message key="res.SignOut"/></a>
     <div class="w3-bar-item w3-right">
         <c:if test="${userRole.name == 'admin'}">

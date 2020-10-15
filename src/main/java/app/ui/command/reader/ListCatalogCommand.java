@@ -37,8 +37,6 @@ public class ListCatalogCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
-
 //      Get Catalog
         List<CatalogObj> catalogItems = null;
         int page;
@@ -52,7 +50,7 @@ public class ListCatalogCommand extends Command {
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.PAGE__ERROR_PAGE;
+                return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
             page = 1;
@@ -108,7 +106,7 @@ public class ListCatalogCommand extends Command {
 
 //      Pagination
         List<CatalogObj> catalogPage = null;
-        if(catalogItems!=null) {
+        if (catalogItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -163,7 +161,7 @@ public class ListCatalogCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 
@@ -188,7 +186,7 @@ public class ListCatalogCommand extends Command {
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     log.debug("Command Post finished");
-                    return  Path.COMMAND__ERROR;
+                    return Path.COMMAND__ERROR;
                 }
             }
             try {
@@ -197,7 +195,7 @@ public class ListCatalogCommand extends Command {
                 session.setAttribute("errorMessage", "ErrorOrderExist");
                 log.error("errorMessage --> ErrorOrderExist");
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
 
             log.debug("Command finished");

@@ -4,7 +4,6 @@ import app.Path;
 import app.dao.*;
 import app.domain.*;
 import app.ui.command.Command;
-import app.ui.command.librarian.MakeLibCardCommand;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -13,9 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class EditAdminBookCommand extends Command {
@@ -69,7 +65,6 @@ public class EditAdminBookCommand extends Command {
         User user = (User) session.getAttribute("user");
         String editId = (String) session.getAttribute("editId");
 
-
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
@@ -105,7 +100,7 @@ public class EditAdminBookCommand extends Command {
                 int catalogId = Integer.parseInt(editId);
                 CatalogObj catalogObj = CatalogObjDao.findCatalogObjById(catalogId);
                 int quantity = catalogObj.getQuantity() - 1;
-                if(quantity<0){
+                if (quantity < 0) {
                     quantity = 0;
                     log.trace("Error Catalog quantity less than 0 ");
                 }
@@ -125,7 +120,6 @@ public class EditAdminBookCommand extends Command {
 //      Make Book
         String invNumber = request.getParameter("invNumber");
         if (invNumber != null) {
-//            String invNumber = new String(strInvNumber.getBytes("ISO-8859-1"), "utf-8");
             if (invNumber.isEmpty() || (invNumber.length() > 45)) {
                 String errorMessage = "ErrorMoreThan45ch";
                 request.getSession().setAttribute("errorMessage", errorMessage);

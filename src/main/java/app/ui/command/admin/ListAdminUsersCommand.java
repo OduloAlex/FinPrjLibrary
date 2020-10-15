@@ -1,13 +1,10 @@
 package app.ui.command.admin;
 
 import app.Path;
-import app.dao.AuthorDao;
 import app.dao.DBException;
-import app.dao.OrderDao;
 import app.dao.UserDao;
 import app.domain.User;
 import app.ui.command.Command;
-import app.ui.command.librarian.ListLibReadersCommand;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -30,9 +27,6 @@ public class ListAdminUsersCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
-        User user = (User) request.getSession().getAttribute("user");
-        HttpSession session = request.getSession();
 
 //      Get Users
         List<User> usersItems = null;

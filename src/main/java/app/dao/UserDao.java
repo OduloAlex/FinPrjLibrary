@@ -15,9 +15,6 @@ public class UserDao {
     private static final String SQL_FIND_USER_BY_ID =
             "SELECT * FROM users WHERE id=?";
 
-    private static final String SQL_FIND_ALL_USER =
-            "SELECT * FROM users ORDER BY id";
-
     private static final String SQL_FIND_ALL_USER_READER =
             "SELECT * FROM users WHERE role_id=3 ORDER BY id";
 
@@ -25,7 +22,7 @@ public class UserDao {
             "SELECT * FROM users WHERE role_id=2 OR role_id=3 ORDER BY id";
 
     private static final String SQL_UPDATE_USER =
-            "UPDATE users SET password=?, active=?, description=?, locale=?, role_id=?"+
+            "UPDATE users SET password=?, active=?, description=?, locale=?, role_id=?" +
                     " WHERE id=?";
 
     private static final String SQL_UPDATE_USER_ACTIVE =
@@ -44,8 +41,7 @@ public class UserDao {
     /**
      * Returns a user with the given id.
      *
-     * @param id
-     *            User id.
+     * @param id User id.
      * @return User entity.
      */
     public static User findUserById(int id) throws DBException {
@@ -57,25 +53,13 @@ public class UserDao {
     /**
      * Returns a user with the given login.
      *
-     * @param login
-     *            User login.
+     * @param login User login.
      * @return User entity.
      */
     public static User findUserByLogin(String login) throws DBException {
         UserMapper mapper = new UserMapper();
         DBCrud<User> dbCrud = new DBCrud<>();
         return dbCrud.findOne(SQL_FIND_USER_BY_LOGIN, login, mapper);
-    }
-
-    /**
-     * Returns all users.
-     *
-     * @return List<User> entities.
-     */
-    public static List<User> findAllUser() throws DBException {
-        UserMapper mapper = new UserMapper();
-        DBCrud<User> dbCrud = new DBCrud<>();
-        return dbCrud.findAll(SQL_FIND_ALL_USER, mapper);
     }
 
     /**
@@ -103,8 +87,7 @@ public class UserDao {
     /**
      * Del user with the given id.
      *
-     * @param id
-     *            User id.
+     * @param id User id.
      * @return boolean true if del
      */
     public static boolean delUserById(int id) throws DBException {
@@ -115,8 +98,7 @@ public class UserDao {
     /**
      * Update user.
      *
-     * @param user
-     *            user to update.
+     * @param user user to update.
      */
     public static void updateUser(User user) throws DBException {
         Connection con = null;
@@ -146,8 +128,7 @@ public class UserDao {
     /**
      * Update user's active.
      *
-     * @param active
-     *            active to active.
+     * @param active active to active.
      */
     public static void updateUserActive(int active, int id) throws DBException {
         Connection con = null;
@@ -173,8 +154,7 @@ public class UserDao {
     /**
      * Update user's role.
      *
-     * @param role
-     *            role to active.
+     * @param role role to active.
      */
     public static void updateUserRole(int role, int id) throws DBException {
         Connection con = null;
@@ -200,8 +180,7 @@ public class UserDao {
     /**
      * Add user.
      *
-     * @param user
-     *            user to add.
+     * @param user user to add.
      */
     public static void addUser(User user) throws DBException {
         Connection con = null;

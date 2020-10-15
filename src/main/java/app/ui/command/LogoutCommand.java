@@ -13,7 +13,6 @@ import java.io.IOException;
  * Logout command.
  *
  * @author
- *
  */
 public class LogoutCommand extends Command {
 
@@ -23,7 +22,7 @@ public class LogoutCommand extends Command {
 
     @Override
     public String executeGet(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                             HttpServletResponse response) throws IOException, ServletException {
         log.debug("Command starts");
 
         HttpSession session = request.getSession(false);

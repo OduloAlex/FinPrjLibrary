@@ -4,7 +4,6 @@ package app.dao;
  * Holder for fields names of DB tables and beans.
  *
  * @author
- *
  */
 public final class Fields {
 
@@ -42,7 +41,5 @@ public final class Fields {
     public static final String ORDER_CATALOG_ID = "catalog_id";
     public static final String ORDER_USERS_ID = "users_id";
     public static final String ORDER_STATE = "state";
-
-
 
 }

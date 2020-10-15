@@ -87,34 +87,34 @@
         </div>
     </div>
 
-        <div class="w3-responsive">
-            <table class="w3-table-all w3-card-4 w3-hoverable">
-                <thead>
-                <tr class="w3-light-grey">
-                    <th><fmt:message key="res.Name"/></th>
-                    <th><fmt:message key="res.Author"/></th>
-                    <th><fmt:message key="res.Publishing"/></th>
-                    <th><fmt:message key="res.Year"/></th>
-                    <th><fmt:message key="res.Description"/></th>
-                    <th><fmt:message key="res.Fine"/></th>
-                    <th><fmt:message key="res.Quantity"/></th>
+    <div class="w3-responsive">
+        <table class="w3-table-all w3-card-4 w3-hoverable">
+            <thead>
+            <tr class="w3-light-grey">
+                <th><fmt:message key="res.Name"/></th>
+                <th><fmt:message key="res.Author"/></th>
+                <th><fmt:message key="res.Publishing"/></th>
+                <th><fmt:message key="res.Year"/></th>
+                <th><fmt:message key="res.Description"/></th>
+                <th><fmt:message key="res.Fine"/></th>
+                <th><fmt:message key="res.Quantity"/></th>
+            </tr>
+            </thead>
+            <c:set var="k" value="0"/>
+            <c:forEach var="item" items="${catalogPage}">
+                <c:set var="k" value="${k+1}"/>
+                <tr>
+                    <td>${item.name}</td>
+                    <td>${item.author.name}</td>
+                    <td>${item.publishing.name}</td>
+                    <td>${item.year}</td>
+                    <td>${item.description}</td>
+                    <td>${item.fine}</td>
+                    <td>${item.quantity}</td>
                 </tr>
-                </thead>
-                <c:set var="k" value="0"/>
-                <c:forEach var="item" items="${catalogPage}">
-                    <c:set var="k" value="${k+1}"/>
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>${item.author.name}</td>
-                        <td>${item.publishing.name}</td>
-                        <td>${item.year}</td>
-                        <td>${item.description}</td>
-                        <td>${item.fine}</td>
-                        <td>${item.quantity}</td>
-                    </tr>
-                </c:forEach>
-            </table>
-        </div>
+            </c:forEach>
+        </table>
+    </div>
     <div class="w3-center">
         <div class="w3-bar">
             <div class="w3-bar-item">

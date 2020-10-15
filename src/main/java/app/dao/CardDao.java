@@ -1,8 +1,6 @@
 package app.dao;
 
 import app.domain.Card;
-import app.domain.CatalogObj;
-import app.domain.Order;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -23,33 +21,19 @@ public class CardDao {
             "INSERT INTO cards (create_time, return_time, books_id, users_id)" +
                     " VALUES (?, ?, ?, ?)";
 
-    private static final String SQL_FIND_ALL_CARD =
-            "SELECT * FROM cards ORDER BY users_id";
-
     private static final String SQL_DEL_CARD_BY_USERS_ID =
             "DELETE FROM cards WHERE books_id=? AND users_id=?";
+
     /**
      * Returns all Card object with the given identifier User.
      *
-     * @param id
-     *            Card object identifier.
+     * @param id Card object identifier.
      * @return List<Card> object entity.
      */
     public static List<Card> findAllCardByUsersId(int id) throws DBException {
         CardMapper mapper = new CardMapper();
         DBCrud<Card> dbCrud = new DBCrud<>();
         return dbCrud.findAllByParam(SQL_FIND_CARD_BY_USERS_ID, String.valueOf(id), mapper);
-    }
-
-    /**
-     * Returns all Card.
-     *
-     * @return List<Card> entities.
-     */
-    public static List<Card> findAllCard() throws DBException {
-        CardMapper mapper = new CardMapper();
-        DBCrud<Card> dbCrud = new DBCrud<>();
-        return dbCrud.findAll(SQL_FIND_ALL_CARD, mapper);
     }
 
     /**
@@ -67,8 +51,7 @@ public class CardDao {
     /**
      * Add Card
      *
-     * @param card
-     *            Card to add.
+     * @param card Card to add.
      */
     public static void addCard(Card card) throws DBException {
         Connection con = null;

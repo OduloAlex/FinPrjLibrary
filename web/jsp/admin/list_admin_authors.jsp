@@ -51,7 +51,8 @@
             </div>
 
             <div class="w3-bar-item w3-right">
-                <input name="makeAuthor" class="w3-input w3-border w3-round-large" type="text" maxlength="45" placeholder=<fmt:message key="res.Author"/>>
+                <input name="makeAuthor" class="w3-input w3-border w3-round-large" type="text" maxlength="45"
+                       placeholder=<fmt:message key="res.Author"/>>
             </div>
         </form>
     </div>

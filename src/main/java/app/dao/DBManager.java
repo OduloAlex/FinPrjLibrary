@@ -34,9 +34,9 @@ public class DBManager {
         Connection con = null;
         try {
             Context initContext = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
+            Context envContext = (Context) initContext.lookup("java:/comp/env");
 
-            DataSource ds = (DataSource)envContext.lookup("jdbc/fp2library");
+            DataSource ds = (DataSource) envContext.lookup("jdbc/fp2library");
             con = ds.getConnection();
             logger.debug("==============>>  connection to DB - OK");
         } catch (NamingException ex) {
@@ -50,7 +50,7 @@ public class DBManager {
 ////////////////////////////////////////////////////////////
 
     public static void closeResultSet(ResultSet rs) {
-        if (rs!=null) {
+        if (rs != null) {
             try {
                 rs.close();
             } catch (SQLException ex) {
@@ -60,7 +60,7 @@ public class DBManager {
     }
 
     public static void closePreparedStatement(PreparedStatement ps) {
-        if (ps!=null) {
+        if (ps != null) {
             try {
                 ps.close();
             } catch (SQLException ex) {
@@ -70,7 +70,7 @@ public class DBManager {
     }
 
     public static void closeStatement(Statement ps) {
-        if (ps!=null) {
+        if (ps != null) {
             try {
                 ps.close();
             } catch (SQLException ex) {
@@ -80,7 +80,7 @@ public class DBManager {
     }
 
     public static void closeConnect(Connection con) {
-        if (con!=null) {
+        if (con != null) {
             try {
                 con.close();
             } catch (SQLException ex) {
@@ -90,7 +90,7 @@ public class DBManager {
     }
 
     public static void rollback(Connection con) {
-        if (con!=null) {
+        if (con != null) {
             try {
                 con.rollback();
             } catch (SQLException ex) {

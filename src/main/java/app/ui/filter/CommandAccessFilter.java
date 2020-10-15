@@ -57,7 +57,7 @@ public class CommandAccessFilter implements Filter {
 
         if (outOfControl.contains(commandName))
             return true;
-        
+
 //      out if session is null
         HttpSession session = httpRequest.getSession(false);
         if (session == null)

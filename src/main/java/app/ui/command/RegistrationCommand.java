@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.List;
 
 public class RegistrationCommand extends Command {
 
@@ -21,7 +20,7 @@ public class RegistrationCommand extends Command {
 
     @Override
     public String executeGet(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                             HttpServletResponse response) throws IOException, ServletException {
         log.debug("Command starts");
 
 
@@ -34,7 +33,7 @@ public class RegistrationCommand extends Command {
                               HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command Post starts");
-        HttpSession session  = request.getSession();
+        HttpSession session = request.getSession();
 
         //      Set locale
         String localeToSet = request.getParameter("localeToSet");
@@ -55,9 +54,6 @@ public class RegistrationCommand extends Command {
         String errorMessage = null;
         String forward = Path.COMMAND__ERROR;
         if (login != null && password != null && description != null) {
-//            String login = new String(inLogin.getBytes("ISO-8859-1"),"utf-8");
-//            String password = new String(inPassword.getBytes("ISO-8859-1"),"utf-8");
-//            String description = new String(inDescription.getBytes("ISO-8859-1"),"utf-8");
             log.trace("Request parameter: loging --> " + login);
             if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45) || (description.length() > 120)) {
                 errorMessage = "ErrorLoginPassEmpty";

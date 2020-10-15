@@ -28,7 +28,6 @@ public class ListLibReadersCommand extends Command {
 
         log.debug("Command starts");
 
-        User user = (User) request.getSession().getAttribute("user");
         HttpSession session = request.getSession();
 
 //      Choose Reader Orders
@@ -104,7 +103,7 @@ public class ListLibReadersCommand extends Command {
 
 //      Pagination
         List<User> readersPage = null;
-        if(usersItems!=null) {
+        if (usersItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);

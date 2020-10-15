@@ -59,7 +59,7 @@
                     <select class="w3-select w3-border w3-round-large" name="authorId">
                         <option value="" disabled selected></option>
                         <c:forEach var="authorFor" items="${authors}">
-                                <option value=${authorFor.id}>${authorFor.name}</option>
+                            <option value=${authorFor.id}>${authorFor.name}</option>
                         </c:forEach>
                     </select>
                 </label>
@@ -69,7 +69,7 @@
                     <select class="w3-select w3-border w3-round-large" name="publishingId">
                         <option value="" disabled selected></option>
                         <c:forEach var="publishingFor" items="${publishings}">
-                                <option value=${publishingFor.id}>${publishingFor.name}</option>
+                            <option value=${publishingFor.id}>${publishingFor.name}</option>
                         </c:forEach>
                     </select>
                 </label>
@@ -94,7 +94,8 @@
         <div class="w3-bar">
             <div class="w3-bar-item w3-right">
                 <div class="w3-padding">
-                    <button type="submit" name="save" value="ok" class="w3-btn w3-green w3-round-large"><fmt:message key="res.Save"/></button>
+                    <button type="submit" name="save" value="ok" class="w3-btn w3-green w3-round-large"><fmt:message
+                            key="res.Save"/></button>
                 </div>
             </div>
         </div>

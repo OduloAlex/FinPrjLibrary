@@ -14,7 +14,6 @@ import java.util.TreeMap;
  * Holder for all commands.
  *
  * @author
- *
  */
 public class CommandContainer {
 
@@ -58,8 +57,7 @@ public class CommandContainer {
     /**
      * Returns command object with the given name.
      *
-     * @param commandName
-     *            Name of the command.
+     * @param commandName Name of the command.
      * @return Command object.
      */
     public static Command get(String commandName) {

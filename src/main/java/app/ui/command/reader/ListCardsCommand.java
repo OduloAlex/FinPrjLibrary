@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  * Lists Cards items.
  *
  * @author
- *
  */
 public class ListCardsCommand extends Command {
 
@@ -32,7 +31,7 @@ public class ListCardsCommand extends Command {
 
     @Override
     public String executeGet(HttpServletRequest request,
-                          HttpServletResponse response) throws IOException, ServletException {
+                             HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
 
@@ -51,7 +50,7 @@ public class ListCardsCommand extends Command {
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.PAGE__ERROR_PAGE;
+                return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCards --> " + cardsItems);
             page = 1;
@@ -107,7 +106,7 @@ public class ListCardsCommand extends Command {
 
 //      Pagination
         List<Card> cardsPage = null;
-        if(cardsItems!=null) {
+        if (cardsItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -137,6 +136,7 @@ public class ListCardsCommand extends Command {
         log.debug("Command finished");
         return Path.PAGE__LIST_CARDS;
     }
+
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {
@@ -160,7 +160,7 @@ public class ListCardsCommand extends Command {
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 log.debug("Command Post finished");
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 

@@ -3,7 +3,6 @@ package app.ui.command.admin;
 import app.Path;
 import app.dao.*;
 import app.domain.Author;
-import app.domain.CatalogObj;
 import app.domain.User;
 import app.ui.command.Command;
 import org.apache.log4j.Logger;
@@ -15,9 +14,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ListAdminAuthorsCommand extends Command {
 
@@ -30,8 +27,6 @@ public class ListAdminAuthorsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
-        User user = (User) request.getSession().getAttribute("user");
 
 //      Get Authors
         List<Author> authorItems = null;
@@ -145,7 +140,6 @@ public class ListAdminAuthorsCommand extends Command {
 //      Make Author
         String name = request.getParameter("makeAuthor");
         if (name != null) {
-//            String name = new String(strAuthor.getBytes("ISO-8859-1"),"utf-8");
             if (name.isEmpty() || (name.length() > 45)) {
                 String errorMessage = "ErrorMoreThan45ch";
                 request.getSession().setAttribute("errorMessage", errorMessage);

@@ -56,7 +56,7 @@ public class Card extends Entity {
     public static String calendarToString(Calendar calendar) {
         if (calendar != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return dateFormat.format(calendar.getTime());
+            return dateFormat.format(calendar.getTime());
         }
         return "";
     }
@@ -64,7 +64,7 @@ public class Card extends Entity {
     public static String calendarIsAfter(Calendar calendar) {
         Calendar today = Calendar.getInstance();
         today.setTime(Calendar.getInstance().getTime());
-        if(calendar.compareTo(today)<0){
+        if (calendar.compareTo(today) < 0) {
             return "true";
         }
         return "false";

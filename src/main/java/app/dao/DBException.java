@@ -1,6 +1,6 @@
 package app.dao;
 
-public class DBException extends Exception{
+public class DBException extends Exception {
     public DBException() {
     }
 

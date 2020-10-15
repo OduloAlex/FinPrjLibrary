@@ -1,7 +1,6 @@
 package app.dao;
 
 import app.domain.Author;
-import app.domain.Book;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -25,11 +24,11 @@ public class AuthorDao {
     private static final String SQL_ADD_AUTHOR =
             "INSERT INTO author (name)" +
                     " VALUES (?)";
+
     /**
      * Returns a Author object with the given identifier.
      *
-     * @param id
-     *            Author identifier.
+     * @param id Author identifier.
      * @return Author object entity.
      */
     public static Author findAuthorById(int id) throws DBException {
@@ -52,8 +51,7 @@ public class AuthorDao {
     /**
      * Del Author with the given id.
      *
-     * @param id
-     *            Author id.
+     * @param id Author id.
      * @return boolean true if del
      */
     public static boolean delAuthorById(int id) throws DBException {
@@ -64,8 +62,7 @@ public class AuthorDao {
     /**
      * Add Author.
      *
-     * @param author
-     *            Author to add.
+     * @param author Author to add.
      */
     public static void addAuthor(Author author) throws DBException {
         Connection con = null;

@@ -1,11 +1,9 @@
 package app.ui.command.admin;
 
 import app.Path;
-import app.dao.AuthorDao;
 import app.dao.DBException;
 import app.dao.PublishingDao;
 import app.dao.UserDao;
-import app.domain.Author;
 import app.domain.Publishing;
 import app.domain.User;
 import app.ui.command.Command;
@@ -31,8 +29,6 @@ public class ListAdminPublishingsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
-        User user = (User) request.getSession().getAttribute("user");
 
 //      Get publishings
         List<Publishing> publishingItems = null;
@@ -146,7 +142,6 @@ public class ListAdminPublishingsCommand extends Command {
 //      Make publishing
         String name = request.getParameter("makePublishing");
         if (name != null) {
-//            String name = new String(strPublishing.getBytes("ISO-8859-1"),"utf-8");
             if (name.isEmpty() || (name.length() > 45)) {
                 String errorMessage = "ErrorMoreThan45ch";
                 request.getSession().setAttribute("errorMessage", errorMessage);

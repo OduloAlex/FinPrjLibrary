@@ -31,17 +31,21 @@
                     <input type="text" name="login" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
                 </label>
                 <label><fmt:message key="res.password"/>
-                    <input type="password" name="password" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
+                    <input type="password" name="password" class="w3-input w3-border w3-round-large"
+                           maxlength="45"><br/>
                 </label>
-                    <label><fmt:message key="res.Description"/>
-                        <input type="text" name="description" class="w3-input w3-border w3-round-large" maxlength="120"><br/>
-                    </label>
-                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message key="res.RegistrationUser"/></button>
+                <label><fmt:message key="res.Description"/>
+                    <input type="text" name="description" class="w3-input w3-border w3-round-large"
+                           maxlength="120"><br/>
+                </label>
+                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message
+                        key="res.RegistrationUser"/></button>
             </form>
 
             <form action="controller" method="get">
                 <input type="hidden" name="command" value="login"/>
-                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message key="res.Back"/></button>
+                <button type="submit" class="w3-btn w3-green w3-round-large w3-block"><fmt:message
+                        key="res.Back"/></button>
             </form>
         </div>
     </div>

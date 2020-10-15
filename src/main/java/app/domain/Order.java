@@ -1,6 +1,6 @@
 package app.domain;
 
-public class Order extends Entity{
+public class Order extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
     private CatalogObj catalogObj;
