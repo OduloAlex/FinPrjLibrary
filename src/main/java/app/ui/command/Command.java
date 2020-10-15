@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Main interface for the Command pattern implementation.
  *
- * @author
+ * @author Alex Odulo
  */
 public abstract class Command implements Serializable {
 

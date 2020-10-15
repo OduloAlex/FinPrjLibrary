@@ -127,4 +127,13 @@
         <location>/jsp/error_page.jsp</location>
     </error-page>
 
+    <!--============================================================
+        jsp config
+    =============================================================-->
+    <jsp-config>
+        <taglib>
+            <taglib-uri>lib</taglib-uri>
+            <taglib-location>/WEB-INF/tlds/custom_tag.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

@@ -29,7 +29,7 @@ public class BookDao {
     private static final String SQL_DEL_BOOK_BY_ID =
             "DELETE FROM books WHERE id=?";
 
-    private static final String SQL_UPDATE_BOOK_STATE =
+    public static final String SQL_UPDATE_BOOK_STATE =
             "UPDATE books SET state=? WHERE id=?";
 
     /**
@@ -65,32 +65,6 @@ public class BookDao {
     public static boolean delBookById(int id) throws DBException {
         DBCrud<Book> dbCrud = new DBCrud<>();
         return dbCrud.delete(SQL_DEL_BOOK_BY_ID, String.valueOf(id));
-    }
-
-    /**
-     * Update book's state.
-     *
-     * @param state state to update.
-     */
-    public static void updateBookState(int state, int id) throws DBException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = DBManager.getInstance().getConnection();
-            pstmt = con.prepareStatement(SQL_UPDATE_BOOK_STATE);
-            int k = 1;
-            pstmt.setInt(k++, state);
-            pstmt.setInt(k++, id);
-            pstmt.executeUpdate();
-            con.commit();
-        } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
-            DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
-        } finally {
-            DBManager.closePreparedStatement(pstmt);
-            DBManager.closeConnect(con);
-        }
     }
 
     /**

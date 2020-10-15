@@ -37,23 +37,59 @@ public class CardDao {
     }
 
     /**
-     * Del Card.
+     * Del Card and update state book and update quantity catalog
      *
-     * @param bookId id.
-     * @param userId id.
-     * @return boolean true if del
+     * @param bookId          bookId
+     * @param userId          bookId
+     * @param bookState       bookState
+     * @param catalogQuantity catalogQuantity
+     * @param catalogId       catalogId
      */
-    public static boolean delCard(int bookId, int userId) throws DBException {
-        DBCrud<Card> dbCrud = new DBCrud<>();
-        return dbCrud.delete(SQL_DEL_CARD_BY_USERS_ID, String.valueOf(bookId), String.valueOf(userId));
+    public static void delCard(int bookId, int userId, int bookState, int catalogQuantity, int catalogId) throws DBException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = DBManager.getInstance().getConnection();
+            pstmt = con.prepareStatement(SQL_DEL_CARD_BY_USERS_ID);
+            int k = 1;
+            pstmt.setInt(k++, bookId);
+            pstmt.setInt(k++, userId);
+            pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement(BookDao.SQL_UPDATE_BOOK_STATE);
+            k = 1;
+            pstmt.setInt(k++, bookState);
+            pstmt.setInt(k++, bookId);
+            pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement(CatalogObjDao.SQL_UPDATE_CATALOG_QUANTITY);
+            k = 1;
+            pstmt.setInt(k++, catalogQuantity);
+            pstmt.setInt(k++, catalogId);
+            pstmt.executeUpdate();
+
+            con.commit();
+        } catch (SQLException ex) {
+            logger.error("SQLException when connecting to db", ex);
+            DBManager.rollback(con);
+            throw new DBException("Unable to insert data in DB");
+        } finally {
+            DBManager.closePreparedStatement(pstmt);
+            DBManager.closeConnect(con);
+        }
     }
 
     /**
-     * Add Card
+     * Add Card and update state book and update quantity catalog
      *
-     * @param card Card to add.
+     * @param card            Card to add
+     * @param bookState       bookState
+     * @param bookId          bookId
+     * @param catalogQuantity catalogQuantity
+     * @param catalogId       catalogId
+     * @param userId          userId
      */
-    public static void addCard(Card card) throws DBException {
+    public static void addCard(Card card, int bookState, int bookId, int catalogQuantity, int catalogId, int userId) throws DBException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -65,6 +101,25 @@ public class CardDao {
             pstmt.setInt(k++, card.getBook().getId());
             pstmt.setInt(k++, card.getUser().getId());
             pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement(BookDao.SQL_UPDATE_BOOK_STATE);
+            k = 1;
+            pstmt.setInt(k++, bookState);
+            pstmt.setInt(k++, bookId);
+            pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement(CatalogObjDao.SQL_UPDATE_CATALOG_QUANTITY);
+            k = 1;
+            pstmt.setInt(k++, catalogQuantity);
+            pstmt.setInt(k++, catalogId);
+            pstmt.executeUpdate();
+
+            pstmt = con.prepareStatement(OrderDao.SQL_DEL_ORDER_BY_USERS_ID);
+            k = 1;
+            pstmt.setInt(k++, catalogId);
+            pstmt.setInt(k++, userId);
+            pstmt.executeUpdate();
+
             con.commit();
         } catch (SQLException ex) {
             logger.error("SQLException when connecting to db", ex);

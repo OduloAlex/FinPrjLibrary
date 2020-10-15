@@ -19,7 +19,7 @@ public class OrderDao {
             "INSERT INTO orders (catalog_id, users_id, state)" +
                     " VALUES (?, ?, ?)";
 
-    private static final String SQL_DEL_ORDER_BY_USERS_ID =
+    public static final String SQL_DEL_ORDER_BY_USERS_ID =
             "DELETE FROM orders WHERE catalog_id=? AND users_id=?";
 
     /**

@@ -17,3 +17,4 @@ JSTL i18n tag library.
 My tag.
 ===========================================================================--%>
 <%@ taglib prefix="h" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="lib" prefix="ct"%>

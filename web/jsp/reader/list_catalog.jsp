@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
-
 <html>
 
 <h:head title="res.BookCatalog"></h:head>
@@ -35,6 +34,7 @@
 </div>
 
 <div class="w3-container w3-padding">
+
     <div class="w3-bar">
         <div class="w3-bar-item">
             <div class="w3-padding w3-xlarge">

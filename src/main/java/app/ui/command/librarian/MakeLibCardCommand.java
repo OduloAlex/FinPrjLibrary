@@ -121,33 +121,26 @@ public class MakeLibCardCommand extends Command {
                 card.setReturnTime(dateReturn);
                 card.setUser(reader);
                 card.setBook(book);
-                CardDao.addCard(card);
-                log.debug("Add Card successful");
+
                 int stateId = 2;
                 if ("room".equals(state)) {
                     stateId = 3;
                 }
-                BookDao.updateBookState(stateId, bookId);
-                log.debug("Update Book State " + stateId + " successful");
+
                 CatalogObj catalogObj = book.getCatalogObj();
                 int quantity = catalogObj.getQuantity() - 1;
                 if (quantity < 0) {
                     quantity = 0;
                     log.trace("Error Catalog quantity less than 0 ");
                 }
-                CatalogObjDao.updateCatalogObjQuantity(quantity, catalogObj.getId());
-                log.debug("Update CatalogObj quantity to " + quantity + " successful");
 
                 int catalogId = book.getCatalogObj().getId();
+
+                CardDao.addCard(card, stateId, bookId, quantity, catalogId, readerId);
+                log.debug("Add Card successful");
+                log.debug("Update Book State " + stateId + " successful");
+                log.debug("Update CatalogObj quantity to " + quantity + " successful");
                 log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
-                if (!OrderDao.delOrder(catalogId, readerId)) {
-                    String errorMessage = "Can't del Order in DB";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
-                    return Path.COMMAND__ERROR;
-                }
-                log.debug("Del Order successful");
             } catch (NumberFormatException e) {
                 log.trace("Book itemId doesn't parse --> " + e);
             } catch (DBException e) {

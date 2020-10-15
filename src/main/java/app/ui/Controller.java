@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Main servlet controller.
  *
- * @author
+ * @author  Alex Odulo
  */
 public class Controller extends HttpServlet {
 
@@ -33,7 +33,7 @@ public class Controller extends HttpServlet {
     }
 
     /**
-     * Main method of this controller.
+     * Main method of this controller Get.
      */
     private void processGet(HttpServletRequest request,
                             HttpServletResponse response) throws IOException, ServletException {
@@ -51,7 +51,6 @@ public class Controller extends HttpServlet {
         // execute command and get forward address
         String path = command.executeGet(request, response);
 
-
         // if the forward address is not null go to the address
         if (path != null) {
             log.trace("Forward to address --> " + path);
@@ -62,7 +61,7 @@ public class Controller extends HttpServlet {
     }
 
     /**
-     * Main method of this controller.
+     * Main method of this controller Post.
      */
     private void processPost(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {

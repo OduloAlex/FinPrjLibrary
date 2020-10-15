@@ -14,12 +14,14 @@ import java.util.StringTokenizer;
 public class ContextListener implements ServletContextListener {
     private static final Logger log = Logger.getLogger(ContextListener.class);
 
+    @Override
     public void contextDestroyed(ServletContextEvent event) {
         log("Servlet context destruction starts");
         // do nothing
         log("Servlet context destruction finished");
     }
 
+    @Override
     public void contextInitialized(ServletContextEvent event) {
         log("Servlet context initialization starts");
 
@@ -32,7 +34,7 @@ public class ContextListener implements ServletContextListener {
     /**
      * Initializes log4j framework.
      *
-     * @param servletContext
+     * @param servletContext servletContext
      */
     private void initLog4J(ServletContext servletContext) {
         log("Log4J initialization started");

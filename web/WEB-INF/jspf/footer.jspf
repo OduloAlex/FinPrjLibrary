@@ -3,5 +3,5 @@ Footer (bottom area).
 ===========================================================================--%> 
 
 <footer class="w3-container w3-blue-grey w3-center">
-	<h6>&copy;MyLibrary.com (Final Project by Alex Odulo), 2020</h6>
+	<h6>&copy;MyLibrary.com (Final Project by Alex Odulo), <ct:time type="yyyy-MM-dd"/></h6>
 </footer>

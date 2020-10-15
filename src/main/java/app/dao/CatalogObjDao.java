@@ -28,7 +28,7 @@ public class CatalogObjDao {
     private static final String SQL_DEL_CATALOG_BY_ID =
             "DELETE FROM catalog WHERE id=?";
 
-    private static final String SQL_UPDATE_CATALOG_QUANTITY =
+    public static final String SQL_UPDATE_CATALOG_QUANTITY =
             "UPDATE catalog SET quantity=? WHERE id=?";
 
     private static final String SQL_UPDATE_CATALOG =

@@ -124,19 +124,13 @@ public class ListLibCardsCommand extends Command {
                 int bookId = Integer.parseInt(itemId);
                 int readerId = reader.getId();
                 log.debug("Del Card --> catalogId " + bookId + ", userId " + readerId);
-                if (!CardDao.delCard(bookId, readerId)) {
-                    String errorMessage = "Can't del Card in DB";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
-                    return Path.COMMAND__ERROR;
-                }
-                log.debug("Del Card successful");
-                BookDao.updateBookState(BookDao.STATE_LIB, bookId);
-                log.debug("Update Book State to LIB successful");
+
                 CatalogObj catalogObj = BookDao.findBookById(bookId).getCatalogObj();
                 int quantity = catalogObj.getQuantity() + 1;
-                CatalogObjDao.updateCatalogObjQuantity(quantity, catalogObj.getId());
+
+                CardDao.delCard(bookId, readerId, BookDao.STATE_LIB, quantity, catalogObj.getId());
+                log.debug("Del Card successful");
+                log.debug("Update Book State to LIB successful");
                 log.debug("Update CatalogObj quantity to " + quantity + " successful");
             } catch (NumberFormatException e) {
                 log.trace("Card itemId doesn't parse --> " + e);
