@@ -132,7 +132,7 @@
                             <input type="hidden" name="show" value="all"/>
                             <button type="submit" name="editId" value="${item.id}"
                                     class="w3-btn w3-green w3-round-large">
-                                <fmt:message key="res.Edit2"/></button>
+                                <i class="material-icons w3-large">settings</i></button>
                         </form>
                     </td>
                     <td>
@@ -141,7 +141,7 @@
                             <input type="hidden" name="show" value="all"/>
                             <button type="submit" name="cancelId" value="${item.id}"
                                     class="w3-btn w3-green w3-round-large">
-                                <fmt:message key="res.Cancel2"/></button>
+                                <i class="material-icons w3-large">delete_forever</i></button>
                         </form>
                     </td>
                 </tr>

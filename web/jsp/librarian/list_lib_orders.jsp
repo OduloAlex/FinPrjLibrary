@@ -92,7 +92,7 @@
                             <input type="hidden" name="show" value="all"/>
                             <button type="submit" name="cancelId" value="${item.catalogObj.id}"
                                     class="w3-btn w3-green w3-round-large">
-                                <fmt:message key="res.Cancel"/></button>
+                                <i class="material-icons w3-large">delete_forever</i></button>
                         </form>
                     </td>
                 </tr>

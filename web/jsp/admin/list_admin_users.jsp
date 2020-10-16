@@ -88,7 +88,7 @@
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="libOffId" value="${item.id}"
-                                            class="w3-btn w3-blue w3-round-large"><i class="material-icons">check_circle_outline</i>
+                                            class="w3-btn w3-blue w3-round-large"><i class="material-icons w3-large">check_circle_outline</i>
                                     </button>
                                 </form>
                             </c:when>
@@ -96,7 +96,7 @@
                                 <form action="controller" method="post">
                                     <input type="hidden" name="command" value="listAdminUsers"/>
                                     <button type="submit" name="libOnId" value="${item.id}"
-                                            class="w3-btn w3-gray w3-round-large"><i class="material-icons">block</i>
+                                            class="w3-btn w3-gray w3-round-large"><i class="material-icons w3-large">block</i>
                                     </button>
                                 </form>
                             </c:otherwise>
@@ -108,7 +108,7 @@
                             <input type="hidden" name="show" value="all"/>
                             <button type="submit" name="cancelId" value="${item.id}"
                                     class="w3-btn w3-green w3-round-large">
-                                <fmt:message key="res.Cancel2"/></button>
+                                <i class="material-icons w3-large">delete_forever</i></button>
                         </form>
                     </td>
                 </tr>
