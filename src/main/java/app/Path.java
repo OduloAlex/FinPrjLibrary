@@ -3,7 +3,7 @@ package app;
 /**
  * Path holder (jsp pages, controller commands).
  *
- * @author
+ * @author Alex Odulo
  */
 public final class Path {
 

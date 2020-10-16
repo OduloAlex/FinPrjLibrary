@@ -13,7 +13,7 @@ import java.util.TreeMap;
 /**
  * Holder for all commands.
  *
- * @author
+ * @author Alex Odulo
  */
 public class CommandContainer {
 

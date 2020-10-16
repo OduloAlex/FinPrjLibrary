@@ -17,6 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * MakeLibCard command.
+ *
+ * @author Alex Odulo
+ */
 public class MakeLibCardCommand extends Command {
 
     private static final long serialVersionUID = 7732266253902928505L;

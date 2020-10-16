@@ -16,6 +16,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * MakeAdminBook command.
+ *
+ * @author Alex Odulo
+ */
 public class MakeAdminBookCommand extends Command {
 
     private static final Logger log = Logger.getLogger(MakeAdminBookCommand.class);

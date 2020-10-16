@@ -12,6 +12,11 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
+/**
+ * Registration command.
+ *
+ * @author Alex Odulo
+ */
 public class RegistrationCommand extends Command {
 
     private static final long serialVersionUID = 7732286214029478505L;

@@ -14,6 +14,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * EditAdminBook command.
+ *
+ * @author Alex Odulo
+ */
 public class EditAdminBookCommand extends Command {
 
     private static final long serialVersionUID = 77322654602928505L;

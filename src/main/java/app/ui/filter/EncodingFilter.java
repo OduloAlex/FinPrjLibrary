@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Encoding filter.
  *
- * @author
+ * @author Alex Odulo
  */
 public class EncodingFilter implements Filter {
     private static final Logger log = Logger.getLogger(EncodingFilter.class);

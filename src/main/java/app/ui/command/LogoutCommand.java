@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Logout command.
  *
- * @author
+ * @author Alex Odulo
  */
 public class LogoutCommand extends Command {
 

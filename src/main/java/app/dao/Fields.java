@@ -3,7 +3,7 @@ package app.dao;
 /**
  * Holder for fields names of DB tables and beans.
  *
- * @author
+ * @author Alex Odulo
  */
 public final class Fields {
 

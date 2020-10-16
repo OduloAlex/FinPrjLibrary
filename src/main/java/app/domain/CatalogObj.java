@@ -1,5 +1,10 @@
 package app.domain;
 
+/**
+ * Entity CatalogObj
+ *
+ * @author Alex Odulo
+ */
 public class CatalogObj extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
@@ -67,6 +72,11 @@ public class CatalogObj extends Entity {
         this.quantity = quantity;
     }
 
+    /**
+     * Return the entity as a string
+     *
+     * @return string entity
+     */
     @Override
     public String toString() {
         return "CatalogObj{" +

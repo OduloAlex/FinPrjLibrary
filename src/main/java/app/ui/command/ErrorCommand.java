@@ -8,6 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Error command.
+ *
+ * @author Alex Odulo
+ */
 public class ErrorCommand extends Command {
 
     private static final long serialVersionUID = -2785976616686657267L;

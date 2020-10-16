@@ -14,6 +14,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * SettingsAdminBook command.
+ *
+ * @author Alex Odulo
+ */
 public class SettingsAdminBookCommand extends Command {
 
     private static final Logger log = Logger.getLogger(SettingsAdminBookCommand.class);

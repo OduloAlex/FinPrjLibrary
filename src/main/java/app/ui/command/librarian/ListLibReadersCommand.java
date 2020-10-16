@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ListLibReaders command.
+ *
+ * @author Alex Odulo
+ */
 public class ListLibReadersCommand extends Command {
 
     private static final long serialVersionUID = 7732286257029478505L;

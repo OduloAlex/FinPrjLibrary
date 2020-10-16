@@ -17,6 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ListLibCards command.
+ *
+ * @author Alex Odulo
+ */
 public class ListLibCardsCommand extends Command {
 
     private static final long serialVersionUID = 7732286253202978505L;

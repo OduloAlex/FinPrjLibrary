@@ -3,6 +3,11 @@ package app.domain;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Entity Card
+ *
+ * @author Alex Odulo
+ */
 public class Card extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
@@ -43,6 +48,11 @@ public class Card extends Entity {
         this.returnTime = returnTime;
     }
 
+    /**
+     * Return the entity as a string
+     *
+     * @return string entity
+     */
     @Override
     public String toString() {
         return "Card{" +
@@ -53,6 +63,12 @@ public class Card extends Entity {
                 '}';
     }
 
+    /**
+     * Convert date Calendar to String
+     *
+     * @param calendar Calendar
+     * @return string
+     */
     public static String calendarToString(Calendar calendar) {
         if (calendar != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,6 +77,12 @@ public class Card extends Entity {
         return "";
     }
 
+    /**
+     * Will Calendar date be in the future
+     *
+     * @param calendar Calendar
+     * @return string true or false
+     */
     public static String calendarIsAfter(Calendar calendar) {
         Calendar today = Calendar.getInstance();
         today.setTime(Calendar.getInstance().getTime());

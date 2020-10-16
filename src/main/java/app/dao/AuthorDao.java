@@ -9,6 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Author's Dao class
+ *
+ * @author Alex Odulo
+ */
 public class AuthorDao {
     private static final Logger logger = Logger.getLogger(AuthorDao.class);
 
@@ -75,9 +80,9 @@ public class AuthorDao {
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);

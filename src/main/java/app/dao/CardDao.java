@@ -11,6 +11,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Card's Dao class
+ *
+ * @author Alex Odulo
+ */
 public class CardDao {
     private static final Logger logger = Logger.getLogger(CardDao.class);
 
@@ -70,9 +75,9 @@ public class CardDao {
 
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -122,9 +127,9 @@ public class CardDao {
 
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -150,7 +155,12 @@ public class CardDao {
             }
         }
 
-        //Convert Date to Calendar
+        /**
+         * Convert Date to Calendar
+         *
+         * @param date date in Date
+         * @return Calendar
+         */
         private static Calendar dateToCalendar(Date date) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);

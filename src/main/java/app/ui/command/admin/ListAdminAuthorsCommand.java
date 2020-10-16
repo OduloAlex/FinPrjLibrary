@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ListAdminAuthors command.
+ *
+ * @author Alex Odulo
+ */
 public class ListAdminAuthorsCommand extends Command {
 
     private static final long serialVersionUID = 7732286225029675505L;

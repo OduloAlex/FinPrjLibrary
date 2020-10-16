@@ -1,5 +1,10 @@
 package app.domain;
 
+/**
+ * Entity Book
+ *
+ * @author Alex Odulo
+ */
 public class Book extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
@@ -31,6 +36,11 @@ public class Book extends Entity {
         this.invNumber = invNumber;
     }
 
+    /**
+     * Return the entity as a string
+     *
+     * @return string entity
+     */
     @Override
     public String toString() {
         return "Book{" +

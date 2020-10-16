@@ -6,9 +6,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class generalization of DAO operations
+ *
+ * @author Alex Odulo
+ */
 public class DBCrud<T> {
     private static final Logger logger = Logger.getLogger(DBCrud.class);
 
+    /**
+     * Operation find one entity in DB
+     *
+     * @param sqlQuery sql query
+     * @param param search parameter
+     * @param mapper mapper entity
+     * @return entity
+     * @throws DBException app exception
+     */
     public T findOne(String sqlQuery, String param, EntityMapper<T> mapper) throws DBException {
         T entity = null;
         PreparedStatement pstmt = null;
@@ -24,7 +38,7 @@ public class DBCrud<T> {
             }
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
             throw new DBException("Unable to find data in DB");
         } finally {
@@ -35,6 +49,14 @@ public class DBCrud<T> {
         return entity;
     }
 
+    /**
+     * Operation find all entity in DB
+     *
+     * @param sqlQuery sql query
+     * @param mapper mapper entity
+     * @return entity
+     * @throws DBException app exception
+     */
     public List<T> findAll(String sqlQuery, EntityMapper<T> mapper) throws DBException {
         List<T> entities = new ArrayList<>();
         Statement stmt = null;
@@ -49,7 +71,7 @@ public class DBCrud<T> {
             }
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
             throw new DBException("Unable to find data in DB");
         } finally {
@@ -60,6 +82,15 @@ public class DBCrud<T> {
         return entities;
     }
 
+    /**
+     * Operation find all entity in DB by parameter
+     *
+     * @param sqlQuery sql query
+     * @param param search parameter
+     * @param mapper mapper entity
+     * @return entity
+     * @throws DBException app exception
+     */
     public List<T> findAllByParam(String sqlQuery, String param, EntityMapper<T> mapper) throws DBException {
         List<T> entities = new ArrayList<>();
         PreparedStatement pstmt = null;
@@ -75,7 +106,7 @@ public class DBCrud<T> {
             }
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
             throw new DBException("Unable to find data in DB");
         } finally {
@@ -86,6 +117,14 @@ public class DBCrud<T> {
         return entities;
     }
 
+    /**
+     * Operation delete entity in DB
+     *
+     * @param sqlQuery sql query
+     * @param param search parameter
+     * @return entity
+     * @throws DBException app exception
+     */
     public boolean delete(String sqlQuery, String... param) throws DBException {
         PreparedStatement pstmt = null;
         Connection con = null;
@@ -101,7 +140,7 @@ public class DBCrud<T> {
             }
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
             throw new DBException("Unable to delete data in DB");
         } finally {

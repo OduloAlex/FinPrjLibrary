@@ -1,5 +1,10 @@
 package app.domain;
 
+/**
+ * Entity User
+ *
+ * @author Alex Odulo
+ */
 public class User extends Entity {
     private static final long serialVersionUID = 5692708766041889396L;
 
@@ -58,6 +63,11 @@ public class User extends Entity {
         this.localeName = localeName;
     }
 
+    /**
+     * Return the entity as a string
+     *
+     * @return string entity
+     */
     @Override
     public String toString() {
         return "User{" +

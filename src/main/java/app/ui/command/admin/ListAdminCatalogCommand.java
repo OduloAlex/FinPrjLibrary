@@ -18,6 +18,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * ListAdminCatalog command.
+ *
+ * @author Alex Odulo
+ */
 public class ListAdminCatalogCommand extends Command {
 
     private static final long serialVersionUID = 7732286225029476505L;

@@ -8,6 +8,11 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.*;
 
+/**
+ * Database manager
+ *
+ * @author Alex Odulo
+ */
 public class DBManager {
     private static final Logger logger = Logger.getLogger(DBManager.class);
 
@@ -45,10 +50,11 @@ public class DBManager {
         return con;
     }
 
-////////////////////////////////////////////////////////////
-//     DB util methods
-////////////////////////////////////////////////////////////
-
+    /**
+     * Close ResultSet
+     *
+     * @param rs ResultSet
+     */
     public static void closeResultSet(ResultSet rs) {
         if (rs != null) {
             try {
@@ -59,6 +65,11 @@ public class DBManager {
         }
     }
 
+    /**
+     * Close PreparedStatement
+     *
+     * @param ps PreparedStatement
+     */
     public static void closePreparedStatement(PreparedStatement ps) {
         if (ps != null) {
             try {
@@ -69,16 +80,26 @@ public class DBManager {
         }
     }
 
-    public static void closeStatement(Statement ps) {
-        if (ps != null) {
+    /**
+     * Close Statement
+     *
+     * @param st Statement
+     */
+    public static void closeStatement(Statement st) {
+        if (st != null) {
             try {
-                ps.close();
+                st.close();
             } catch (SQLException ex) {
                 logger.error("SQLException:", ex);
             }
         }
     }
 
+    /**
+     * Close connect
+     *
+     * @param con connect
+     */
     public static void closeConnect(Connection con) {
         if (con != null) {
             try {
@@ -89,6 +110,11 @@ public class DBManager {
         }
     }
 
+    /**
+     * Rollback operation
+     *
+     * @param con connection
+     */
     public static void rollback(Connection con) {
         if (con != null) {
             try {

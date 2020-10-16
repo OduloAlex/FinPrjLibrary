@@ -6,6 +6,11 @@ import org.apache.log4j.Logger;
 import java.sql.*;
 import java.util.List;
 
+/**
+ * User's Dao class
+ *
+ * @author Alex Odulo
+ */
 public class UserDao {
     private static final Logger logger = Logger.getLogger(UserDao.class);
 
@@ -116,9 +121,9 @@ public class UserDao {
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -126,9 +131,9 @@ public class UserDao {
     }
 
     /**
-     * Update user's active.
+     * Update user's active state.
      *
-     * @param active active to active.
+     * @param active state to active.
      */
     public static void updateUserActive(int active, int id) throws DBException {
         Connection con = null;
@@ -142,9 +147,9 @@ public class UserDao {
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -168,9 +173,9 @@ public class UserDao {
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
@@ -198,9 +203,9 @@ public class UserDao {
             pstmt.executeUpdate();
             con.commit();
         } catch (SQLException ex) {
-            logger.error("SQLException when connecting to db", ex);
+            logger.error("SQLException exception when working with a database", ex);
             DBManager.rollback(con);
-            throw new DBException("Unable to insert data in DB");
+            throw new DBException("DB operation cannot be performed");
         } finally {
             DBManager.closePreparedStatement(pstmt);
             DBManager.closeConnect(con);
