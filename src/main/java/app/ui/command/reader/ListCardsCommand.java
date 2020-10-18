@@ -42,14 +42,12 @@ public class ListCardsCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all cards------>>>>> " + show);
             try {
                 cardsItems = CardDao.findAllCardByUsersId(user.getId());
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCards --> " + cardsItems);
@@ -63,7 +61,6 @@ public class ListCardsCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            log.debug("Find by name in cards ------>>>>> " + find);
             cardsItems = cardsItems.stream()
                     .filter(c -> c.getBook().getCatalogObj().getName().equals(find))
                     .collect(Collectors.toList());
@@ -72,7 +69,6 @@ public class ListCardsCommand extends Command {
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            log.debug("Find by author in cards ------>>>>> " + findAuthor);
             cardsItems = cardsItems.stream()
                     .filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor))
                     .collect(Collectors.toList());
@@ -82,22 +78,18 @@ public class ListCardsCommand extends Command {
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
                 cardsItems = cardsItems.stream()
                         .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName()))
                         .collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
                 cardsItems = cardsItems.stream()
                         .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName()))
                         .collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
                 cardsItems = cardsItems.stream()
                         .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName()))
                         .collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                log.debug("Sort cards by------>>>>> " + sort);
                 cardsItems = cardsItems.stream()
                         .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear()))
                         .collect(Collectors.toList());
@@ -148,7 +140,6 @@ public class ListCardsCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             HttpSession session = request.getSession();
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
@@ -159,7 +150,6 @@ public class ListCardsCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

@@ -40,14 +40,12 @@ public class ListAdminPublishingsCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all publishings ------>>>>> " + show);
             try {
                 publishingItems = PublishingDao.findAllPublishing();
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + publishingItems);
@@ -104,7 +102,6 @@ public class ListAdminPublishingsCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -114,7 +111,6 @@ public class ListAdminPublishingsCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -124,22 +120,18 @@ public class ListAdminPublishingsCommand extends Command {
         if (itemId != null) {
             try {
                 int publishingId = Integer.parseInt(itemId);
-                log.debug("Del publishing--> publishingId " + publishingId);
                 if (!PublishingDao.delPublishingById(publishingId)) {
                     String errorMessage = "Can't del publishing in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("Del publishing successful");
             } catch (NumberFormatException e) {
                 log.trace("publishing itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -157,12 +149,10 @@ public class ListAdminPublishingsCommand extends Command {
                 Publishing publishing = new Publishing();
                 publishing.setName(name);
                 PublishingDao.addPublishing(publishing);
-                log.debug("Add publishing--> " + publishing);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.getSession().setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

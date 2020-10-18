@@ -38,14 +38,12 @@ public class ListAdminUsersCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all users------>>>>> " + show);
             try {
                 usersItems = UserDao.findAllUserReaderOrLib();
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllUser --> " + usersItems);
@@ -78,7 +76,6 @@ public class ListAdminUsersCommand extends Command {
             readersPage = new ArrayList<>(usersItems.subList(((page * 5) - 5), lastPage));
         }
         request.setAttribute("readersPage", readersPage);
-        log.debug("Set the request attribute: catalogPage --> " + readersPage);
 
         request.getSession().setAttribute("usersItems", usersItems);
         log.trace("Set the request attribute: usersItems --> " + usersItems);
@@ -102,7 +99,6 @@ public class ListAdminUsersCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -112,7 +108,6 @@ public class ListAdminUsersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -122,22 +117,18 @@ public class ListAdminUsersCommand extends Command {
         if (itemId != null) {
             try {
                 int userId = Integer.parseInt(itemId);
-                log.debug("Del User--> userId " + userId);
                 if (!UserDao.delUserById(userId)) {
                     String errorMessage = "Can't del User in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("Del User successful");
             } catch (NumberFormatException e) {
                 log.trace("User itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -148,14 +139,12 @@ public class ListAdminUsersCommand extends Command {
             try {
                 int userId = Integer.parseInt(itemId);
                 UserDao.updateUserActive(0, userId);
-                log.debug("UpdateUserActive --> block, userId " + userId);
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return  Path.COMMAND__ERROR;
             }
         }
@@ -164,14 +153,12 @@ public class ListAdminUsersCommand extends Command {
             try {
                 int userId = Integer.parseInt(itemId);
                 UserDao.updateUserActive(1, userId);
-                log.debug("UpdateUserActive --> unblock, userId " + userId);
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return  Path.COMMAND__ERROR;
             }
         }
@@ -182,14 +169,12 @@ public class ListAdminUsersCommand extends Command {
             try {
                 int userId = Integer.parseInt(itemId);
                 UserDao.updateUserRole(3, userId);
-                log.debug("UpdateUserRole --> reader, userId " + userId);
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return  Path.COMMAND__ERROR;
             }
         }
@@ -198,14 +183,12 @@ public class ListAdminUsersCommand extends Command {
             try {
                 int userId = Integer.parseInt(itemId);
                 UserDao.updateUserRole(2, userId);
-                log.debug("UpdateUserRole --> lib, userId " + userId);
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return  Path.COMMAND__ERROR;
             }
         }

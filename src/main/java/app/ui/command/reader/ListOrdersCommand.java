@@ -39,7 +39,6 @@ public class ListOrdersCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all order------>>>>> " + show);
             try {
                 ordersItems = OrderDao.findAllOrderByUsersId(user.getId());
             } catch (DBException e) {
@@ -56,7 +55,6 @@ public class ListOrdersCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            log.debug("Find by name in orders ------>>>>> " + find);
             ordersItems = ordersItems.stream()
                     .filter(c -> c.getCatalogObj().getName().equals(find))
                     .collect(Collectors.toList());
@@ -65,7 +63,6 @@ public class ListOrdersCommand extends Command {
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            log.debug("Find by author in orders ------>>>>> " + findAuthor);
             ordersItems = ordersItems.stream()
                     .filter(c -> c.getCatalogObj().getAuthor().getName().equals(findAuthor))
                     .collect(Collectors.toList());
@@ -75,22 +72,18 @@ public class ListOrdersCommand extends Command {
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                log.debug("Sort orders by------>>>>> " + sort);
                 ordersItems = ordersItems.stream()
                         .sorted(Comparator.comparing(c -> c.getCatalogObj().getName()))
                         .collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                log.debug("Sort orders by------>>>>> " + sort);
                 ordersItems = ordersItems.stream()
                         .sorted(Comparator.comparing(c -> c.getCatalogObj().getAuthor().getName()))
                         .collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                log.debug("Sort orders by------>>>>> " + sort);
                 ordersItems = ordersItems.stream()
                         .sorted(Comparator.comparing(c -> c.getCatalogObj().getPublishing().getName()))
                         .collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                log.debug("Sort orders by------>>>>> " + sort);
                 ordersItems = ordersItems.stream()
                         .sorted(Comparator.comparing(c -> c.getCatalogObj().getYear()))
                         .collect(Collectors.toList());
@@ -102,7 +95,6 @@ public class ListOrdersCommand extends Command {
         if (ordersItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
-                log.debug("Go page ------>>>>> " + goPage);
                 if ("next".equals(goPage)) {
                     if (ordersItems.size() > (page * 5)) {
                         page++;
@@ -142,7 +134,6 @@ public class ListOrdersCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -152,7 +143,6 @@ public class ListOrdersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -164,12 +154,10 @@ public class ListOrdersCommand extends Command {
                 try {
                     int result = Integer.parseInt(item);
                     int userId = user.getId();
-                    log.debug("Del Order --> catalogId " + result + ", userId " + userId);
                     if (!OrderDao.delOrder(result, userId)) {
                         String errorMessage = "Can't del Order in DB";
                         session.setAttribute("errorMessage", errorMessage);
                         log.error("errorMessage --> " + errorMessage);
-                        log.debug("Command Post finished");
                         return Path.COMMAND__ERROR;
                     }
                 } catch (NumberFormatException e) {
@@ -178,7 +166,6 @@ public class ListOrdersCommand extends Command {
                     String errorMessage = e.getMessage();
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
             }

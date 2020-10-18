@@ -45,14 +45,12 @@ public class EditAdminBookCommand extends Command {
             int catalogId = Integer.parseInt(editId);
             List<Book> books = BookDao.findBookByCatalogIdStateLib(catalogId);
             session.setAttribute("books", books);
-            log.debug("Set the session attribute: books --> " + books);
         } catch (NumberFormatException e) {
             log.trace("Catalog itemId doesn't parse --> " + e);
         } catch (DBException e) {
             String errorMessage = e.getMessage();
             session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            log.debug("Command Post finished");
             return Path.COMMAND__ERROR;
         }
 
@@ -73,7 +71,6 @@ public class EditAdminBookCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -83,7 +80,6 @@ public class EditAdminBookCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -93,15 +89,12 @@ public class EditAdminBookCommand extends Command {
         if (itemId != null) {
             try {
                 int bookId = Integer.parseInt(itemId);
-                log.debug("Del book--> bookId " + bookId);
                 if (!BookDao.delBookById(bookId)) {
                     String errorMessage = "Can't del Book in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("DelBook successful");
                 int catalogId = Integer.parseInt(editId);
                 CatalogObj catalogObj = CatalogObjDao.findCatalogObjById(catalogId);
                 int quantity = catalogObj.getQuantity() - 1;
@@ -110,14 +103,12 @@ public class EditAdminBookCommand extends Command {
                     log.trace("Error Catalog quantity less than 0 ");
                 }
                 CatalogObjDao.updateCatalogObjQuantity(quantity, catalogObj.getId());
-                log.debug("Update CatalogObj quantity to " + quantity + " successful");
             } catch (NumberFormatException e) {
                 log.trace("Book itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -134,11 +125,9 @@ public class EditAdminBookCommand extends Command {
             try {
                 int catalogId = Integer.parseInt(editId);
                 BookDao.addBook(BookDao.STATE_LIB, invNumber, catalogId);
-                log.debug("Add book --> invNumber: " + invNumber);
                 CatalogObj catalogObj = CatalogObjDao.findCatalogObjById(catalogId);
                 int quantity = catalogObj.getQuantity() + 1;
                 CatalogObjDao.updateCatalogObjQuantity(quantity, catalogId);
-                log.debug("Update CatalogObj quantity to " + quantity + " successful");
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
@@ -149,7 +138,6 @@ public class EditAdminBookCommand extends Command {
             }
         }
 
-        log.debug("Command Post finished");
         return Path.COMMAND__EDIT_ADMIN_BOOK;
     }
 }

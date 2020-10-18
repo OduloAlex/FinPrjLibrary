@@ -41,14 +41,12 @@ public class ListLibCardsCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all cards------>>>>> " + show);
             try {
                 cardsItems = CardDao.findAllCardByUsersId(reader.getId());
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCards --> " + cardsItems);
@@ -107,7 +105,6 @@ public class ListLibCardsCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -117,7 +114,6 @@ public class ListLibCardsCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -128,22 +124,17 @@ public class ListLibCardsCommand extends Command {
             try {
                 int bookId = Integer.parseInt(itemId);
                 int readerId = reader.getId();
-                log.debug("Del Card --> catalogId " + bookId + ", userId " + readerId);
 
                 CatalogObj catalogObj = BookDao.findBookById(bookId).getCatalogObj();
                 int quantity = catalogObj.getQuantity() + 1;
 
                 CardDao.delCard(bookId, readerId, BookDao.STATE_LIB, quantity, catalogObj.getId());
-                log.debug("Del Card successful");
-                log.debug("Update Book State to LIB successful");
-                log.debug("Update CatalogObj quantity to " + quantity + " successful");
             } catch (NumberFormatException e) {
                 log.trace("Card itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

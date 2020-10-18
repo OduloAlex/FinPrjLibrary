@@ -49,7 +49,6 @@ public class ListLibReadersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
             session.setAttribute("reader", reader);
@@ -73,7 +72,6 @@ public class ListLibReadersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
             session.setAttribute("reader", reader);
@@ -88,14 +86,12 @@ public class ListLibReadersCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all users------>>>>> " + show);
             try {
                 usersItems = UserDao.findAllUserReader();
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllUser --> " + usersItems);
@@ -162,7 +158,6 @@ public class ListLibReadersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

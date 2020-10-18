@@ -38,7 +38,6 @@ public class ListAdminAuthorsCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all authors ------>>>>> " + show);
             try {
                 authorItems = AuthorDao.findAllAuthor();
             } catch (DBException e) {
@@ -102,7 +101,6 @@ public class ListAdminAuthorsCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -112,7 +110,6 @@ public class ListAdminAuthorsCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -122,22 +119,18 @@ public class ListAdminAuthorsCommand extends Command {
         if (itemId != null) {
             try {
                 int authorId = Integer.parseInt(itemId);
-                log.debug("Del Author--> authorId " + authorId);
                 if (!AuthorDao.delAuthorById(authorId)) {
                     String errorMessage = "Can't del Author in DB";
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("Del Author successful");
             } catch (NumberFormatException e) {
                 log.trace("Author itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -151,16 +144,14 @@ public class ListAdminAuthorsCommand extends Command {
                 log.error("errorMessage --> " + errorMessage);
                 return Path.COMMAND__ERROR;
             }
+            Author author = new Author();
+            author.setName(name);
             try {
-                Author author = new Author();
-                author.setName(name);
                 AuthorDao.addAuthor(author);
-                log.debug("Add Author--> " + author);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.getSession().setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

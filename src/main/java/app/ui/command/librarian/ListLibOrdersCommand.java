@@ -42,14 +42,12 @@ public class ListLibOrdersCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all orders------>>>>> " + show);
             try {
                 ordersItems = OrderDao.findAllOrderByUsersId(reader.getId());
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllOrders --> " + ordersItems);
@@ -107,7 +105,6 @@ public class ListLibOrdersCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -117,7 +114,6 @@ public class ListLibOrdersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -128,7 +124,6 @@ public class ListLibOrdersCommand extends Command {
             try {
                 int catalogId = Integer.parseInt(itemId);
                 int readerId = reader.getId();
-                log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
                 if (!OrderDao.delOrder(catalogId, readerId)) {
                     String errorMessage = "Can't del Order in DB";
                     session.setAttribute("errorMessage", errorMessage);
@@ -136,14 +131,12 @@ public class ListLibOrdersCommand extends Command {
                     log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("Del Order successful");
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

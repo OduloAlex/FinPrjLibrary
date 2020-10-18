@@ -104,7 +104,6 @@ public class LoginCommand extends Command {
                 }
             }
         }
-        log.debug("Command Get finished");
         return forward;
     }
 

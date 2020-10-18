@@ -42,14 +42,12 @@ public class ListLibCatalogCommand extends Command {
         int page;
         String show = request.getParameter("show");
         if ((show != null && !show.isEmpty()) && ("all".equals(show))) {
-            log.debug("Show all catalog------>>>>> " + show);
             try {
                 catalogItems = CatalogObjDao.findAllCatalogObj();
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
@@ -63,7 +61,6 @@ public class ListLibCatalogCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            log.debug("Find by name in catalog ------>>>>> " + find);
             catalogItems = catalogItems.stream()
                     .filter(c -> c.getName().equals(find))
                     .collect(Collectors.toList());
@@ -72,7 +69,6 @@ public class ListLibCatalogCommand extends Command {
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            log.debug("Find by author in catalog ------>>>>> " + findAuthor);
             catalogItems = catalogItems.stream()
                     .filter(c -> c.getAuthor().getName().equals(findAuthor))
                     .collect(Collectors.toList());
@@ -82,22 +78,18 @@ public class ListLibCatalogCommand extends Command {
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                log.debug("Sort catalog by------>>>>> " + sort);
                 catalogItems = catalogItems.stream()
                         .sorted(Comparator.comparing(CatalogObj::getName))
                         .collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                log.debug("Sort catalog by------>>>>> " + sort);
                 catalogItems = catalogItems.stream()
                         .sorted(Comparator.comparing(c -> c.getAuthor().getName()))
                         .collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                log.debug("Sort catalog by------>>>>> " + sort);
                 catalogItems = catalogItems.stream()
                         .sorted(Comparator.comparing(c -> c.getPublishing().getName()))
                         .collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                log.debug("Sort catalog by------>>>>> " + sort);
                 catalogItems = catalogItems.stream()
                         .sorted(Comparator.comparing(CatalogObj::getYear))
                         .collect(Collectors.toList());
@@ -109,7 +101,6 @@ public class ListLibCatalogCommand extends Command {
         if (catalogItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
-                log.debug("Go page ------>>>>> " + goPage);
                 if ("next".equals(goPage)) {
                     if (catalogItems.size() > (page * 5)) {
                         page++;
@@ -150,7 +141,6 @@ public class ListLibCatalogCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -160,7 +150,6 @@ public class ListLibCatalogCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }

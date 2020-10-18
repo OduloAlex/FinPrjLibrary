@@ -44,14 +44,12 @@ public class MakeLibCardCommand extends Command {
                 int catalogId = Integer.parseInt(itemId);
                 books = BookDao.findBookByCatalogIdStateLib(catalogId);
                 session.setAttribute("books", books);
-                log.debug("Set the session attribute: books --> " + books);
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -73,7 +71,6 @@ public class MakeLibCardCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -83,7 +80,6 @@ public class MakeLibCardCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -118,7 +114,6 @@ public class MakeLibCardCommand extends Command {
             try {
                 int bookId = Integer.parseInt(itemId);
                 int readerId = reader.getId();
-                log.debug("Make card --> bookId " + bookId + ", userId " + readerId);
                 Book book = BookDao.findBookById(bookId);
 
                 Card card = new Card();
@@ -142,24 +137,18 @@ public class MakeLibCardCommand extends Command {
                 int catalogId = book.getCatalogObj().getId();
 
                 CardDao.addCard(card, stateId, bookId, quantity, catalogId, readerId);
-                log.debug("Add Card successful");
-                log.debug("Update Book State " + stateId + " successful");
-                log.debug("Update CatalogObj quantity to " + quantity + " successful");
-                log.debug("Del Order --> catalogId " + catalogId + ", userId " + readerId);
             } catch (NumberFormatException e) {
                 log.trace("Book itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
             log.debug("Command Post finished");
             return Path.COMMAND__LIST_LIB_ORDERS;
         }
 
-        log.debug("Command Post finished");
         return Path.COMMAND__MAKE_LIB_CARD;
     }
 }

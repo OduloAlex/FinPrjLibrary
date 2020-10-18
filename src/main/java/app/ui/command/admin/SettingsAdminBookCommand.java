@@ -50,7 +50,6 @@ public class SettingsAdminBookCommand extends Command {
             String errorMessage = e.getMessage();
             session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            log.debug("Command Post finished");
             return Path.COMMAND__ERROR;
         }
 
@@ -72,7 +71,6 @@ public class SettingsAdminBookCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -82,7 +80,6 @@ public class SettingsAdminBookCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -121,21 +118,18 @@ public class SettingsAdminBookCommand extends Command {
                 int authorId = Integer.parseInt(strAuthorId);
                 int publishingId = Integer.parseInt(strPublishingId);
                 CatalogObjDao.updateCatalogObj(name, year, fine, description, authorId, publishingId, catalogId);
-                log.debug("Update catalogObj --> catalogId: " + catalogId);
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
             log.debug("Command Post finished");
             return Path.COMMAND__EDIT_ADMIN_BOOK;
         }
 
-        log.debug("Command Post finished");
         return Path.COMMAND__SETTINGS_ADMIN_BOOK;
     }
 }

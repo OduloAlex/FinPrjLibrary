@@ -31,8 +31,6 @@ public class MakeAdminBookCommand extends Command {
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
 
-        log.debug("Command starts");
-
         HttpSession session = request.getSession();
 
         try {
@@ -44,11 +42,9 @@ public class MakeAdminBookCommand extends Command {
             String errorMessage = e.getMessage();
             session.setAttribute("errorMessage", errorMessage);
             log.error("errorMessage --> " + errorMessage);
-            log.debug("Command Post finished");
             return Path.COMMAND__ERROR;
         }
 
-        log.debug("Command finished");
         return Path.PAGE__MAKE_ADMIN_BOOK;
     }
 
@@ -64,7 +60,6 @@ public class MakeAdminBookCommand extends Command {
 //      Set locale
         String localeToSet = request.getParameter("localeToSet");
         if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
             Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
             session.setAttribute("defaultLocale", localeToSet);
             user.setLocaleName(localeToSet);
@@ -74,7 +69,6 @@ public class MakeAdminBookCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -114,27 +108,22 @@ public class MakeAdminBookCommand extends Command {
                     int authorId = Integer.parseInt(strAuthorId);
                     int publishingId = Integer.parseInt(strPublishingId);
                     CatalogObjDao.addCatalogObj(name, year, fine, description, 0, authorId, publishingId);
-                    log.debug("Add catalogObj");
                 } catch (NumberFormatException e) {
                     log.trace("Catalog itemId doesn't parse --> " + e);
                 } catch (DBException e) {
                     String errorMessage = e.getMessage();
                     session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
                     return Path.COMMAND__ERROR;
                 }
-                log.debug("Command Post finished");
                 return Path.COMMAND__LIST_ADMIN_CATALOG;
             } else {
                 String errorMessage = "ErrorSetAll";
                 request.getSession().setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
                 return Path.COMMAND__ERROR;
             }
         }
-        log.debug("Command Post finished");
         return Path.COMMAND__MAKE_ADMIN_BOOK;
     }
 }
