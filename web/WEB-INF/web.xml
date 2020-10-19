@@ -91,13 +91,13 @@
         <!--        commands for all roles -->
         <init-param>
             <param-name>common</param-name>
-            <param-value>logout</param-value>
+            <param-value>userSettings</param-value>
         </init-param>
 
         <!--        commands without access control -->
         <init-param>
             <param-name>out-of-control</param-name>
-            <param-value>login registration error</param-value>
+            <param-value>login registration error logout</param-value>
         </init-param>
 
     </filter>

@@ -27,6 +27,7 @@ public class CommandContainer {
         commands.put("registration", new RegistrationCommand());
         commands.put("logout", new LogoutCommand());
         commands.put("error", new ErrorCommand());
+        commands.put("userSettings", new UserSettingsCommand());
 
         // reader commands
         commands.put("listCards", new ListCardsCommand());

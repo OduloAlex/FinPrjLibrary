@@ -16,17 +16,18 @@
     <a href="controller?command=listAdminPublishings&show=all" class="w3-bar-item w3-button w3-left"><fmt:message
             key="res.ListPublishing"/></a>
     <a href="controller?command=logout" class="w3-bar-item w3-button w3-right"><fmt:message key="res.SignOut"/></a>
-    <div class="w3-bar-item w3-right">
-        <c:if test="${userRole.name == 'admin'}">
-            ${user.username}(<fmt:message key="res.Admin"/>)
-        </c:if>
-        <c:if test="${userRole.name == 'librarian'}">
-            ${user.username}(<fmt:message key="res.Librarian"/>)
-        </c:if>
-        <c:if test="${userRole.name == 'reader'}">
-            ${user.username}(<fmt:message key="res.Reader"/>)
-        </c:if>
-    </div>
+    <c:if test="${userRole.name == 'admin'}">
+        <a href="controller?command=userSettings" class="w3-bar-item w3-button w3-right">${user.username}(<fmt:message
+                key="res.Admin"/>)</a>
+    </c:if>
+    <c:if test="${userRole.name == 'librarian'}">
+        <a href="controller?command=userSettings" class="w3-bar-item w3-button w3-right">${user.username}(<fmt:message
+                key="res.Librarian"/>)</a>
+    </c:if>
+    <c:if test="${userRole.name == 'reader'}">
+        <a href="controller?command=userSettings" class="w3-bar-item w3-button w3-right">${user.username}(<fmt:message
+                key="res.Reader"/>)</a>
+    </c:if>
     <form action="controller" method="post">
         <input type="hidden" name="command" value="listAdminAuthors"/>
         <c:forEach var="localeName" items="${locales}">

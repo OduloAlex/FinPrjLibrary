@@ -167,6 +167,42 @@ public class ControllerTest  extends Mockito {
 //    ------------------------------
 
     @Test
+    public void doGetUserSettings() throws IOException, ServletException{
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("command")).thenReturn("userSettings");
+        when(request.getRequestDispatcher(anyString())).thenReturn(rd);
+
+        controller.doGet(request, response);
+
+        verify(rd).forward(request, response);
+    }
+
+    @Test
+    public void doPostUserSettings() throws ServletException, IOException {
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("command")).thenReturn("userSettings");
+        when(request.getParameter("save")).thenReturn("ok");
+
+        controller.doPost(request, response);
+
+        verify(response).sendRedirect(anyString());
+    }
+    @Test
+    public void doPostUserSettingsWithPsw() throws ServletException, IOException {
+        when(request.getSession()).thenReturn(session);
+        when(request.getParameter("command")).thenReturn("userSettings");
+        when(request.getParameter("password")).thenReturn("");
+        when(request.getParameter("description")).thenReturn("");
+        when(request.getParameter("save")).thenReturn("ok");
+
+        controller.doPost(request, response);
+
+        verify(response).sendRedirect(anyString());
+    }
+
+//    ------------------------------
+
+    @Test
     public void doGetListCards() throws IOException, ServletException{
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCards");
