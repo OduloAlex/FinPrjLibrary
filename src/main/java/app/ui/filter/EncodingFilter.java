@@ -16,11 +16,23 @@ public class EncodingFilter implements Filter {
 
     private String encoding;
 
+    /**
+     * Access Filter destruction
+     */
     @Override
     public void destroy() {
         // do nothing
     }
 
+    /**
+     * Encoding Filter execution
+     *
+     * @param request ServletRequest
+     * @param response ServletResponse
+     * @param chain FilterChain
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
@@ -36,6 +48,13 @@ public class EncodingFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Filter initialization
+     *
+     * @param fConfig FilterConfig
+     * @throws ServletException ServletException
+     */
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
         encoding = fConfig.getInitParameter("encoding");
         log.trace("Encoding from web.xml --> " + encoding);

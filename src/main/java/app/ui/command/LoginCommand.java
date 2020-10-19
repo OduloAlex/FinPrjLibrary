@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Login command.
@@ -24,6 +25,15 @@ public class LoginCommand extends Command {
 
     private static final Logger log = Logger.getLogger(LoginCommand.class);
 
+    /**
+     * Execute command to Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -59,54 +69,81 @@ public class LoginCommand extends Command {
             }
 
             log.trace("Found in DB: user --> " + user);
-            if (user == null || !password.equals(user.getPassword())) {
+
+            if (user == null) {
                 errorMessage = "ErrorNotFindUser";
                 request.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return forward;
-            } else if (!user.isActive()) {
-                errorMessage = "ErrorUserBlocked";
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                return forward;
             } else {
-                Role userRole = Role.getRole(user);
-                log.trace("userRole --> " + userRole);
+                boolean check = false;
+                try {
+                    check = Password.check(password, user.getPassword());
+                } catch (NoSuchAlgorithmException e) {
+                    errorMessage = e.getMessage();
+                    session.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+                if(!check){
+                    errorMessage = "ErrorNotFindUser";
+                    request.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
+                if (!user.isActive()) {
+                    errorMessage = "ErrorUserBlocked";
+                    request.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return forward;
+                } else {
+                    Role userRole = Role.getRole(user);
+                    log.trace("userRole --> " + userRole);
 
-                if (userRole == Role.ADMIN)
-                    forward = Path.COMMAND__LIST_ADMIN_CATALOG;
+                    if (userRole == Role.ADMIN)
+                        forward = Path.COMMAND__LIST_ADMIN_CATALOG;
 
-                if (userRole == Role.LIBRARIAN)
-                    forward = Path.COMMAND__LIST_LIB_CATALOG;
+                    if (userRole == Role.LIBRARIAN)
+                        forward = Path.COMMAND__LIST_LIB_CATALOG;
 
-                if (userRole == Role.READER)
-                    forward = Path.COMMAND__LIST_CATALOG;
+                    if (userRole == Role.READER)
+                        forward = Path.COMMAND__LIST_CATALOG;
 
-                session.setAttribute("user", user);
-                log.trace("Set the session attribute: user --> " + user);
+                    session.setAttribute("user", user);
+                    log.trace("Set the session attribute: user --> " + user);
 
-                session.setAttribute("userRole", userRole);
-                log.trace("Set the session attribute: userRole --> " + userRole);
+                    session.setAttribute("userRole", userRole);
+                    log.trace("Set the session attribute: userRole --> " + userRole);
 
-                log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
+                    log.info("User " + user + " logged as " + userRole.toString().toLowerCase());
 
-                // work with i18n
-                String userLocaleName = user.getLocaleName();
-                log.trace("userLocalName --> " + userLocaleName);
+                    // work with i18n
+                    String userLocaleName = user.getLocaleName();
+                    log.trace("userLocalName --> " + userLocaleName);
 
-                if (userLocaleName != null && !userLocaleName.isEmpty()) {
-                    Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
+                    if (userLocaleName != null && !userLocaleName.isEmpty()) {
+                        Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", userLocaleName);
 
-                    session.setAttribute("defaultLocale", userLocaleName);
-                    log.trace("Set the session attribute: defaultLocaleName --> " + userLocaleName);
+                        session.setAttribute("defaultLocale", userLocaleName);
+                        log.trace("Set the session attribute: defaultLocaleName --> " + userLocaleName);
 
-                    log.info("Locale for user: defaultLocale --> " + userLocaleName);
+                        log.info("Locale for user: defaultLocale --> " + userLocaleName);
+                    }
                 }
             }
         }
         return forward;
     }
 
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {

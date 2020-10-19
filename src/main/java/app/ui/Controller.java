@@ -22,18 +22,41 @@ public class Controller extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(Controller.class);
 
+    /**
+     *  Controller method Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
+    @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         processGet(request, response);
     }
 
+    /**
+     * Controller method Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
+    @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         processPost(request, response);
     }
 
     /**
-     * Main method of this controller Get.
+     * Main method of this controller Get
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     private void processGet(HttpServletRequest request,
                             HttpServletResponse response) throws IOException, ServletException {
@@ -48,7 +71,7 @@ public class Controller extends HttpServlet {
         Command command = CommandContainer.get(commandName);
         log.trace("Obtained command --> " + command);
 
-        // execute command and get forward address
+        // execute command
         String path = command.executeGet(request, response);
 
         // if the forward address is not null go to the address
@@ -57,11 +80,16 @@ public class Controller extends HttpServlet {
             RequestDispatcher disp = request.getRequestDispatcher(path);
             disp.forward(request, response);
         }
-        log.debug("Controller Get finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        log.debug("Controller Get finished");
     }
 
     /**
-     * Main method of this controller Post.
+     * Main method of this controller Post
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     private void processPost(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -76,7 +104,7 @@ public class Controller extends HttpServlet {
         Command command = CommandContainer.get(commandName);
         log.trace("Obtained command --> " + command);
 
-        // execute command and get forward address
+        // execute command
         String path = command.executePost(request, response);
 
         // if the forward address is not null go to the address
@@ -84,6 +112,6 @@ public class Controller extends HttpServlet {
             log.trace("Redirect to address --> " + path);
             response.sendRedirect(path);
         }
-        log.debug("Controller Post finished $$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        log.debug("Controller Post finished");
     }
 }

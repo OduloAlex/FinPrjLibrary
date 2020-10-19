@@ -19,6 +19,11 @@ import java.util.StringTokenizer;
 public class ContextListener implements ServletContextListener {
     private static final Logger log = Logger.getLogger(ContextListener.class);
 
+    /**
+     * Servlet context destruction
+     *
+     * @param event ServletContextEvent
+     */
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         log("Servlet context destruction starts");
@@ -26,6 +31,11 @@ public class ContextListener implements ServletContextListener {
         log("Servlet context destruction finished");
     }
 
+    /**
+     * Servlet context initialization
+     *
+     * @param event ServletContextEvent
+     */
     @Override
     public void contextInitialized(ServletContextEvent event) {
         log("Servlet context initialization starts");
@@ -39,7 +49,7 @@ public class ContextListener implements ServletContextListener {
     /**
      * Initializes log4j framework.
      *
-     * @param servletContext servletContext
+     * @param servletContext ServletContext
      */
     private void initLog4J(ServletContext servletContext) {
         log("Log4J initialization started");
@@ -56,6 +66,8 @@ public class ContextListener implements ServletContextListener {
 
     /**
      * Initializes i18n subsystem.
+     *
+     * @param servletContext ServletContext
      */
     private void initI18N(ServletContext servletContext) {
         String localesValue = servletContext.getInitParameter("locales");
@@ -73,6 +85,11 @@ public class ContextListener implements ServletContextListener {
         }
     }
 
+    /**
+     * Log for ContextListener only
+     *
+     * @param msg message
+     */
     private void log(String msg) {
         System.out.println("[ContextListener] " + msg);
     }

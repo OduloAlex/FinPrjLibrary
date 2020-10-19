@@ -2,8 +2,6 @@ package app.ui.command;
 
 import app.Path;
 import app.dao.*;
-import app.domain.Author;
-import app.domain.Publishing;
 import app.domain.Role;
 import app.domain.User;
 import org.apache.log4j.Logger;
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * UserSettings command.
@@ -24,9 +22,18 @@ import java.util.List;
 public class UserSettingsCommand extends Command {
 
     private static final Logger log = Logger.getLogger(UserSettingsCommand.class);
+
     private static final long serialVersionUID = 8432018125609598753L;
 
-
+    /**
+     * Execute command to Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -54,6 +61,15 @@ public class UserSettingsCommand extends Command {
         return Path.PAGE__USER_SETTINGS;
     }
 
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {
@@ -93,7 +109,16 @@ public class UserSettingsCommand extends Command {
                     log.error("errorMessage --> " + errorMessage);
                     return Path.COMMAND__ERROR;
                 }
-                user.setPassword(password);
+                String hashPsw;
+                try {
+                    hashPsw = Password.getSaltedHash(password);
+                } catch (NoSuchAlgorithmException e) {
+                    String errorMessage = e.getMessage();
+                    session.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return Path.COMMAND__ERROR;
+                }
+                user.setPassword(hashPsw);
                 user.setDescription(description);
                 try {
                     UserDao.updateUser(user);

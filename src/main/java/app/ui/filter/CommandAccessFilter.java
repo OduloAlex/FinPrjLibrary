@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Security filter. Disabled by default. Uncomment Security filter
- * section in web.xml to enable.
+ * Security filter
  *
  * @author Alex Odulo
  */
@@ -25,17 +24,26 @@ public class CommandAccessFilter implements Filter {
     private static List<String> commons = new ArrayList<String>();
     private static List<String> outOfControl = new ArrayList<String>();
 
+    /**
+     * Access Filter destruction
+     */
+    @Override
     public void destroy() {
-        log.debug("Filter destruction starts");
         // do nothing
-        log.debug("Filter destruction finished");
     }
 
+    /**
+     * Access Filter execution
+     *
+     * @param request ServletRequest
+     * @param response ServletResponse
+     * @param chain FilterChain
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.debug("Filter starts");
 
         if (accessAllowed(request)) {
-            log.debug("Filter finished");
             chain.doFilter(request, response);
         } else {
             String errorMessage = "You do not have permission to access the requested resource";
@@ -48,6 +56,12 @@ public class CommandAccessFilter implements Filter {
         }
     }
 
+    /**
+     * Access allowed
+     *
+     * @param request ServletRequest
+     * @return true if access allowed
+     */
     private boolean accessAllowed(ServletRequest request) {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
 
@@ -71,9 +85,14 @@ public class CommandAccessFilter implements Filter {
                 || commons.contains(commandName);
     }
 
+    /**
+     * Filter initialization
+     *
+     * @param fConfig FilterConfig
+     * @throws ServletException ServletException
+     */
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
-        log.debug("Filter initialization starts");
-
         // roles
         accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
         accessMap.put(Role.LIBRARIAN, asList(fConfig.getInitParameter("librarian")));
@@ -87,8 +106,6 @@ public class CommandAccessFilter implements Filter {
         // out of control
         outOfControl = asList(fConfig.getInitParameter("out-of-control"));
         log.trace("Out of control commands --> " + outOfControl);
-
-        log.debug("Filter initialization finished");
     }
 
     /**

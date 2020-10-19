@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Registration command.
@@ -23,6 +24,15 @@ public class RegistrationCommand extends Command {
 
     private static final Logger log = Logger.getLogger(RegistrationCommand.class);
 
+    /**
+     * Execute command to Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -33,6 +43,15 @@ public class RegistrationCommand extends Command {
         return Path.PAGE__REGISTRATION_PAGE;
     }
 
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {
@@ -85,9 +104,18 @@ public class RegistrationCommand extends Command {
                 log.error("errorMessage --> " + errorMessage);
                 return forward;
             } else {
+                String hashPsw;
+                try {
+                    hashPsw = Password.getSaltedHash(password);
+                } catch (NoSuchAlgorithmException e) {
+                    errorMessage = e.getMessage();
+                    session.setAttribute("errorMessage", errorMessage);
+                    log.error("errorMessage --> " + errorMessage);
+                    return forward;
+                }
                 user = new User();
                 user.setUsername(login);
-                user.setPassword(password);
+                user.setPassword(hashPsw);
                 user.setActive(true);
                 user.setDescription(description);
                 user.setLocaleName("en");

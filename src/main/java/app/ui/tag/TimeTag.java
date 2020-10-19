@@ -8,11 +8,22 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Class for custom tag library
+ *
+ * @author  Alex Odulo
+ */
 public class TimeTag extends TagSupport {
 
     private static final long serialVersionUID = -5246409001497897805L;
     private String type;
 
+    /**
+     * Get current Date to tag
+     *
+     * @return return value for doStartTag
+     * @throws JspException JspException
+     */
     @Override
     public int doStartTag() throws JspException {
 
@@ -30,10 +41,20 @@ public class TimeTag extends TagSupport {
         return SKIP_BODY;
     }
 
+    /**
+     * Get type from tag
+     *
+     * @return type
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Set type to tag
+     *
+     * @param type type
+     */
     public void setType(String type) {
         this.type = type;
     }

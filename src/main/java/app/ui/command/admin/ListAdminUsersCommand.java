@@ -27,6 +27,15 @@ public class ListAdminUsersCommand extends Command {
 
     private static final Logger log = Logger.getLogger(ListAdminUsersCommand.class);
 
+    /**
+     * Execute command to Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -87,6 +96,15 @@ public class ListAdminUsersCommand extends Command {
         return Path.PAGE__LIST_ADMIN_USERS;
     }
 
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {

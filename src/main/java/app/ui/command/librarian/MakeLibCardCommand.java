@@ -28,6 +28,15 @@ public class MakeLibCardCommand extends Command {
 
     private static final Logger log = Logger.getLogger(MakeLibCardCommand.class);
 
+    /**
+     * Execute command to Get request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
@@ -58,6 +67,15 @@ public class MakeLibCardCommand extends Command {
         return Path.PAGE__MAKE_LIB_CARD;
     }
 
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
     @Override
     public String executePost(HttpServletRequest request,
                               HttpServletResponse response) throws IOException, ServletException {

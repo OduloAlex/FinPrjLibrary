@@ -94,6 +94,11 @@
                 </form>
             </div>
             <div class="w3-bar-item">
+                <div class="w3-margin-top">
+                    ${page}
+                </div>
+            </div>
+            <div class="w3-bar-item">
                 <form action="controller" method="get">
                     <input type="hidden" name="command" value="listAdminAuthors"/>
                     <input type="hidden" name="goPage" value="next"/>
