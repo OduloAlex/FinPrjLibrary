@@ -42,9 +42,9 @@
         <input type="hidden" name="command" value="userSettings"/>
         <div class="w3-bar">
             <div class="w3-bar-item">
-                <label><fmt:message key="res.password"/>
+                <label><fmt:message key="res.newPassword"/>
                     <input name="password" class="w3-input w3-border w3-round-large" type="password"
-                           value="${user.password}" maxlength="45">
+                            maxlength="45">
                 </label>
             </div>
             <div class="w3-bar-item">

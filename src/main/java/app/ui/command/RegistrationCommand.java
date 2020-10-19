@@ -106,7 +106,7 @@ public class RegistrationCommand extends Command {
             } else {
                 String hashPsw;
                 try {
-                    hashPsw = Password.getSaltedHash(password);
+                    hashPsw = Password.getHash(password);
                 } catch (NoSuchAlgorithmException e) {
                     errorMessage = e.getMessage();
                     session.setAttribute("errorMessage", errorMessage);

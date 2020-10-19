@@ -14,11 +14,13 @@ public class Password implements Serializable {
     private static final long serialVersionUID = -7403047418039946710L;
 
     /**
-     * Computes a salted PBKDF2 hash of given plaintext password
-     * suitable for storing in a database.
-     * Empty passwords are not supported.
+     * Get hash MD5 (Message-Digest Algorithm)
+     *
+     * @param password password
+     * @return hash password
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */
-    public static String getSaltedHash(String password) throws NoSuchAlgorithmException {
+    public static String getHash(String password) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] bytes = md.digest();
@@ -30,11 +32,16 @@ public class Password implements Serializable {
     }
 
     /**
-     * Checks whether given plaintext password corresponds
-     * to a stored salted hash of the password.
+     *Checks whether given plaintext password corresponds
+     * to a stored hash of the password.
+     *
+     * @param password password
+     * @param stored hash
+     * @return true if equals
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */
     public static boolean check(String password, String stored) throws NoSuchAlgorithmException {
 
-        return getSaltedHash(password).equals(stored);
+        return getHash(password).equals(stored);
     }
 }
