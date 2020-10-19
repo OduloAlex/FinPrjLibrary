@@ -10,7 +10,7 @@ public class AuthorTest {
     public void testToString() {
         Author author = new Author();
         author.setName("abc");
-        assertEquals("abc",author.getName());
-        assertEquals("Author{name='abc'}",author.toString());
+        assertEquals("abc", author.getName());
+        assertEquals("Author{name='abc'}", author.toString());
     }
 }

@@ -1,9 +1,6 @@
 package app.ui;
 
-import app.dao.CatalogObjDao;
 import app.dao.DBException;
-import app.dao.PublishingDao;
-import app.dao.UserDao;
 import app.domain.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,22 +14,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.stream.Stream;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ControllerTest  extends Mockito {
+public class ControllerTest extends Mockito {
     @Mock
     HttpServletRequest request;
     @Mock
@@ -58,7 +45,7 @@ public class ControllerTest  extends Mockito {
     Controller controller;
 
     @Test
-    public void doGetLogin() throws IOException, ServletException{
+    public void doGetLogin() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("login");
         when(request.getParameter("login")).thenReturn("");
@@ -84,7 +71,7 @@ public class ControllerTest  extends Mockito {
 //    ------------------------------
 
     @Test
-    public void doGetRegistration() throws IOException, ServletException{
+    public void doGetRegistration() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("registration");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -121,7 +108,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetLogout() throws IOException, ServletException{
+    public void doGetLogout() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("logout");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -144,7 +131,7 @@ public class ControllerTest  extends Mockito {
 //    ------------------------------
 
     @Test
-    public void doGetError() throws IOException, ServletException{
+    public void doGetError() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("error");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -167,7 +154,7 @@ public class ControllerTest  extends Mockito {
 //    ------------------------------
 
     @Test
-    public void doGetUserSettings() throws IOException, ServletException{
+    public void doGetUserSettings() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("userSettings");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -187,6 +174,7 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
     public void doPostUserSettingsWithPsw() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
@@ -203,7 +191,7 @@ public class ControllerTest  extends Mockito {
 //    ------------------------------
 
     @Test
-    public void doGetListCards() throws IOException, ServletException{
+    public void doGetListCards() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCards");
         when(session.getAttribute("cardsItems")).thenReturn(cardsItems);
@@ -217,7 +205,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doGetListCardsPrevious() throws IOException, ServletException{
+    public void doGetListCardsPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCards");
         when(session.getAttribute("cardsItems")).thenReturn(cardsItems);
@@ -242,7 +230,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListCatalog() throws IOException, ServletException{
+    public void doGetListCatalog() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -256,7 +244,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doGetListCatalogPrevious() throws IOException, ServletException{
+    public void doGetListCatalogPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -270,7 +258,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListCatalog() throws ServletException, IOException{
+    public void doPostListCatalog() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listCatalog");
         when(request.getParameter("itemId")).thenReturn("a");
@@ -283,7 +271,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListOrders() throws IOException, ServletException{
+    public void doGetListOrders() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listOrders");
         when(session.getAttribute("ordersItems")).thenReturn(ordersItems);
@@ -295,8 +283,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListOrdersPrevious() throws IOException, ServletException{
+    public void doGetListOrdersPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listOrders");
         when(session.getAttribute("ordersItems")).thenReturn(ordersItems);
@@ -310,15 +299,16 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListOrders() throws ServletException, IOException{
+    public void doPostListOrders() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listOrders");
         controller.doPost(request, response);
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListOrdersCancelId() throws ServletException, IOException{
+    public void doPostListOrdersCancelId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listOrders");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -330,7 +320,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListLibReaders() throws IOException, ServletException{
+    public void doGetListLibReaders() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibReaders");
         when(session.getAttribute("usersItems")).thenReturn(usersItems);
@@ -342,8 +332,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListLibReadersPrevious() throws IOException, ServletException{
+    public void doGetListLibReadersPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibReaders");
         when(session.getAttribute("usersItems")).thenReturn(usersItems);
@@ -355,8 +346,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListLibReadersItemIdOrders() throws IOException, ServletException{
+    public void doGetListLibReadersItemIdOrders() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibReaders");
         when(request.getParameter("itemIdOrders")).thenReturn("a");
@@ -366,8 +358,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListLibReadersItemIdCards() throws IOException, ServletException{
+    public void doGetListLibReadersItemIdCards() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibReaders");
         when(request.getParameter("itemIdCards")).thenReturn("a");
@@ -379,7 +372,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListLibReaders() throws ServletException, IOException{
+    public void doPostListLibReaders() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibReaders");
         controller.doPost(request, response);
@@ -390,7 +383,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListLibOrders() throws IOException, ServletException{
+    public void doGetListLibOrders() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibOrders");
         when(session.getAttribute("ordersItems")).thenReturn(ordersItems);
@@ -404,7 +397,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doGetListLibOrdersPrevious() throws IOException, ServletException{
+    public void doGetListLibOrdersPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibOrders");
         when(session.getAttribute("ordersItems")).thenReturn(ordersItems);
@@ -418,7 +411,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListLibOrders() throws ServletException, IOException{
+    public void doPostListLibOrders() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibOrders");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -430,7 +423,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListLibCards() throws IOException, ServletException{
+    public void doGetListLibCards() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCards");
         when(session.getAttribute("cardsItems")).thenReturn(cardsItems);
@@ -442,8 +435,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListLibCardsPrevious() throws IOException, ServletException{
+    public void doGetListLibCardsPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCards");
         when(session.getAttribute("cardsItems")).thenReturn(cardsItems);
@@ -457,7 +451,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListLibCards() throws ServletException, IOException{
+    public void doPostListLibCards() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCards");
         when(request.getParameter("deleteId")).thenReturn("a");
@@ -469,7 +463,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetMakeLibCard() throws IOException, ServletException{
+    public void doGetMakeLibCard() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeLibCard");
         when(request.getParameter("giveId")).thenReturn("a");
@@ -481,7 +475,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostMakeLibCard() throws ServletException, IOException{
+    public void doPostMakeLibCard() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeLibCard");
         when(request.getParameter("makeId")).thenReturn("1");
@@ -491,8 +485,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostMakeLibCardUpDate() throws ServletException, IOException{
+    public void doPostMakeLibCardUpDate() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeLibCard");
         when(request.getParameter("makeId")).thenReturn("a");
@@ -502,8 +497,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostMakeLibCardExceptionParse() throws ServletException, IOException{
+    public void doPostMakeLibCardExceptionParse() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeLibCard");
         when(request.getParameter("makeId")).thenReturn("1");
@@ -517,7 +513,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListLibCatalog() throws IOException, ServletException{
+    public void doGetListLibCatalog() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -529,8 +525,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListLibCatalogPrevious() throws IOException, ServletException{
+    public void doGetListLibCatalogPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -544,7 +541,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListLibCatalog() throws ServletException, IOException{
+    public void doPostListLibCatalog() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listLibCatalog");
         controller.doPost(request, response);
@@ -555,7 +552,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListAdminCatalog() throws IOException, ServletException{
+    public void doGetListAdminCatalog() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -567,8 +564,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListAdminCatalogPrevious() throws IOException, ServletException{
+    public void doGetListAdminCatalogPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminCatalog");
         when(session.getAttribute("catalogItems")).thenReturn(catalogItems);
@@ -582,7 +580,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListAdminCatalog() throws ServletException, IOException{
+    public void doPostListAdminCatalog() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminCatalog");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -594,7 +592,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListAdminUsers() throws IOException, ServletException{
+    public void doGetListAdminUsers() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(session.getAttribute("usersItems")).thenReturn(usersItems);
@@ -606,8 +604,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListAdminUsersPrevious() throws IOException, ServletException{
+    public void doGetListAdminUsersPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(session.getAttribute("usersItems")).thenReturn(usersItems);
@@ -621,7 +620,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListAdminUsers() throws ServletException, IOException{
+    public void doPostListAdminUsers() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -629,8 +628,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListAdminUsersStateOffId() throws ServletException, IOException{
+    public void doPostListAdminUsersStateOffId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(request.getParameter("stateOffId")).thenReturn("a");
@@ -638,8 +638,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListAdminUsersStateOnId() throws ServletException, IOException{
+    public void doPostListAdminUsersStateOnId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(request.getParameter("stateOnId")).thenReturn("a");
@@ -647,8 +648,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListAdminUsersLibOffId() throws ServletException, IOException{
+    public void doPostListAdminUsersLibOffId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(request.getParameter("libOffId")).thenReturn("a");
@@ -656,8 +658,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListAdminUsersLibOnId() throws ServletException, IOException{
+    public void doPostListAdminUsersLibOnId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminUsers");
         when(request.getParameter("libOnId")).thenReturn("a");
@@ -669,7 +672,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListAdminAuthors() throws IOException, ServletException{
+    public void doGetListAdminAuthors() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminAuthors");
         when(session.getAttribute("authorItems")).thenReturn(authorItems);
@@ -681,8 +684,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListAdminAuthorsPrevious() throws IOException, ServletException{
+    public void doGetListAdminAuthorsPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminAuthors");
         when(session.getAttribute("authorItems")).thenReturn(authorItems);
@@ -696,7 +700,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostListAdminAuthors() throws ServletException, IOException{
+    public void doPostListAdminAuthors() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminAuthors");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -704,8 +708,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostListAdminAuthorsMakeAuthor() throws ServletException, IOException{
+    public void doPostListAdminAuthorsMakeAuthor() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminAuthors");
         when(request.getParameter("makeAuthor")).thenReturn("");
@@ -717,7 +722,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetEditAdminBook() throws IOException, ServletException{
+    public void doGetEditAdminBook() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("editAdminBook");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -728,7 +733,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostEditAdminBook() throws ServletException, IOException{
+    public void doPostEditAdminBook() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("editAdminBook");
         when(request.getParameter("invNumber")).thenReturn("");
@@ -736,8 +741,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostEditAdminBookCancelId() throws ServletException, IOException{
+    public void doPostEditAdminBookCancelId() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("editAdminBook");
         when(request.getParameter("cancelId")).thenReturn("a");
@@ -745,8 +751,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostEditAdminBookInvNumber() throws ServletException, IOException{
+    public void doPostEditAdminBookInvNumber() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("editAdminBook");
         when(request.getParameter("invNumber")).thenReturn("1");
@@ -758,7 +765,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetSettingsAdminBook() throws IOException, ServletException{
+    public void doGetSettingsAdminBook() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("settingsAdminBook");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
@@ -769,7 +776,7 @@ public class ControllerTest  extends Mockito {
     }
 
     @Test
-    public void doPostSettingsAdminBook() throws ServletException, IOException{
+    public void doPostSettingsAdminBook() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("settingsAdminBook");
         when(request.getParameter("name")).thenReturn("abc");
@@ -786,7 +793,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doPostMakeAdminBook() throws ServletException, IOException{
+    public void doPostMakeAdminBook() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeAdminBook");
         when(request.getParameter("name")).thenReturn("abc");
@@ -800,8 +807,9 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
-    public void doPostMakeAdminBookFine() throws ServletException, IOException{
+    public void doPostMakeAdminBookFine() throws ServletException, IOException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("makeAdminBook");
         when(request.getParameter("name")).thenReturn("abc");
@@ -819,7 +827,7 @@ public class ControllerTest  extends Mockito {
     //    ------------------------------
 
     @Test
-    public void doGetListAdminPublishings() throws IOException, ServletException{
+    public void doGetListAdminPublishings() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminPublishings");
         when(session.getAttribute("publishingItems")).thenReturn(publishingItems);
@@ -831,8 +839,9 @@ public class ControllerTest  extends Mockito {
 
         verify(rd).forward(request, response);
     }
+
     @Test
-    public void doGetListAdminPublishingsPrevious() throws IOException, ServletException{
+    public void doGetListAdminPublishingsPrevious() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("listAdminPublishings");
         when(session.getAttribute("publishingItems")).thenReturn(publishingItems);
@@ -855,6 +864,7 @@ public class ControllerTest  extends Mockito {
 
         verify(response).sendRedirect(anyString());
     }
+
     @Test
     public void doPostListAdminPublishingsCancelId() throws ServletException, IOException, DBException, SQLException {
         when(request.getSession()).thenReturn(session);

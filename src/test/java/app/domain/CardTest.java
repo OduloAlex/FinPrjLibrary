@@ -13,17 +13,18 @@ public class CardTest {
     public void calendarToString() {
         Calendar calendar = new GregorianCalendar(2020, Calendar.OCTOBER, 12);
 
-        String actual =  Card.calendarToString(calendar);
+        String actual = Card.calendarToString(calendar);
 
         String expected = "2020-10-12";
 
         assertEquals(expected, actual);
     }
+
     @Test
     public void calendarToStringNull() {
         Calendar calendar = null;
 
-        String actual =  Card.calendarToString(calendar);
+        String actual = Card.calendarToString(calendar);
 
         String expected = "";
 
@@ -34,7 +35,7 @@ public class CardTest {
     public void calendarIsAfterTrue() {
         Calendar calendar = new GregorianCalendar(2020, Calendar.OCTOBER, 12);
 
-        String actual =  Card.calendarIsAfter(calendar);
+        String actual = Card.calendarIsAfter(calendar);
 
         String expected = "true";
 
@@ -45,7 +46,7 @@ public class CardTest {
     public void calendarIsAfterFalse() {
         Calendar calendar = new GregorianCalendar(2099, Calendar.OCTOBER, 12);
 
-        String actual =  Card.calendarIsAfter(calendar);
+        String actual = Card.calendarIsAfter(calendar);
 
         String expected = "false";
 
