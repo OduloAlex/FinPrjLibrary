@@ -41,104 +41,107 @@
             </div>
         </div>
 
-        <div class="w3-bar-item w3-right">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="listLibCatalog"/>
-                <select class="w3-select w3-border w3-round-large" name="sort" onchange="this.form.submit()">
-                    <option value="" disabled selected><fmt:message key="res.Sort"/></option>
-                    <option value="name"><fmt:message key="res.Name"/></option>
-                    <option value="author"><fmt:message key="res.Author"/></option>
-                    <option value="publishing"><fmt:message key="res.Publishing"/></option>
-                    <option value="year"><fmt:message key="res.Year"/></option>
-                </select>
-            </form>
-        </div>
-
-        <div class="w3-bar-item w3-right">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="listLibCatalog"/>
-                <input name="findAuthor" class="w3-input w3-border w3-round-large" type="text"
-                       onchange="this.form.submit()" placeholder=<fmt:message
-                        key="res.Author"/>>
-            </form>
-        </div>
-
-        <div class="w3-bar-item w3-right">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="listLibCatalog"/>
-                <input name="findName" class="w3-input w3-border w3-round-large" type="text"
-                       onchange="this.form.submit()" placeholder=<fmt:message
-                        key="res.Name"/>>
-            </form>
-        </div>
-
-        <div class="w3-bar-item w3-right">
-            <div class="w3-padding">
-                <fmt:message key="res.FindBy"/>
-            </div>
-        </div>
-
-        <div class="w3-bar-item w3-right">
-            <form action="controller" method="get">
-                <input type="hidden" name="command" value="listLibCatalog"/>
-                <input type="hidden" name="show" value="all"/>
-                <button type="submit" class="w3-btn w3-light-grey w3-round-large"><fmt:message
-                        key="res.ShowAll"/></button>
-            </form>
-        </div>
-    </div>
-
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable">
-            <thead>
-            <tr class="w3-light-grey">
-                <th><fmt:message key="res.Name"/></th>
-                <th><fmt:message key="res.Author"/></th>
-                <th><fmt:message key="res.Publishing"/></th>
-                <th><fmt:message key="res.Year"/></th>
-                <th><fmt:message key="res.Description"/></th>
-                <th><fmt:message key="res.Fine"/></th>
-                <th><fmt:message key="res.Quantity"/></th>
-            </tr>
-            </thead>
-            <c:set var="k" value="0"/>
-            <c:forEach var="item" items="${catalogPage}">
-                <c:set var="k" value="${k+1}"/>
-                <tr>
-                    <td>${item.name}</td>
-                    <td>${item.author.name}</td>
-                    <td>${item.publishing.name}</td>
-                    <td>${item.year}</td>
-                    <td>${item.description}</td>
-                    <td>${item.fine}</td>
-                    <td>${item.quantity}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-    <div class="w3-center">
-        <div class="w3-bar">
-            <div class="w3-bar-item">
+        <c:if test="${not empty catalogPage}">
+            <div class="w3-bar-item w3-right">
                 <form action="controller" method="get">
                     <input type="hidden" name="command" value="listLibCatalog"/>
-                    <input type="hidden" name="goPage" value="previous"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
+                    <select class="w3-select w3-border w3-round-large" name="sort" onchange="this.form.submit()">
+                        <option value="" disabled selected><fmt:message key="res.Sort"/></option>
+                        <option value="name"><fmt:message key="res.Name"/></option>
+                        <option value="author"><fmt:message key="res.Author"/></option>
+                        <option value="publishing"><fmt:message key="res.Publishing"/></option>
+                        <option value="year"><fmt:message key="res.Year"/></option>
+                    </select>
                 </form>
             </div>
-            <div class="w3-bar-item">
-                <div class="w3-margin-top">
-                    ${page}
+
+            <div class="w3-bar-item w3-right">
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="listLibCatalog"/>
+                    <input name="findAuthor" class="w3-input w3-border w3-round-large" type="text"
+                           onchange="this.form.submit()" placeholder=<fmt:message
+                            key="res.Author"/>>
+                </form>
+            </div>
+
+            <div class="w3-bar-item w3-right">
+                <form action="controller" method="get">
+                    <input type="hidden" name="command" value="listLibCatalog"/>
+                    <input name="findName" class="w3-input w3-border w3-round-large" type="text"
+                           onchange="this.form.submit()" placeholder=<fmt:message
+                            key="res.Name"/>>
+                </form>
+            </div>
+
+            <div class="w3-bar-item w3-right">
+                <div class="w3-padding">
+                    <fmt:message key="res.FindBy"/>
                 </div>
             </div>
-            <div class="w3-bar-item">
+
+            <div class="w3-bar-item w3-right">
                 <form action="controller" method="get">
                     <input type="hidden" name="command" value="listLibCatalog"/>
-                    <input type="hidden" name="goPage" value="next"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
+                    <input type="hidden" name="show" value="all"/>
+                    <button type="submit" class="w3-btn w3-light-grey w3-round-large"><fmt:message
+                            key="res.ShowAll"/></button>
                 </form>
             </div>
-        </div>
+        </c:if>
     </div>
+    <c:if test="${not empty catalogPage}">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-4 w3-hoverable">
+                <thead>
+                <tr class="w3-light-grey">
+                    <th><fmt:message key="res.Name"/></th>
+                    <th><fmt:message key="res.Author"/></th>
+                    <th><fmt:message key="res.Publishing"/></th>
+                    <th><fmt:message key="res.Year"/></th>
+                    <th><fmt:message key="res.Description"/></th>
+                    <th><fmt:message key="res.Fine"/></th>
+                    <th><fmt:message key="res.Quantity"/></th>
+                </tr>
+                </thead>
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${catalogPage}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.author.name}</td>
+                        <td>${item.publishing.name}</td>
+                        <td>${item.year}</td>
+                        <td>${item.description}</td>
+                        <td>${item.fine}</td>
+                        <td>${item.quantity}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="w3-center">
+            <div class="w3-bar">
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listLibCatalog"/>
+                        <input type="hidden" name="goPage" value="previous"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
+                    </form>
+                </div>
+                <div class="w3-bar-item">
+                    <div class="w3-margin-top">
+                            ${page}
+                    </div>
+                </div>
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listLibCatalog"/>
+                        <input type="hidden" name="goPage" value="next"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </c:if>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

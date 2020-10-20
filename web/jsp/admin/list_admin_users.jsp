@@ -46,99 +46,103 @@
         </div>
     </div>
 
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable">
-            <thead>
-            <tr class="w3-light-grey">
-                <th><fmt:message key="res.login"/></th>
-                <th><fmt:message key="res.Description"/></th>
-                <th><fmt:message key="res.State2"/></th>
-                <th><fmt:message key="res.Librarian2"/></th>
-                <th><fmt:message key="res.Cancel"/></th>
-            </tr>
-            </thead>
-            <c:set var="k" value="0"/>
-            <c:forEach var="item" items="${readersPage}">
-                <c:set var="k" value="${k+1}"/>
-                <tr>
-                    <td>${item.username}</td>
-                    <td>${item.description}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${item.active == 'true'}">
-                                <form action="controller" method="post">
-                                    <input type="hidden" name="command" value="listAdminUsers"/>
-                                    <button type="submit" name="stateOffId" value="${item.id}"
-                                            class="w3-btn w3-green w3-round-large"><i class="material-icons">check_circle_outline</i>
-                                    </button>
-                                </form>
-                            </c:when>
-                            <c:otherwise>
-                                <form action="controller" method="post">
-                                    <input type="hidden" name="command" value="listAdminUsers"/>
-                                    <button type="submit" name="stateOnId" value="${item.id}"
-                                            class="w3-btn w3-red w3-round-large"><i class="material-icons">block</i>
-                                    </button>
-                                </form>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${item.roleId == '2'}">
-                                <form action="controller" method="post">
-                                    <input type="hidden" name="command" value="listAdminUsers"/>
-                                    <button type="submit" name="libOffId" value="${item.id}"
-                                            class="w3-btn w3-blue w3-round-large"><i class="material-icons w3-large">check_circle_outline</i>
-                                    </button>
-                                </form>
-                            </c:when>
-                            <c:otherwise>
-                                <form action="controller" method="post">
-                                    <input type="hidden" name="command" value="listAdminUsers"/>
-                                    <button type="submit" name="libOnId" value="${item.id}"
-                                            class="w3-btn w3-gray w3-round-large"><i class="material-icons w3-large">block</i>
-                                    </button>
-                                </form>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>
-                        <form action="controller" method="post">
-                            <input type="hidden" name="command" value="listAdminUsers"/>
-                            <input type="hidden" name="show" value="all"/>
-                            <button type="submit" name="cancelId" value="${item.id}"
-                                    class="w3-btn w3-green w3-round-large">
-                                <i class="material-icons w3-large">delete_forever</i></button>
-                        </form>
-                    </td>
+    <c:if test="${not empty readersPage}">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-4 w3-hoverable">
+                <thead>
+                <tr class="w3-light-grey">
+                    <th><fmt:message key="res.login"/></th>
+                    <th><fmt:message key="res.Description"/></th>
+                    <th><fmt:message key="res.State2"/></th>
+                    <th><fmt:message key="res.Librarian2"/></th>
+                    <th><fmt:message key="res.Cancel"/></th>
                 </tr>
-            </c:forEach>
-        </table>
-    </div>
-    <div class="w3-center">
-        <div class="w3-bar">
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listAdminUsers"/>
-                    <input type="hidden" name="goPage" value="previous"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
-                </form>
-            </div>
-            <div class="w3-bar-item">
-                <div class="w3-margin-top">
-                    ${page}
+                </thead>
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${readersPage}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.username}</td>
+                        <td>${item.description}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.active == 'true'}">
+                                    <form action="controller" method="post">
+                                        <input type="hidden" name="command" value="listAdminUsers"/>
+                                        <button type="submit" name="stateOffId" value="${item.id}"
+                                                class="w3-btn w3-green w3-round-large"><i class="material-icons">check_circle_outline</i>
+                                        </button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="controller" method="post">
+                                        <input type="hidden" name="command" value="listAdminUsers"/>
+                                        <button type="submit" name="stateOnId" value="${item.id}"
+                                                class="w3-btn w3-red w3-round-large"><i class="material-icons">block</i>
+                                        </button>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.roleId == '2'}">
+                                    <form action="controller" method="post">
+                                        <input type="hidden" name="command" value="listAdminUsers"/>
+                                        <button type="submit" name="libOffId" value="${item.id}"
+                                                class="w3-btn w3-blue w3-round-large"><i
+                                                class="material-icons w3-large">check_circle_outline</i>
+                                        </button>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="controller" method="post">
+                                        <input type="hidden" name="command" value="listAdminUsers"/>
+                                        <button type="submit" name="libOnId" value="${item.id}"
+                                                class="w3-btn w3-gray w3-round-large"><i
+                                                class="material-icons w3-large">block</i>
+                                        </button>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <form action="controller" method="post">
+                                <input type="hidden" name="command" value="listAdminUsers"/>
+                                <input type="hidden" name="show" value="all"/>
+                                <button type="submit" name="cancelId" value="${item.id}"
+                                        class="w3-btn w3-green w3-round-large">
+                                    <i class="material-icons w3-large">delete_forever</i></button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="w3-center">
+            <div class="w3-bar">
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listAdminUsers"/>
+                        <input type="hidden" name="goPage" value="previous"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
+                    </form>
+                </div>
+                <div class="w3-bar-item">
+                    <div class="w3-margin-top">
+                            ${page}
+                    </div>
+                </div>
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listAdminUsers"/>
+                        <input type="hidden" name="goPage" value="next"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
+                    </form>
                 </div>
             </div>
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listAdminUsers"/>
-                    <input type="hidden" name="goPage" value="next"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
-                </form>
-            </div>
         </div>
-    </div>
+    </c:if>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

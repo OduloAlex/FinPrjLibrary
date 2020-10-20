@@ -45,80 +45,82 @@
         </div>
     </div>
 
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable">
-            <thead>
-            <tr class="w3-light-grey">
-                <th><fmt:message key="res.Name"/></th>
-                <th><fmt:message key="res.Author"/></th>
-                <th><fmt:message key="res.Publishing"/></th>
-                <th><fmt:message key="res.Year"/></th>
-                <th><fmt:message key="res.InvNumber"/></th>
-                <th><fmt:message key="res.State"/></th>
-                <th><fmt:message key="res.Registration"/></th>
-                <th><fmt:message key="res.Return"/></th>
-                <th><fmt:message key="res.Fine"/></th>
-            </tr>
-            </thead>
-            <c:set var="k" value="0"/>
-            <c:forEach var="item" items="${cardsPage}">
-                <c:set var="k" value="${k+1}"/>
-                <tr>
-                    <td>${item.book.catalogObj.name}</td>
-                    <td>${item.book.catalogObj.author.name}</td>
-                    <td>${item.book.catalogObj.publishing.name}</td>
-                    <td>${item.book.catalogObj.year}</td>
-                    <td>${item.book.invNumber}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${item.book.statusBookId == '1' }">
-                                <fmt:message key="res.InLibrary"/>
-                            </c:when>
-                            <c:when test="${item.book.statusBookId == '2'}">
-                                <fmt:message key="res.OnHands"/>
-                            </c:when>
-                            <c:when test="${item.book.statusBookId == '3'}">
-                                <fmt:message key="res.InRoom"/>
-                            </c:when>
-                        </c:choose>
-                    </td>
-                    <td>${Card.calendarToString(item.createTime)}</td>
-                    <td>${Card.calendarToString(item.returnTime)}</td>
-                    <td>
-                        <c:if test="${Card.calendarIsAfter(item.returnTime) == true}">
-                            ${item.book.catalogObj.fine}
-                        </c:if>
-                        <c:if test="${Card.calendarIsAfter(item.returnTime) == false}">
-                            ---
-                        </c:if>
-                    </td>
+    <c:if test="${not empty cardsPage}">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-4 w3-hoverable">
+                <thead>
+                <tr class="w3-light-grey">
+                    <th><fmt:message key="res.Name"/></th>
+                    <th><fmt:message key="res.Author"/></th>
+                    <th><fmt:message key="res.Publishing"/></th>
+                    <th><fmt:message key="res.Year"/></th>
+                    <th><fmt:message key="res.InvNumber"/></th>
+                    <th><fmt:message key="res.State"/></th>
+                    <th><fmt:message key="res.Registration"/></th>
+                    <th><fmt:message key="res.Return"/></th>
+                    <th><fmt:message key="res.Fine"/></th>
                 </tr>
-            </c:forEach>
-        </table>
-    </div>
-    <div class="w3-center">
-        <div class="w3-bar">
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listCards"/>
-                    <input type="hidden" name="goPage" value="previous"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
-                </form>
-            </div>
-            <div class="w3-bar-item">
-                <div class="w3-margin-top">
-                    ${page}
+                </thead>
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${cardsPage}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.book.catalogObj.name}</td>
+                        <td>${item.book.catalogObj.author.name}</td>
+                        <td>${item.book.catalogObj.publishing.name}</td>
+                        <td>${item.book.catalogObj.year}</td>
+                        <td>${item.book.invNumber}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.book.statusBookId == '1' }">
+                                    <fmt:message key="res.InLibrary"/>
+                                </c:when>
+                                <c:when test="${item.book.statusBookId == '2'}">
+                                    <fmt:message key="res.OnHands"/>
+                                </c:when>
+                                <c:when test="${item.book.statusBookId == '3'}">
+                                    <fmt:message key="res.InRoom"/>
+                                </c:when>
+                            </c:choose>
+                        </td>
+                        <td>${Card.calendarToString(item.createTime)}</td>
+                        <td>${Card.calendarToString(item.returnTime)}</td>
+                        <td>
+                            <c:if test="${Card.calendarIsAfter(item.returnTime) == true}">
+                                ${item.book.catalogObj.fine}
+                            </c:if>
+                            <c:if test="${Card.calendarIsAfter(item.returnTime) == false}">
+                                ---
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="w3-center">
+            <div class="w3-bar">
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listCards"/>
+                        <input type="hidden" name="goPage" value="previous"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
+                    </form>
+                </div>
+                <div class="w3-bar-item">
+                    <div class="w3-margin-top">
+                            ${page}
+                    </div>
+                </div>
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listCards"/>
+                        <input type="hidden" name="goPage" value="next"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
+                    </form>
                 </div>
             </div>
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listCards"/>
-                    <input type="hidden" name="goPage" value="next"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
-                </form>
-            </div>
         </div>
-    </div>
+    </c:if>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

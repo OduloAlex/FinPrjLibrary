@@ -46,83 +46,86 @@
         </div>
     </div>
 
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable">
-            <thead>
-            <tr class="w3-light-grey">
-                <th><fmt:message key="res.Name"/></th>
-                <th><fmt:message key="res.Author"/></th>
-                <th><fmt:message key="res.Publishing"/></th>
-                <th><fmt:message key="res.Year"/></th>
-                <th><fmt:message key="res.Description"/></th>
-                <th><fmt:message key="res.Quantity"/></th>
-                <th><fmt:message key="res.Give"/></th>
-                <th><fmt:message key="res.Cancel"/></th>
-            </tr>
-            </thead>
-            <c:set var="k" value="0"/>
-            <c:forEach var="item" items="${ordersPage}">
-                <c:set var="k" value="${k+1}"/>
-                <tr>
-                    <td>${item.catalogObj.name}</td>
-                    <td>${item.catalogObj.author.name}</td>
-                    <td>${item.catalogObj.publishing.name}</td>
-                    <td>${item.catalogObj.year}</td>
-                    <td>${item.catalogObj.description}</td>
-                    <td>${item.catalogObj.quantity}</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${item.catalogObj.quantity == 0}">
-                                <button class="w3-btn w3-green w3-round-large" disabled><fmt:message
-                                        key="res.Give"/></button>
-                            </c:when>
-                            <c:otherwise>
-                                <form action="controller" method="get">
-                                    <input type="hidden" name="command" value="makeLibCard"/>
-                                    <input type="hidden" name="show" value="all"/>
-                                    <button type="submit" name="giveId" value="${item.catalogObj.id}"
-                                            class="w3-btn w3-green w3-round-large">
-                                        <fmt:message key="res.Give"/></button>
-                                </form>
-                            </c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td>
-                        <form action="controller" method="post">
-                            <input type="hidden" name="command" value="listLibOrders"/>
-                            <input type="hidden" name="show" value="all"/>
-                            <button type="submit" name="cancelId" value="${item.catalogObj.id}"
-                                    class="w3-btn w3-green w3-round-large">
-                                <i class="material-icons w3-large">delete_forever</i></button>
-                        </form>
-                    </td>
+    <c:if test="${not empty ordersPage}">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-4 w3-hoverable">
+                <thead>
+                <tr class="w3-light-grey">
+                    <th><fmt:message key="res.Name"/></th>
+                    <th><fmt:message key="res.Author"/></th>
+                    <th><fmt:message key="res.Publishing"/></th>
+                    <th><fmt:message key="res.Year"/></th>
+                    <th><fmt:message key="res.Description"/></th>
+                    <th><fmt:message key="res.Quantity"/></th>
+                    <th><fmt:message key="res.Give"/></th>
+                    <th><fmt:message key="res.Cancel"/></th>
                 </tr>
-            </c:forEach>
-        </table>
-    </div>
-    <div class="w3-center">
-        <div class="w3-bar">
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listLibOrders"/>
-                    <input type="hidden" name="goPage" value="previous"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
-                </form>
-            </div>
-            <div class="w3-bar-item">
-                <div class="w3-margin-top">
-                    ${page}
+                </thead>
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${ordersPage}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.catalogObj.name}</td>
+                        <td>${item.catalogObj.author.name}</td>
+                        <td>${item.catalogObj.publishing.name}</td>
+                        <td>${item.catalogObj.year}</td>
+                        <td>${item.catalogObj.description}</td>
+                        <td>${item.catalogObj.quantity}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${item.catalogObj.quantity == 0}">
+                                    <button class="w3-btn w3-green w3-round-large" disabled><fmt:message
+                                            key="res.Give"/></button>
+                                </c:when>
+                                <c:otherwise>
+                                    <form action="controller" method="get">
+                                        <input type="hidden" name="command" value="makeLibCard"/>
+                                        <input type="hidden" name="show" value="all"/>
+                                        <button type="submit" name="giveId" value="${item.catalogObj.id}"
+                                                class="w3-btn w3-green w3-round-large">
+                                            <fmt:message key="res.Give"/></button>
+                                    </form>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <form action="controller" method="post">
+                                <input type="hidden" name="command" value="listLibOrders"/>
+                                <input type="hidden" name="show" value="all"/>
+                                <button type="submit" name="cancelId" value="${item.catalogObj.id}"
+                                        class="w3-btn w3-green w3-round-large">
+                                    <i class="material-icons w3-large">delete_forever</i></button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="w3-center">
+            <div class="w3-bar">
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listLibOrders"/>
+                        <input type="hidden" name="goPage" value="previous"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&lt;&lt;</button>
+                    </form>
+                </div>
+                <div class="w3-bar-item">
+                    <div class="w3-margin-top">
+                            ${page}
+                    </div>
+                </div>
+                <div class="w3-bar-item">
+                    <form action="controller" method="get">
+                        <input type="hidden" name="command" value="listLibOrders"/>
+                        <input type="hidden" name="goPage" value="next"/>
+                        <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
+                    </form>
                 </div>
             </div>
-            <div class="w3-bar-item">
-                <form action="controller" method="get">
-                    <input type="hidden" name="command" value="listLibOrders"/>
-                    <input type="hidden" name="goPage" value="next"/>
-                    <button type="submit" class="w3-btn w3-light-grey w3-round-large w3-margin">&gt;&gt;</button>
-                </form>
-            </div>
         </div>
-    </div>
+    </c:if>
+
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

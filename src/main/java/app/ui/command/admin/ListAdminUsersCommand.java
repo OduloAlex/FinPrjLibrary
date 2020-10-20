@@ -30,10 +30,10 @@ public class ListAdminUsersCommand extends Command {
     /**
      * Execute command to Get request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -65,7 +65,7 @@ public class ListAdminUsersCommand extends Command {
 
 //      Pagination
         List<User> readersPage = null;
-        if(usersItems!=null) {
+        if (usersItems != null) {
             String goPage = request.getParameter("goPage");
             if (goPage != null && !goPage.isEmpty()) {
                 log.debug("Go page ------>>>>> " + goPage);
@@ -99,10 +99,10 @@ public class ListAdminUsersCommand extends Command {
     /**
      * Execute command to Post request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -144,7 +144,7 @@ public class ListAdminUsersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("User itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
+                String errorMessage = "ErrorCantDelUserHasCard";
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return Path.COMMAND__ERROR;
@@ -163,7 +163,7 @@ public class ListAdminUsersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
         itemId = request.getParameter("stateOnId");
@@ -177,7 +177,7 @@ public class ListAdminUsersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 
@@ -193,7 +193,7 @@ public class ListAdminUsersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
         itemId = request.getParameter("libOnId");
@@ -207,7 +207,7 @@ public class ListAdminUsersCommand extends Command {
                 String errorMessage = e.getMessage();
                 session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
-                return  Path.COMMAND__ERROR;
+                return Path.COMMAND__ERROR;
             }
         }
 

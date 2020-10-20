@@ -71,43 +71,44 @@
             </div>
         </div>
     </div>
-
-    <div class="w3-responsive">
-        <table class="w3-table-all w3-card-4 w3-hoverable">
-            <thead>
-            <tr class="w3-light-grey">
-                <th><fmt:message key="res.Name"/></th>
-                <th><fmt:message key="res.Author"/></th>
-                <th><fmt:message key="res.Publishing"/></th>
-                <th><fmt:message key="res.Year"/></th>
-                <th><fmt:message key="res.InvNumber"/></th>
-                <th><fmt:message key="res.Fine"/></th>
-                <th><fmt:message key="res.Cancel"/></th>
-            </tr>
-            </thead>
-            <c:set var="k" value="0"/>
-            <c:forEach var="item" items="${books}">
-                <c:set var="k" value="${k+1}"/>
-                <tr>
-                    <td>${item.catalogObj.name}</td>
-                    <td>${item.catalogObj.author.name}</td>
-                    <td>${item.catalogObj.publishing.name}</td>
-                    <td>${item.catalogObj.year}</td>
-                    <td>${item.invNumber}</td>
-                    <td>${item.catalogObj.fine}</td>
-                    <td>
-                        <form action="controller" method="post">
-                            <input type="hidden" name="command" value="editAdminBook"/>
-                            <input type="hidden" name="show" value="all"/>
-                            <button type="submit" name="cancelId" value="${item.id}"
-                                    class="w3-btn w3-green w3-round-large">
-                                <i class="material-icons w3-large">delete_forever</i></button>
-                        </form>
-                    </td>
+    <c:if test="${not empty books}">
+        <div class="w3-responsive">
+            <table class="w3-table-all w3-card-4 w3-hoverable">
+                <thead>
+                <tr class="w3-light-grey">
+                    <th><fmt:message key="res.Name"/></th>
+                    <th><fmt:message key="res.Author"/></th>
+                    <th><fmt:message key="res.Publishing"/></th>
+                    <th><fmt:message key="res.Year"/></th>
+                    <th><fmt:message key="res.InvNumber"/></th>
+                    <th><fmt:message key="res.Fine"/></th>
+                    <th><fmt:message key="res.Cancel"/></th>
                 </tr>
-            </c:forEach>
-        </table>
-    </div>
+                </thead>
+                <c:set var="k" value="0"/>
+                <c:forEach var="item" items="${books}">
+                    <c:set var="k" value="${k+1}"/>
+                    <tr>
+                        <td>${item.catalogObj.name}</td>
+                        <td>${item.catalogObj.author.name}</td>
+                        <td>${item.catalogObj.publishing.name}</td>
+                        <td>${item.catalogObj.year}</td>
+                        <td>${item.invNumber}</td>
+                        <td>${item.catalogObj.fine}</td>
+                        <td>
+                            <form action="controller" method="post">
+                                <input type="hidden" name="command" value="editAdminBook"/>
+                                <input type="hidden" name="show" value="all"/>
+                                <button type="submit" name="cancelId" value="${item.id}"
+                                        class="w3-btn w3-green w3-round-large">
+                                    <i class="material-icons w3-large">delete_forever</i></button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+    </c:if>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>

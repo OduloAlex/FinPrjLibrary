@@ -70,6 +70,9 @@
                 <c:when test="${errorMessage == 'ErrorWrongPassword'}">
                     <h3><fmt:message key="res.ErrorWrongPassword"/></h3>
                 </c:when>
+                <c:when test="${errorMessage == 'ErrorCantDelUserHasCard'}">
+                    <h3><fmt:message key="res.ErrorCantDelUserHasCard"/></h3>
+                </c:when>
                 <c:otherwise>
                     <h3>Error message: ${errorMessage}</h3>
                 </c:otherwise>
