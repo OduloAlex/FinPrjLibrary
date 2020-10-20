@@ -48,8 +48,6 @@ public class ControllerTest extends Mockito {
     public void doGetLogin() throws IOException, ServletException {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("login");
-        when(request.getParameter("login")).thenReturn("");
-        when(request.getParameter("password")).thenReturn("");
         when(request.getRequestDispatcher(anyString())).thenReturn(rd);
 
         controller.doGet(request, response);
@@ -62,7 +60,8 @@ public class ControllerTest extends Mockito {
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("command")).thenReturn("login");
         when(request.getParameter("localeToSet")).thenReturn("en");
-
+        when(request.getParameter("login")).thenReturn("");
+        when(request.getParameter("password")).thenReturn("");
         controller.doPost(request, response);
 
         verify(response).sendRedirect(anyString());

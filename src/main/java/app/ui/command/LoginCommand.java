@@ -40,7 +40,33 @@ public class LoginCommand extends Command {
 
         log.debug("Command starts");
 
+        log.debug("Command Get finished");
+        return Path.PAGE__LOGIN;
+    }
+
+    /**
+     * Execute command to Post request
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @return path to jsp pages or controller commands
+     * @throws IOException IOException
+     * @throws ServletException ServletException
+     */
+    @Override
+    public String executePost(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException, ServletException {
+
+        log.debug("Command Post starts");
         HttpSession session = request.getSession();
+
+        //      Set locale
+        String localeToSet = request.getParameter("localeToSet");
+        if (localeToSet != null && !localeToSet.isEmpty()) {
+            log.debug("Set locale------>>>>> " + localeToSet);
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            session.setAttribute("defaultLocale", localeToSet);
+        }
 
         // obtain login and password from the request
         String login = request.getParameter("login");
@@ -48,15 +74,14 @@ public class LoginCommand extends Command {
 
         String password = request.getParameter("password");
 
-
         // error handler
         String errorMessage = null;
-        String forward = Path.PAGE__LOGIN;
+        String forward = Path.COMMAND__LOGIN;
         if (login != null && password != null) {
             forward = Path.COMMAND__ERROR;
             if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45)) {
                 errorMessage = "ErrorLoginPassEmpty";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return forward;
             }
@@ -72,13 +97,13 @@ public class LoginCommand extends Command {
 
             if (user == null) {
                 errorMessage = "ErrorNotFindUser";
-                request.setAttribute("errorMessage", errorMessage);
+                session.setAttribute("errorMessage", errorMessage);
                 log.error("errorMessage --> " + errorMessage);
                 return forward;
             } else {
                 boolean check = false;
                 try {
-                    check = Password.check(password, user.getPassword());
+                    check = Password.check(password, login, user.getPassword());
                 } catch (NoSuchAlgorithmException e) {
                     errorMessage = e.getMessage();
                     session.setAttribute("errorMessage", errorMessage);
@@ -86,14 +111,14 @@ public class LoginCommand extends Command {
                     return forward;
                 }
                 if(!check){
-                    errorMessage = "ErrorNotFindUser";
-                    request.setAttribute("errorMessage", errorMessage);
+                    errorMessage = "ErrorWrongPassword";
+                    session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     return forward;
                 }
                 if (!user.isActive()) {
                     errorMessage = "ErrorUserBlocked";
-                    request.setAttribute("errorMessage", errorMessage);
+                    session.setAttribute("errorMessage", errorMessage);
                     log.error("errorMessage --> " + errorMessage);
                     return forward;
                 } else {
@@ -132,35 +157,8 @@ public class LoginCommand extends Command {
                 }
             }
         }
-        return forward;
-    }
-
-    /**
-     * Execute command to Post request
-     *
-     * @param request HttpServletRequest
-     * @param response HttpServletResponse
-     * @return path to jsp pages or controller commands
-     * @throws IOException IOException
-     * @throws ServletException ServletException
-     */
-    @Override
-    public String executePost(HttpServletRequest request,
-                              HttpServletResponse response) throws IOException, ServletException {
-
-        log.debug("Command Post starts");
-
-        //      Set locale
-        String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            log.debug("Set locale------>>>>> " + localeToSet);
-            HttpSession session = request.getSession();
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-        }
-
         log.debug("Command Post finished");
-        return Path.COMMAND__LOGIN;
+        return forward;
     }
 
 }

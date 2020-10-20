@@ -111,7 +111,7 @@ public class UserSettingsCommand extends Command {
                 }
                 String hashPsw;
                 try {
-                    hashPsw = Password.getHash(password);
+                    hashPsw = Password.getHash(password, user.getUsername());
                 } catch (NoSuchAlgorithmException e) {
                     String errorMessage = e.getMessage();
                     session.setAttribute("errorMessage", errorMessage);

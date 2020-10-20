@@ -24,7 +24,7 @@
             <h3><fmt:message key="res.SignIn"/></h3>
         </div>
         <div class="w3-light-grey w3-padding w3-left-align">
-            <form action="controller" method="get">
+            <form action="controller" method="post">
                 <input type="hidden" name="command" value="login"/>
                 <label><fmt:message key="res.login"/>
                     <input type="text" name="login" class="w3-input w3-border w3-round-large" maxlength="45"><br/>
