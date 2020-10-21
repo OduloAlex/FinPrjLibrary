@@ -7,6 +7,7 @@ import app.dao.UserDao;
 import app.domain.CatalogObj;
 import app.domain.User;
 import app.ui.command.Command;
+import app.ui.command.UserSettingsCommand;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -139,21 +140,13 @@ public class ListLibCatalogCommand extends Command {
 
         log.debug("Command Post starts");
 
-        User user = (User) request.getSession().getAttribute("user");
         HttpSession session = request.getSession();
 
-//      Set locale
-        String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-            user.setLocaleName(localeToSet);
-            try {
-                UserDao.updateUser(user);
-            } catch (DBException e) {
-                DBException.outputException(session, e.getMessage());
-                return Path.COMMAND__ERROR;
-            }
+        try {
+            UserSettingsCommand.setUserLocale(request);
+        } catch (DBException e) {
+            DBException.outputException(session, e.getMessage());
+            return Path.COMMAND__ERROR;
         }
 
         log.debug("Command Post finished");

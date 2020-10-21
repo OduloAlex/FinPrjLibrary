@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
 
 /**
  * Login command.
@@ -28,10 +29,10 @@ public class LoginCommand extends Command {
     /**
      * Execute command to Get request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -47,10 +48,10 @@ public class LoginCommand extends Command {
     /**
      * Execute command to Post request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -75,7 +76,6 @@ public class LoginCommand extends Command {
         String password = request.getParameter("password");
 
         // error handler
-        String errorMessage = null;
         String forward = Path.COMMAND__LOGIN;
         if (login != null && password != null) {
             forward = Path.COMMAND__ERROR;
@@ -105,10 +105,16 @@ public class LoginCommand extends Command {
                     DBException.outputException(session, e.getMessage());
                     return forward;
                 }
-                if(!check){
+                if (!check) {
                     DBException.outputException(session, "ErrorWrongPassword");
                     return forward;
                 }
+
+                if (checkOnlyOneLogin(session, user.getUsername())) {
+                    DBException.outputException(session, "ErrorUserAlreadyLogged");
+                    return forward;
+                }
+
                 if (!user.isActive()) {
                     DBException.outputException(session, "ErrorUserBlocked");
                     return forward;
@@ -148,8 +154,30 @@ public class LoginCommand extends Command {
                 }
             }
         }
-        log.debug("Command Post finished");
         return forward;
     }
 
+    /**
+     * Checks if the user is logged in
+     *
+     * @param session  HttpSession
+     * @param userName user name
+     * @return true if user already logged
+     */
+    public static boolean checkOnlyOneLogin(HttpSession session, String userName) {
+        HashSet<String> loggedUsers = (HashSet<String>) session.getServletContext().getAttribute("loggedUsers");
+        return !loggedUsers.add(userName);
+    }
+
+    /**
+     * Delete user from loggedUsers list
+     *
+     * @param session  HttpSession
+     * @param userName user name
+     */
+    public static void deleteUserInOnlyOneLogin(HttpSession session, String userName) {
+        HashSet<String> loggedUsers = (HashSet<String>) session.getServletContext().getAttribute("loggedUsers");
+        loggedUsers.remove(userName);
+        session.getServletContext().setAttribute("loggedUsers", loggedUsers);
+    }
 }

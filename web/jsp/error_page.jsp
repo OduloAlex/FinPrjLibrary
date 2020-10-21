@@ -73,6 +73,9 @@
                 <c:when test="${errorMessage == 'ErrorCantDelUserHasCard'}">
                     <h3><fmt:message key="res.ErrorCantDelUserHasCard"/></h3>
                 </c:when>
+                <c:when test="${errorMessage == 'ErrorUserAlreadyLogged'}">
+                    <h3><fmt:message key="res.ErrorUserAlreadyLogged"/></h3>
+                </c:when>
                 <c:otherwise>
                     <h3>Error message: ${errorMessage}</h3>
                 </c:otherwise>

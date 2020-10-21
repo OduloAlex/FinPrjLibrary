@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -43,6 +44,7 @@ public class ContextListener implements ServletContextListener {
         ServletContext servletContext = event.getServletContext();
         initLog4J(servletContext);
         initI18N(servletContext);
+        initOnlyOneLogin(servletContext);
         log("Servlet context initialization finished");
     }
 
@@ -83,6 +85,16 @@ public class ContextListener implements ServletContextListener {
 
             servletContext.setAttribute("locales", locales);
         }
+    }
+
+    /**
+     * Initialization system OnlyOneLogin
+     *
+     * @param servletContext ServletContext
+     */
+    private void initOnlyOneLogin(ServletContext servletContext) {
+        HashSet<String> loggedUsers = new HashSet<>();
+        servletContext.setAttribute("loggedUsers", loggedUsers);
     }
 
     /**

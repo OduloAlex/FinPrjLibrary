@@ -1,6 +1,7 @@
 package app.ui.command;
 
 import app.Path;
+import app.domain.User;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -33,8 +34,8 @@ public class LogoutCommand extends Command {
     public String executeGet(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {
         log.debug("Command starts");
-
         HttpSession session = request.getSession(false);
+
         if (session != null)
             session.invalidate();
 

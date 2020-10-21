@@ -125,6 +125,8 @@ public class RegistrationCommand extends Command {
                     return forward;
                 }
 
+                LoginCommand.checkOnlyOneLogin(session, user.getUsername());
+
                 Role userRole = Role.getRole(user);
                 log.trace("userRole --> " + userRole);
 

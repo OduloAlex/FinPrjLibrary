@@ -28,10 +28,10 @@ public class UserSettingsCommand extends Command {
     /**
      * Execute command to Get request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -64,10 +64,10 @@ public class UserSettingsCommand extends Command {
     /**
      * Execute command to Post request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -79,18 +79,11 @@ public class UserSettingsCommand extends Command {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-//      Set locale
-        String localeToSet = request.getParameter("localeToSet");
-        if (localeToSet != null && !localeToSet.isEmpty()) {
-            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
-            session.setAttribute("defaultLocale", localeToSet);
-            user.setLocaleName(localeToSet);
-            try {
-                UserDao.updateUser(user);
-            } catch (DBException e) {
-                DBException.outputException(session, e.getMessage());
-                return Path.COMMAND__ERROR;
-            }
+        try {
+            setUserLocale(request);
+        } catch (DBException e) {
+            DBException.outputException(session, e.getMessage());
+            return Path.COMMAND__ERROR;
         }
 
 //      Update User
@@ -149,5 +142,23 @@ public class UserSettingsCommand extends Command {
         }
 
         return Path.COMMAND__USER_SETTINGS;
+    }
+
+    /**
+     * Set UserLocale if get parameter localeToSet
+     *
+     * @param request HttpServletRequest
+     * @throws DBException DBException
+     */
+    public static void setUserLocale(HttpServletRequest request) throws DBException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        String localeToSet = request.getParameter("localeToSet");
+        if (localeToSet != null && !localeToSet.isEmpty()) {
+            Config.set(session, "javax.servlet.jsp.jstl.fmt.locale", localeToSet);
+            session.setAttribute("defaultLocale", localeToSet);
+            user.setLocaleName(localeToSet);
+            UserDao.updateUser(user);
+        }
     }
 }
