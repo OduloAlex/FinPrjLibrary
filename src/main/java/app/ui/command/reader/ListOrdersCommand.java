@@ -40,7 +40,7 @@ public class ListOrdersCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command Get starts");
-
+        HttpSession session = request.getSession();
         User user = (User) request.getSession().getAttribute("user");
 
 //      Get orders
@@ -51,7 +51,8 @@ public class ListOrdersCommand extends Command {
             try {
                 ordersItems = OrderDao.findAllOrderByUsersId(user.getId());
             } catch (DBException e) {
-                e.printStackTrace();
+                DBException.outputException(session, e.getMessage());
+                return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllOrders --> " + ordersItems);
             page = 1;
@@ -64,38 +65,26 @@ public class ListOrdersCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            ordersItems = ordersItems.stream()
-                    .filter(c -> c.getCatalogObj().getName().equals(find))
-                    .collect(Collectors.toList());
+            ordersItems = ordersItems.stream().filter(c -> c.getCatalogObj().getName().equals(find)).collect(Collectors.toList());
         }
 
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            ordersItems = ordersItems.stream()
-                    .filter(c -> c.getCatalogObj().getAuthor().getName().equals(findAuthor))
-                    .collect(Collectors.toList());
+            ordersItems = ordersItems.stream().filter(c -> c.getCatalogObj().getAuthor().getName().equals(findAuthor)).collect(Collectors.toList());
         }
 
 //      Sort
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                ordersItems = ordersItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getName()))
-                        .collect(Collectors.toList());
+                ordersItems = ordersItems.stream().sorted(Comparator.comparing(c -> c.getCatalogObj().getName())).collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                ordersItems = ordersItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getAuthor().getName()))
-                        .collect(Collectors.toList());
+                ordersItems = ordersItems.stream().sorted(Comparator.comparing(c -> c.getCatalogObj().getAuthor().getName())).collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                ordersItems = ordersItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getPublishing().getName()))
-                        .collect(Collectors.toList());
+                ordersItems = ordersItems.stream().sorted(Comparator.comparing(c -> c.getCatalogObj().getPublishing().getName())).collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                ordersItems = ordersItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getCatalogObj().getYear()))
-                        .collect(Collectors.toList());
+                ordersItems = ordersItems.stream().sorted(Comparator.comparing(c -> c.getCatalogObj().getYear())).collect(Collectors.toList());
             }
         }
 
@@ -158,9 +147,7 @@ public class ListOrdersCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -173,17 +160,13 @@ public class ListOrdersCommand extends Command {
                     int result = Integer.parseInt(item);
                     int userId = user.getId();
                     if (!OrderDao.delOrder(result, userId)) {
-                        String errorMessage = "Can't del Order in DB";
-                        session.setAttribute("errorMessage", errorMessage);
-                        log.error("errorMessage --> " + errorMessage);
+                        DBException.outputException(session, "Can't del Order in DB");
                         return Path.COMMAND__ERROR;
                     }
                 } catch (NumberFormatException e) {
                     log.trace("Order itemId doesn't parse --> " + e);
                 } catch (DBException e) {
-                    String errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return Path.COMMAND__ERROR;
                 }
             }

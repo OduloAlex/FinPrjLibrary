@@ -56,9 +56,7 @@ public class SettingsAdminBookCommand extends Command {
         } catch (NumberFormatException e) {
             log.trace("Catalog itemId doesn't parse --> " + e);
         } catch (DBException e) {
-            String errorMessage = e.getMessage();
-            session.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
+            DBException.outputException(session, e.getMessage());
             return Path.COMMAND__ERROR;
         }
 
@@ -95,9 +93,7 @@ public class SettingsAdminBookCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -114,9 +110,7 @@ public class SettingsAdminBookCommand extends Command {
                 && (strYear != null) && (description != null) && (strFine != null)) {
 
             if (name.isEmpty() || (name.length() > 45) || description.isEmpty() || (description.length() > 120)) {
-                String errorMessage = "ErrorMoreThan45ch";
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorMoreThan45ch");
                 return Path.COMMAND__ERROR;
             }
             int year;
@@ -125,9 +119,7 @@ public class SettingsAdminBookCommand extends Command {
                 year = Integer.parseInt(strYear);
                 fine = Integer.parseInt(strFine);
             } catch (NumberFormatException e) {
-                String errorMessage = "ErrorYearAndFine";
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorYearAndFine");
                 return Path.COMMAND__ERROR;
             }
 
@@ -139,9 +131,7 @@ public class SettingsAdminBookCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
             log.debug("Command Post finished");

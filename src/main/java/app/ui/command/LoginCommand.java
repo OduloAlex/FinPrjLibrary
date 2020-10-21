@@ -80,9 +80,7 @@ public class LoginCommand extends Command {
         if (login != null && password != null) {
             forward = Path.COMMAND__ERROR;
             if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45)) {
-                errorMessage = "ErrorLoginPassEmpty";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorLoginPassEmpty");
                 return forward;
             }
 
@@ -90,36 +88,29 @@ public class LoginCommand extends Command {
             try {
                 user = UserDao.findUserByLogin(login);
             } catch (DBException e) {
-                e.printStackTrace();
+                DBException.outputException(session, e.getMessage());
+                return forward;
             }
 
             log.trace("Found in DB: user --> " + user);
 
             if (user == null) {
-                errorMessage = "ErrorNotFindUser";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorNotFindUser");
                 return forward;
             } else {
                 boolean check = false;
                 try {
                     check = Password.check(password, login, user.getPassword());
                 } catch (NoSuchAlgorithmException e) {
-                    errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return forward;
                 }
                 if(!check){
-                    errorMessage = "ErrorWrongPassword";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, "ErrorWrongPassword");
                     return forward;
                 }
                 if (!user.isActive()) {
-                    errorMessage = "ErrorUserBlocked";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, "ErrorUserBlocked");
                     return forward;
                 } else {
                     Role userRole = Role.getRole(user);

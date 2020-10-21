@@ -57,9 +57,7 @@ public class EditAdminBookCommand extends Command {
         } catch (NumberFormatException e) {
             log.trace("Catalog itemId doesn't parse --> " + e);
         } catch (DBException e) {
-            String errorMessage = e.getMessage();
-            session.setAttribute("errorMessage", errorMessage);
-            log.error("errorMessage --> " + errorMessage);
+            DBException.outputException(session, e.getMessage());
             return Path.COMMAND__ERROR;
         }
 
@@ -95,9 +93,7 @@ public class EditAdminBookCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -108,9 +104,7 @@ public class EditAdminBookCommand extends Command {
             try {
                 int bookId = Integer.parseInt(itemId);
                 if (!BookDao.delBookById(bookId)) {
-                    String errorMessage = "Can't del Book in DB";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, "Can't del Book in DB");
                     return Path.COMMAND__ERROR;
                 }
                 int catalogId = Integer.parseInt(editId);
@@ -124,9 +118,7 @@ public class EditAdminBookCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Book itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -135,9 +127,7 @@ public class EditAdminBookCommand extends Command {
         String invNumber = request.getParameter("invNumber");
         if (invNumber != null) {
             if (invNumber.isEmpty() || (invNumber.length() > 45)) {
-                String errorMessage = "ErrorMoreThan45ch";
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorMoreThan45ch");
                 return Path.COMMAND__ERROR;
             }
             try {
@@ -149,9 +139,7 @@ public class EditAdminBookCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = "ErrorInvNumber";
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorInvNumber");
                 return Path.COMMAND__ERROR;
             }
         }

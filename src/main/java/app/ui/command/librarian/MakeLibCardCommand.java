@@ -56,9 +56,7 @@ public class MakeLibCardCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -95,9 +93,7 @@ public class MakeLibCardCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -112,19 +108,13 @@ public class MakeLibCardCommand extends Command {
             try {
                 dateReturn.setTime(sdf.parse(date));
             } catch (ParseException e) {
-                String errorMessage = "ErrorWrongData";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
+                DBException.outputException(session, "ErrorWrongData");
                 return Path.COMMAND__ERROR;
             }
             Calendar today = Calendar.getInstance();
             today.setTime(Calendar.getInstance().getTime());
             if (dateReturn.compareTo(today) < 0) {
-                String errorMessage = "ErrorWrongData";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
+                DBException.outputException(session, "ErrorWrongData");
                 return Path.COMMAND__ERROR;
             }
             log.debug("Today date --> " + Card.calendarToString(today));
@@ -158,9 +148,7 @@ public class MakeLibCardCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Book itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
             log.debug("Command Post finished");

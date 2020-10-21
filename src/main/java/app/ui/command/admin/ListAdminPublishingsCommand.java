@@ -43,7 +43,7 @@ public class ListAdminPublishingsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
 //      Get publishings
         List<Publishing> publishingItems = null;
         int page;
@@ -52,9 +52,7 @@ public class ListAdminPublishingsCommand extends Command {
             try {
                 publishingItems = PublishingDao.findAllPublishing();
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + publishingItems);
@@ -126,9 +124,7 @@ public class ListAdminPublishingsCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -147,9 +143,7 @@ public class ListAdminPublishingsCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("publishing itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -168,9 +162,7 @@ public class ListAdminPublishingsCommand extends Command {
                 publishing.setName(name);
                 PublishingDao.addPublishing(publishing);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

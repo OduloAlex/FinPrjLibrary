@@ -88,9 +88,7 @@ public class UserSettingsCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -123,9 +121,7 @@ public class UserSettingsCommand extends Command {
                 try {
                     UserDao.updateUser(user);
                 } catch (DBException e) {
-                    String errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return Path.COMMAND__ERROR;
                 }
                 session.setAttribute("user", user);

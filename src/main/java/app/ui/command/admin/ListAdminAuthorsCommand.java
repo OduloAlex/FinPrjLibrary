@@ -41,7 +41,7 @@ public class ListAdminAuthorsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
 //      Get Authors
         List<Author> authorItems = null;
         int page;
@@ -50,10 +50,7 @@ public class ListAdminAuthorsCommand extends Command {
             try {
                 authorItems = AuthorDao.findAllAuthor();
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
-                log.debug("Command Post finished");
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + authorItems);
@@ -125,9 +122,7 @@ public class ListAdminAuthorsCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -146,9 +141,7 @@ public class ListAdminAuthorsCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Author itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -167,9 +160,7 @@ public class ListAdminAuthorsCommand extends Command {
             try {
                 AuthorDao.addAuthor(author);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.getSession().setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

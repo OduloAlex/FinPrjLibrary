@@ -41,7 +41,7 @@ public class ListAdminUsersCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
 //      Get Users
         List<User> usersItems = null;
         int page;
@@ -50,9 +50,7 @@ public class ListAdminUsersCommand extends Command {
             try {
                 usersItems = UserDao.findAllUserReaderOrLib();
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllUser --> " + usersItems);
@@ -123,9 +121,7 @@ public class ListAdminUsersCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -136,17 +132,13 @@ public class ListAdminUsersCommand extends Command {
             try {
                 int userId = Integer.parseInt(itemId);
                 if (!UserDao.delUserById(userId)) {
-                    String errorMessage = "Can't del User in DB";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, "Can't del User in DB");
                     return Path.COMMAND__ERROR;
                 }
             } catch (NumberFormatException e) {
                 log.trace("User itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = "ErrorCantDelUserHasCard";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorCantDelUserHasCard");
                 return Path.COMMAND__ERROR;
             }
         }
@@ -160,9 +152,7 @@ public class ListAdminUsersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -174,9 +164,7 @@ public class ListAdminUsersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -190,9 +178,7 @@ public class ListAdminUsersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -204,9 +190,7 @@ public class ListAdminUsersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

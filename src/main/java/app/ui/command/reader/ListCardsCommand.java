@@ -43,7 +43,7 @@ public class ListCardsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
         User user = (User) request.getSession().getAttribute("user");
 
 //      Get cards
@@ -54,9 +54,7 @@ public class ListCardsCommand extends Command {
             try {
                 cardsItems = CardDao.findAllCardByUsersId(user.getId());
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCards --> " + cardsItems);
@@ -70,38 +68,26 @@ public class ListCardsCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            cardsItems = cardsItems.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getName().equals(find))
-                    .collect(Collectors.toList());
+            cardsItems = cardsItems.stream().filter(c -> c.getBook().getCatalogObj().getName().equals(find)).collect(Collectors.toList());
         }
 
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            cardsItems = cardsItems.stream()
-                    .filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor))
-                    .collect(Collectors.toList());
+            cardsItems = cardsItems.stream().filter(c -> c.getBook().getCatalogObj().getAuthor().getName().equals(findAuthor)).collect(Collectors.toList());
         }
 
 //      Sort
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                cardsItems = cardsItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName()))
-                        .collect(Collectors.toList());
+                cardsItems = cardsItems.stream().sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getName())).collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                cardsItems = cardsItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName()))
-                        .collect(Collectors.toList());
+                cardsItems = cardsItems.stream().sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getAuthor().getName())).collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                cardsItems = cardsItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName()))
-                        .collect(Collectors.toList());
+                cardsItems = cardsItems.stream().sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getPublishing().getName())).collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                cardsItems = cardsItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear()))
-                        .collect(Collectors.toList());
+                cardsItems = cardsItems.stream().sorted(Comparator.comparing(c -> c.getBook().getCatalogObj().getYear())).collect(Collectors.toList());
             }
         }
 
@@ -165,9 +151,7 @@ public class ListCardsCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

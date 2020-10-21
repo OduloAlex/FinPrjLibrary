@@ -55,9 +55,7 @@ public class ListLibReadersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("User itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
             session.setAttribute("reader", reader);
@@ -78,9 +76,7 @@ public class ListLibReadersCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("User itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
             session.setAttribute("reader", reader);
@@ -98,9 +94,7 @@ public class ListLibReadersCommand extends Command {
             try {
                 usersItems = UserDao.findAllUserReader();
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllUser --> " + usersItems);
@@ -173,9 +167,7 @@ public class ListLibReadersCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

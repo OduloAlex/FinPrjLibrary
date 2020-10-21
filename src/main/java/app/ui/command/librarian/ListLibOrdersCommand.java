@@ -43,7 +43,7 @@ public class ListLibOrdersCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
         User reader = (User) request.getSession().getAttribute("reader");
 
 //      Get Orders
@@ -54,9 +54,7 @@ public class ListLibOrdersCommand extends Command {
             try {
                 ordersItems = OrderDao.findAllOrderByUsersId(reader.getId());
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllOrders --> " + ordersItems);
@@ -129,9 +127,7 @@ public class ListLibOrdersCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -143,18 +139,13 @@ public class ListLibOrdersCommand extends Command {
                 int catalogId = Integer.parseInt(itemId);
                 int readerId = reader.getId();
                 if (!OrderDao.delOrder(catalogId, readerId)) {
-                    String errorMessage = "Can't del Order in DB";
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
-                    log.debug("Command Post finished");
+                    DBException.outputException(session, "Can't del Order in DB");
                     return Path.COMMAND__ERROR;
                 }
             } catch (NumberFormatException e) {
                 log.trace("Order itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

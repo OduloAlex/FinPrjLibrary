@@ -42,7 +42,7 @@ public class ListLibCardsCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
         User reader = (User) request.getSession().getAttribute("reader");
 
 //      Get Cards
@@ -53,9 +53,7 @@ public class ListLibCardsCommand extends Command {
             try {
                 cardsItems = CardDao.findAllCardByUsersId(reader.getId());
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCards --> " + cardsItems);
@@ -129,9 +127,7 @@ public class ListLibCardsCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -150,9 +146,7 @@ public class ListLibCardsCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Card itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }

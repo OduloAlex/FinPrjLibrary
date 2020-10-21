@@ -75,14 +75,11 @@ public class RegistrationCommand extends Command {
         String description = request.getParameter("description");
 
         // error handler
-        String errorMessage = null;
         String forward = Path.COMMAND__ERROR;
         if (login != null && password != null && description != null) {
             log.trace("Request parameter: loging --> " + login);
             if (login.isEmpty() || password.isEmpty() || (login.length() > 45) || (password.length() > 45) || (description.length() > 120)) {
-                errorMessage = "ErrorLoginPassEmpty";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorLoginPassEmpty");
                 return forward;
             }
 
@@ -90,27 +87,21 @@ public class RegistrationCommand extends Command {
             try {
                 user = UserDao.findUserByLogin(login);
             } catch (DBException e) {
-                errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return forward;
             }
 
             log.trace("Found in DB: user --> " + user);
 
             if (user != null) {
-                errorMessage = "ErrorUserExists";
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, "ErrorUserExists");
                 return forward;
             } else {
                 String hashPsw;
                 try {
                     hashPsw = Password.getHash(password, login);
                 } catch (NoSuchAlgorithmException e) {
-                    errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return forward;
                 }
                 user = new User();
@@ -123,18 +114,14 @@ public class RegistrationCommand extends Command {
                 try {
                     UserDao.addUser(user);
                 } catch (DBException e) {
-                    errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return forward;
                 }
 
                 try {
                     user = UserDao.findUserByLogin(login);
                 } catch (DBException e) {
-                    errorMessage = e.getMessage();
-                    session.setAttribute("errorMessage", errorMessage);
-                    log.error("errorMessage --> " + errorMessage);
+                    DBException.outputException(session, e.getMessage());
                     return forward;
                 }
 

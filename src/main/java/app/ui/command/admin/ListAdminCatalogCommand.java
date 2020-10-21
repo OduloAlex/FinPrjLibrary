@@ -43,7 +43,7 @@ public class ListAdminCatalogCommand extends Command {
                              HttpServletResponse response) throws IOException, ServletException {
 
         log.debug("Command starts");
-
+        HttpSession session = request.getSession();
 //      Get Catalog
         List<CatalogObj> catalogItems = null;
         int page;
@@ -52,9 +52,7 @@ public class ListAdminCatalogCommand extends Command {
             try {
                 catalogItems = CatalogObjDao.findAllCatalogObj();
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                request.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.PAGE__ERROR_PAGE;
             }
             log.trace("Found in DB: findAllCatalogObj --> " + catalogItems);
@@ -68,38 +66,26 @@ public class ListAdminCatalogCommand extends Command {
 //      Find by name
         String find = request.getParameter("findName");
         if (find != null && !find.isEmpty()) {
-            catalogItems = catalogItems.stream()
-                    .filter(c -> c.getName().equals(find))
-                    .collect(Collectors.toList());
+            catalogItems = catalogItems.stream().filter(c -> c.getName().equals(find)).collect(Collectors.toList());
         }
 
 //      Find by author
         String findAuthor = request.getParameter("findAuthor");
         if (findAuthor != null && !findAuthor.isEmpty()) {
-            catalogItems = catalogItems.stream()
-                    .filter(c -> c.getAuthor().getName().equals(findAuthor))
-                    .collect(Collectors.toList());
+            catalogItems = catalogItems.stream().filter(c -> c.getAuthor().getName().equals(findAuthor)).collect(Collectors.toList());
         }
 
 //      Sort
         String sort = request.getParameter("sort");
         if (sort != null && !sort.isEmpty()) {
             if ("name".equals(sort)) {
-                catalogItems = catalogItems.stream()
-                        .sorted(Comparator.comparing(CatalogObj::getName))
-                        .collect(Collectors.toList());
+                catalogItems = catalogItems.stream().sorted(Comparator.comparing(CatalogObj::getName)).collect(Collectors.toList());
             } else if ("author".equals(sort)) {
-                catalogItems = catalogItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getAuthor().getName()))
-                        .collect(Collectors.toList());
+                catalogItems = catalogItems.stream().sorted(Comparator.comparing(c -> c.getAuthor().getName())).collect(Collectors.toList());
             } else if ("publishing".equals(sort)) {
-                catalogItems = catalogItems.stream()
-                        .sorted(Comparator.comparing(c -> c.getPublishing().getName()))
-                        .collect(Collectors.toList());
+                catalogItems = catalogItems.stream().sorted(Comparator.comparing(c -> c.getPublishing().getName())).collect(Collectors.toList());
             } else if ("year".equals(sort)) {
-                catalogItems = catalogItems.stream()
-                        .sorted(Comparator.comparing(CatalogObj::getYear))
-                        .collect(Collectors.toList());
+                catalogItems = catalogItems.stream().sorted(Comparator.comparing(CatalogObj::getYear)).collect(Collectors.toList());
             }
         }
 
@@ -164,9 +150,7 @@ public class ListAdminCatalogCommand extends Command {
             try {
                 UserDao.updateUser(user);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
@@ -185,9 +169,7 @@ public class ListAdminCatalogCommand extends Command {
             } catch (NumberFormatException e) {
                 log.trace("Catalog itemId doesn't parse --> " + e);
             } catch (DBException e) {
-                String errorMessage = e.getMessage();
-                session.setAttribute("errorMessage", errorMessage);
-                log.error("errorMessage --> " + errorMessage);
+                DBException.outputException(session, e.getMessage());
                 return Path.COMMAND__ERROR;
             }
         }
