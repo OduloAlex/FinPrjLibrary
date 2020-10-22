@@ -12,8 +12,17 @@
 </div>
 <div class="w3-container w3-padding">
 
-    <button type="submit" onclick="history.back();" class="w3-btn w3-green w3-round-large"><fmt:message
-            key="res.Back"/></button>
+    <c:if test="${errorMessage == 'ErrorDontHavePermission'}">
+        <form action="controller" method="get">
+            <input type="hidden" name="command" value="login"/>
+            <button type="submit" class="w3-btn w3-green w3-round-large"><fmt:message
+                    key="res.loginIn"/></button>
+        </form>
+    </c:if>
+
+        <button type="submit" onclick="history.back();" class="w3-btn w3-green w3-round-large"><fmt:message
+                key="res.Back"/></button>
+
 
     <h2>
         <fmt:message key="res.ErrorOccurred"/>
@@ -75,6 +84,9 @@
                 </c:when>
                 <c:when test="${errorMessage == 'ErrorUserAlreadyLogged'}">
                     <h3><fmt:message key="res.ErrorUserAlreadyLogged"/></h3>
+                </c:when>
+                <c:when test="${errorMessage == 'ErrorDontHavePermission'}">
+                    <h3><fmt:message key="res.ErrorDontHavePermission"/></h3>
                 </c:when>
                 <c:otherwise>
                     <h3>Error message: ${errorMessage}</h3>

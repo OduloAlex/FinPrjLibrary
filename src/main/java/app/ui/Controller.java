@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Main servlet controller.
  *
- * @author  Alex Odulo
+ * @author Alex Odulo
  */
 public class Controller extends HttpServlet {
 
@@ -23,12 +23,12 @@ public class Controller extends HttpServlet {
     private static final Logger log = Logger.getLogger(Controller.class);
 
     /**
-     *  Controller method Get request
+     * Controller method Get request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @throws ServletException ServletException
-     * @throws IOException IOException
+     * @throws IOException      IOException
      */
     @Override
     protected void doGet(HttpServletRequest request,
@@ -39,10 +39,10 @@ public class Controller extends HttpServlet {
     /**
      * Controller method Post request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @throws ServletException ServletException
-     * @throws IOException IOException
+     * @throws IOException      IOException
      */
     @Override
     protected void doPost(HttpServletRequest request,
@@ -53,10 +53,10 @@ public class Controller extends HttpServlet {
     /**
      * Main method of this controller Get
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @throws ServletException ServletException
-     * @throws IOException IOException
+     * @throws IOException      IOException
      */
     private void processGet(HttpServletRequest request,
                             HttpServletResponse response) throws IOException, ServletException {
@@ -86,10 +86,10 @@ public class Controller extends HttpServlet {
     /**
      * Main method of this controller Post
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @throws ServletException ServletException
-     * @throws IOException IOException
+     * @throws IOException      IOException
      */
     private void processPost(HttpServletRequest request,
                              HttpServletResponse response) throws IOException, ServletException {

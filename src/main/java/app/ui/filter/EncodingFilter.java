@@ -27,10 +27,10 @@ public class EncodingFilter implements Filter {
     /**
      * Encoding Filter execution
      *
-     * @param request ServletRequest
+     * @param request  ServletRequest
      * @param response ServletResponse
-     * @param chain FilterChain
-     * @throws IOException IOException
+     * @param chain    FilterChain
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     public void doFilter(ServletRequest request, ServletResponse response,

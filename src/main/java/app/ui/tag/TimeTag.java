@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Class for custom tag library
  *
- * @author  Alex Odulo
+ * @author Alex Odulo
  */
 public class TimeTag extends TagSupport {
 

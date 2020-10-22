@@ -22,10 +22,10 @@ public class ErrorCommand extends Command {
     /**
      * Execute command to Get request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override
@@ -40,10 +40,10 @@ public class ErrorCommand extends Command {
     /**
      * Execute command to Post request
      *
-     * @param request HttpServletRequest
+     * @param request  HttpServletRequest
      * @param response HttpServletResponse
      * @return path to jsp pages or controller commands
-     * @throws IOException IOException
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     @Override

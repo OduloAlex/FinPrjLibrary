@@ -18,8 +18,8 @@ public class DBCrud<T> {
      * Operation find one entity in DB
      *
      * @param sqlQuery sql query
-     * @param param search parameter
-     * @param mapper mapper entity
+     * @param param    search parameter
+     * @param mapper   mapper entity
      * @return entity
      * @throws DBException app exception
      */
@@ -53,7 +53,7 @@ public class DBCrud<T> {
      * Operation find all entity in DB
      *
      * @param sqlQuery sql query
-     * @param mapper mapper entity
+     * @param mapper   mapper entity
      * @return entity
      * @throws DBException app exception
      */
@@ -86,8 +86,8 @@ public class DBCrud<T> {
      * Operation find all entity in DB by parameter
      *
      * @param sqlQuery sql query
-     * @param param search parameter
-     * @param mapper mapper entity
+     * @param param    search parameter
+     * @param mapper   mapper entity
      * @return entity
      * @throws DBException app exception
      */
@@ -121,7 +121,7 @@ public class DBCrud<T> {
      * Operation delete entity in DB
      *
      * @param sqlQuery sql query
-     * @param param search parameter
+     * @param param    search parameter
      * @return entity
      * @throws DBException app exception
      */

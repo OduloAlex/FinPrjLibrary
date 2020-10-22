@@ -17,7 +17,7 @@ public class Password implements Serializable {
      * Get hash MD5 (Message-Digest Algorithm) with salt
      *
      * @param password password
-     * @param salt salt
+     * @param salt     salt
      * @return hash password
      * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */
@@ -52,12 +52,12 @@ public class Password implements Serializable {
     }
 
     /**
-     *Checks whether given plaintext password corresponds
+     * Checks whether given plaintext password corresponds
      * to a stored hash of the password.
      *
      * @param password password
-     * @param salt salt
-     * @param stored hash
+     * @param salt     salt
+     * @param stored   hash
      * @return true if equals
      * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */

@@ -29,9 +29,7 @@ public class DBManager {
     }
 
     /**
-     * Returns a DB connection from the Pool Connections. Before using this
-     * method you must configure the Date Source and the Connections Pool in your
-     * WEB_APP_ROOT/META-INF/context.xml file.
+     * Returns a DB connection from the Pool Connections.
      *
      * @return A DB connection.
      */

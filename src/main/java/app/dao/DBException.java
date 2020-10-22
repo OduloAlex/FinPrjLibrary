@@ -27,10 +27,10 @@ public class DBException extends Exception {
     /**
      * Put Message to log and ErrorPage
      *
-     * @param session HttpSession
+     * @param session      HttpSession
      * @param errorMessage Message to log and ErrorPage
      */
-    public static void outputException(HttpSession session, String errorMessage){
+    public static void outputException(HttpSession session, String errorMessage) {
         session.setAttribute("errorMessage", errorMessage);
         logger.error("errorMessage --> " + errorMessage);
     }

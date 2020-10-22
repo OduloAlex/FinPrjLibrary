@@ -35,10 +35,10 @@ public class CommandAccessFilter implements Filter {
     /**
      * Access Filter execution
      *
-     * @param request ServletRequest
+     * @param request  ServletRequest
      * @param response ServletResponse
-     * @param chain FilterChain
-     * @throws IOException IOException
+     * @param chain    FilterChain
+     * @throws IOException      IOException
      * @throws ServletException ServletException
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -46,7 +46,7 @@ public class CommandAccessFilter implements Filter {
         if (accessAllowed(request)) {
             chain.doFilter(request, response);
         } else {
-            String errorMessage = "You do not have permission to access the requested resource";
+            String errorMessage = "ErrorDontHavePermission";
 
             request.setAttribute("errorMessage", errorMessage);
             log.trace("Set the request attribute: errorMessage --> " + errorMessage);
