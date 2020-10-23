@@ -49,6 +49,7 @@ public class CommandContainer {
         commands.put("settingsAdminBook", new SettingsAdminBookCommand());
         commands.put("makeAdminBook", new MakeAdminBookCommand());
         commands.put("listAdminPublishings", new ListAdminPublishingsCommand());
+        commands.put("listAdminReaders", new ListAdminReadersCommand());
 
         //
         log.debug("Command container was successfully initialized");

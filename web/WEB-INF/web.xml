@@ -71,7 +71,7 @@
         <!--        admin commands -->
         <init-param>
             <param-name>admin</param-name>
-            <param-value>listAdminCatalog listAdminUsers listAdminAuthors editAdminBook settingsAdminBook makeAdminBook
+            <param-value>listAdminReaders listAdminCatalog listAdminUsers listAdminAuthors editAdminBook settingsAdminBook makeAdminBook
                 listAdminPublishings
             </param-value>
         </init-param>

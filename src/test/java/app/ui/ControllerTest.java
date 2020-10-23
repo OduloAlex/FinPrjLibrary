@@ -28,7 +28,7 @@ public class ControllerTest extends Mockito {
     HttpSession session;
     @Mock
     RequestDispatcher rd;
-    @Mock
+//    @Mock
     List<Card> cardsItems;
     @Mock
     List<CatalogObj> catalogItems;

@@ -16,6 +16,8 @@
             key="res.ListAuthors"/></a>
     <a href="controller?command=listAdminPublishings&show=all" class="w3-bar-item w3-button w3-left"><fmt:message
             key="res.ListPublishing"/></a>
+    <a href="controller?command=listAdminReaders&show=all" class="w3-bar-item w3-button w3-left"><fmt:message
+            key="res.ListReaders"/></a>
     <a href="controller?command=logout" class="w3-bar-item w3-button w3-right"><fmt:message key="res.SignOut"/></a>
     <c:if test="${userRole.name == 'admin'}">
         <a href="controller?command=userSettings" class="w3-bar-item w3-button w3-right">${user.username}(<fmt:message

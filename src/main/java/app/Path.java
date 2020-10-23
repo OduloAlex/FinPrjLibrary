@@ -30,6 +30,7 @@ public final class Path {
     public static final String PAGE__EDIT_ADMIN_BOOK = "/jsp/admin/edit_admin_book.jsp";
     public static final String PAGE__SETTINGS_ADMIN_BOOK = "/jsp/admin/settings_admin_book.jsp";
     public static final String PAGE__MAKE_ADMIN_BOOK = "/jsp/admin/make_admin_book.jsp";
+    public static final String PAGE__LIST_ADMIN_READERS = "/jsp/admin/list_admin_readers.jsp";
 
     // commands
     public static final String COMMAND__LOGIN = "/controller?command=login";
@@ -55,4 +56,5 @@ public final class Path {
     public static final String COMMAND__EDIT_ADMIN_BOOK = "/controller?command=editAdminBook&show=all";
     public static final String COMMAND__SETTINGS_ADMIN_BOOK = "/controller?command=settingsAdminBook";
     public static final String COMMAND__MAKE_ADMIN_BOOK = "/controller?command=makeAdminBook";
+    public static final String COMMAND__LIST_ADMIN_READERS = "/controller?command=listAdminReaders&show=all";
 }
